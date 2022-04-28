@@ -1,0 +1,432 @@
+# depslib dependency file v1.0
+1648621400 source:c:\users\andy\desktop\ict289\week3\3d_cube\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"CUBE_3D.h"
+
+1647586931 source:c:\users\andy\desktop\ict289\week3\3d_cube\3d_cube.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+
+1647579095 c:\users\andy\desktop\ict289\week3\3d_cube\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\week3\3d_cube\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\week3\3d_cube\include\gl\freeglut_ext.h
+
+1648623879 c:\users\andy\desktop\ict289\week3\3d_cube\cube_3d.h
+	"ObjectFileLib.h"
+
+1648623843 source:c:\users\andy\desktop\ict289\week3\3d_cube\cube_3d.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"CUBE_3D.h"
+
+1648623512 source:c:\users\andy\desktop\ict289\week3\3d_cube\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+
+1648623542 c:\users\andy\desktop\ict289\week3\3d_cube\objectfilelib.h
+	<gl/freeglut.h>
+
+1648624632 source:c:\users\andy\desktop\ict289\week5-6\opengl_boiler\cube_3d.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"CUBE_3D.h"
+
+1647579095 c:\users\andy\desktop\ict289\week5-6\opengl_boiler\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\week5-6\opengl_boiler\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\week5-6\opengl_boiler\include\gl\freeglut_ext.h
+
+1648623542 c:\users\andy\desktop\ict289\week5-6\opengl_boiler\objectfilelib.h
+	<gl/freeglut.h>
+
+1648623879 c:\users\andy\desktop\ict289\week5-6\opengl_boiler\cube_3d.h
+	"ObjectFileLib.h"
+
+1648625296 source:c:\users\andy\desktop\ict289\week5-6\opengl_boiler\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"Initializer.h"
+
+1648624090 source:c:\users\andy\desktop\ict289\week5-6\opengl_boiler\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+
+1648625618 source:c:\users\andy\desktop\ict289\week5-6\opengl_boiler\initializer.c
+	"Initializer.h"
+	"ObjectFileLib.h"
+
+1648624632 c:\users\andy\desktop\ict289\week5-6\opengl_boiler\initializer.h
+
+1649225152 source:c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\initializer.c
+	"Initializer.h"
+	"ObjectFileLib.h"
+
+1648624632 c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\initializer.h
+
+1649147069 c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\objectfilelib.h
+	<gl/freeglut.h>
+
+1647579095 c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\include\gl\freeglut_ext.h
+
+1649225701 source:c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"Initializer.h"
+	"house.h"
+
+1649320063 source:c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+
+1649150840 source:c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\house.c
+	"house.h"
+	<gl/freeglut.h>
+
+1648626666 c:\users\andy\desktop\ict289\week5-6\opengl_house_sim\house.h
+
+1649150840 source:c:\users\andy\desktop\ict289\up-to-date\3d_program\house.c
+	"house.h"
+	<gl/freeglut.h>
+
+1648626666 c:\users\andy\desktop\ict289\up-to-date\3d_program\house.h
+
+1647579095 c:\users\andy\desktop\ict289\up-to-date\3d_program\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\up-to-date\3d_program\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\up-to-date\3d_program\include\gl\freeglut_ext.h
+
+1649481814 source:c:\users\andy\desktop\ict289\up-to-date\3d_program\initializer.c
+	"Initializer.h"
+	"ObjectFileLib.h"
+
+1648624632 c:\users\andy\desktop\ict289\up-to-date\3d_program\initializer.h
+
+1649485036 c:\users\andy\desktop\ict289\up-to-date\3d_program\objectfilelib.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+
+1649484795 source:c:\users\andy\desktop\ict289\up-to-date\3d_program\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+	"VectorMath.h"
+
+1649487769 source:c:\users\andy\desktop\ict289\up-to-date\3d_program\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"Initializer.h"
+	"GameObject.h"
+
+1649489579 source:c:\users\andy\desktop\ict289\up-to-date\3d_program\gameobject.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1649398391 c:\users\andy\desktop\ict289\up-to-date\3d_program\vectormath.h
+
+1649487229 c:\users\andy\desktop\ict289\up-to-date\3d_program\gameobject.h
+	"ObjectFileLib.h"
+	"VectorMath.h"
+
+1649476523 source:c:\users\andy\desktop\ict289\up-to-date\3d_program\vectormath.c
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"math.h"
+	<stdio.h>
+
+1650886753 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\gameobject.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1647579095 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\include\gl\freeglut_ext.h
+
+1650883807 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\objectfilelib.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+
+1650865848 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\vectormath.h
+	<gl/freeglut.h>
+
+1650883351 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\gameobject.h
+	"ObjectFileLib.h"
+	"HitBox.h"
+	"VectorMath.h"
+	"PhysicsObject.h"
+
+1650865848 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\initializer.c
+	"Initializer.h"
+	"ObjectFileLib.h"
+
+1650862129 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\initializer.h
+
+1650886851 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"Initializer.h"
+	"GameObject.h"
+	"HitBox.h"
+	"Scene.h"
+
+1650886358 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+	"VectorMath.h"
+
+1650866247 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\vectormath.c
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"math.h"
+	<stdio.h>
+
+1650869160 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\hitbox.c
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1650866902 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\hitbox.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1650885677 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\scene.c
+	"Scene.h"
+	"PhysicsObject.h"
+	"GameObject.h"
+
+1650874732 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\physicsobject.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"GameObject.h"
+
+1650885866 source:c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\physicsobject.c
+	"PhysicsObject.h"
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"GameObject.h"
+
+1650873540 c:\users\andy\desktop\ict289\up-to-date\3d_program - aabb test\scene.h
+	"GameObject.h"
+	"PhysicsObject.h"
+
+1650889911 source:c:\users\andy\desktop\ict289\assignment2\billiards\hitbox.c
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1650889739 c:\users\andy\desktop\ict289\assignment2\billiards\vectormath.h
+	<gl/freeglut.h>
+
+1647579095 c:\users\andy\desktop\ict289\assignment2\billiards\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\assignment2\billiards\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\assignment2\billiards\include\gl\freeglut_ext.h
+
+1650890263 c:\users\andy\desktop\ict289\assignment2\billiards\objectfilelib.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+
+1650890207 c:\users\andy\desktop\ict289\assignment2\billiards\gameobject.h
+	"ObjectFileLib.h"
+	"HitBox.h"
+	"VectorMath.h"
+
+1650866902 c:\users\andy\desktop\ict289\assignment2\billiards\hitbox.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1650874732 c:\users\andy\desktop\ict289\assignment2\billiards\physicsobject.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"GameObject.h"
+
+1650889680 source:c:\users\andy\desktop\ict289\assignment2\billiards\initializer.c
+	"Initializer.h"
+	"ObjectFileLib.h"
+
+1650862129 c:\users\andy\desktop\ict289\assignment2\billiards\initializer.h
+
+1650894000 source:c:\users\andy\desktop\ict289\assignment2\billiards\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"Initializer.h"
+	"GameObject.h"
+	"HitBox.h"
+
+1650873540 c:\users\andy\desktop\ict289\assignment2\billiards\scene.h
+	"GameObject.h"
+	"PhysicsObject.h"
+
+1650886358 source:c:\users\andy\desktop\ict289\assignment2\billiards\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+	"VectorMath.h"
+
+1650886909 source:c:\users\andy\desktop\ict289\assignment2\billiards\physicsobject.c
+	"PhysicsObject.h"
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"GameObject.h"
+
+1650885677 source:c:\users\andy\desktop\ict289\assignment2\billiards\scene.c
+	"Scene.h"
+	"PhysicsObject.h"
+	"GameObject.h"
+
+1650866247 source:c:\users\andy\desktop\ict289\assignment2\billiards\vectormath.c
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"math.h"
+	<stdio.h>
+
+1650889434 source:c:\users\andy\desktop\ict289\assignment2\billiards\gameobject.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1651050033 source:c:\users\andy\desktop\ict289\week7\bouncy boi\gameobject.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1647579095 c:\users\andy\desktop\ict289\week7\bouncy boi\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\desktop\ict289\week7\bouncy boi\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\desktop\ict289\week7\bouncy boi\include\gl\freeglut_ext.h
+
+1650890263 c:\users\andy\desktop\ict289\week7\bouncy boi\objectfilelib.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+
+1651048528 c:\users\andy\desktop\ict289\week7\bouncy boi\vectormath.h
+	<gl/freeglut.h>
+
+1651040466 c:\users\andy\desktop\ict289\week7\bouncy boi\gameobject.h
+	"ObjectFileLib.h"
+	"HitBox.h"
+	"VectorMath.h"
+
+1651050994 c:\users\andy\desktop\ict289\week7\bouncy boi\hitbox.h
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1651052446 source:c:\users\andy\desktop\ict289\week7\bouncy boi\hitbox.c
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"GameObject.h"
+
+1651035209 source:c:\users\andy\desktop\ict289\week7\bouncy boi\initializer.c
+	"Initializer.h"
+	"ObjectFileLib.h"
+
+1650862129 c:\users\andy\desktop\ict289\week7\bouncy boi\initializer.h
+
+1651054051 source:c:\users\andy\desktop\ict289\week7\bouncy boi\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"ObjectFileLib.h"
+	"Initializer.h"
+	"GameObject.h"
+	"HitBox.h"
+
+1651051366 source:c:\users\andy\desktop\ict289\week7\bouncy boi\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+	"VectorMath.h"
+
+1651048527 source:c:\users\andy\desktop\ict289\week7\bouncy boi\vectormath.c
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"math.h"
+	<stdio.h>
+
