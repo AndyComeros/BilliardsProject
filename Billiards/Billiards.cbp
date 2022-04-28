@@ -50,14 +50,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Initializer.h" />
-		<Unit filename="ObjectFileLib.c">
+		<Unit filename="OFFFILE.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="ObjectFileLib.h" />
-		<Unit filename="VectorMath.c">
+		<Unit filename="OFFFILE.h" />
+		<Unit filename="Vector.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="VectorMath.h" />
+		<Unit filename="Vector.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

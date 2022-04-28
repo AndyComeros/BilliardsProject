@@ -430,3 +430,90 @@
 	"math.h"
 	<stdio.h>
 
+1651155335 source:c:\users\andy\documents\github\billiardsproject\billiards\gameobject.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"OFFFILE.h"
+	"GameObject.h"
+
+1647579095 c:\users\andy\documents\github\billiardsproject\billiards\include\gl\freeglut.h
+	"freeglut_std.h"
+	"freeglut_ext.h"
+
+1647579095 c:\users\andy\documents\github\billiardsproject\billiards\include\gl\freeglut_std.h
+	<windows.h>
+	<GL/gl.h>
+	<GL/glu.h>
+	<stdlib.h>
+
+1647579095 c:\users\andy\documents\github\billiardsproject\billiards\include\gl\freeglut_ext.h
+
+1651152622 c:\users\andy\documents\github\billiardsproject\billiards\objectfilelib.h
+	<gl/freeglut.h>
+	"Vector.h"
+
+1651150855 c:\users\andy\documents\github\billiardsproject\billiards\vectormath.h
+	<gl/freeglut.h>
+
+1651155265 c:\users\andy\documents\github\billiardsproject\billiards\gameobject.h
+	"OFFFILE.h"
+	"HitBox.h"
+	"Vector.h"
+
+1651155265 c:\users\andy\documents\github\billiardsproject\billiards\hitbox.h
+	<gl/freeglut.h>
+	"Vector.h"
+	"OFFFILE.h"
+	"GameObject.h"
+
+1651155251 source:c:\users\andy\documents\github\billiardsproject\billiards\hitbox.c
+	"Vector.h"
+	"OFFFILE.h"
+	"GameObject.h"
+
+1651155251 source:c:\users\andy\documents\github\billiardsproject\billiards\initializer.c
+	"Initializer.h"
+	"OFFFILE.h"
+
+1650862129 c:\users\andy\documents\github\billiardsproject\billiards\initializer.h
+
+1651155658 source:c:\users\andy\documents\github\billiardsproject\billiards\main.c
+	<stdio.h>
+	<stdlib.h>
+	<gl/freeglut.h>
+	"Vector.h"
+	"OFFFILE.h"
+	"Initializer.h"
+	"GameObject.h"
+	"HitBox.h"
+
+1651051366 source:c:\users\andy\documents\github\billiardsproject\billiards\objectfilelib.c
+	"ObjectFileLib.h"
+	<stdio.h>
+	"VectorMath.h"
+
+1651048527 source:c:\users\andy\documents\github\billiardsproject\billiards\vectormath.c
+	<gl/freeglut.h>
+	"VectorMath.h"
+	"math.h"
+	<stdio.h>
+
+1651155285 c:\users\andy\documents\github\billiardsproject\billiards\vector.h
+	<gl/freeglut.h>
+
+1651155774 source:c:\users\andy\documents\github\billiardsproject\billiards\vector.c
+	<gl/freeglut.h>
+	"Vector.h"
+	"math.h"
+	<stdio.h>
+
+1651155695 source:c:\users\andy\documents\github\billiardsproject\billiards\offfile.c
+	"OFFFILE.h"
+	<stdio.h>
+	"Vector.h"
+
+1651153507 c:\users\andy\documents\github\billiardsproject\billiards\offfile.h
+	<gl/freeglut.h>
+	"Vector.h"
+

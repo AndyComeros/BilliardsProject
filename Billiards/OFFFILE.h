@@ -1,7 +1,7 @@
-#ifndef OBJECTFILELIB_H_INCLUDED
-#define OBJECTFILELIB_H_INCLUDED
+#ifndef OFFFILE_H_INCLUDED
+#define OFFFILE_H_INCLUDED
 #include <gl/freeglut.h>
-#include "VectorMath.h"
+#include "Vector.h"
 
 //triangles similar to point but ints
 typedef int triangle[3];
@@ -32,4 +32,4 @@ void printOFFInfo(struct OFFFile *data);
 void drawAxis();
 void drawGridXZ(int size);
 
-#endif // OBJECTFILELIB_H_INCLUDED
+#endif // OFFFILE_H_INCLUDED

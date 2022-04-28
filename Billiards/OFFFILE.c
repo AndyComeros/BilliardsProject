@@ -2,9 +2,9 @@
 /*
 This class contains useful functions related to reading OFFFiles
 */
-#include "ObjectFileLib.h"
+#include "OFFFILE.h"
 #include <stdio.h>
-#include "VectorMath.h"
+#include "Vector.h"
 
 //free offile memory
 void freeOFFile(struct OFFFile *off)
@@ -43,22 +43,22 @@ void readOFFFile(struct OFFFile *data, char *fileName)
 
     //reads in vertecies and calulates center based on data
     data->vertecies = (GLfloat *)malloc(sizeof(GLfloat)*3*(data->nVert));
-    (*data).center[0] = 0;
-    (*data).center[1] = 0;
-    (*data).center[2] = 0;
+    (*data).center.x = 0;
+    (*data).center.y = 0;
+    (*data).center.z = 0;
 
     for(int i = 0; i < data->nVert; i++)
     {
-        fscanf(inFile,"%f %f %f",&data->vertecies[i][0],&data->vertecies[i][1],&data->vertecies[i][2]);
+        fscanf(inFile,"%f %f %f",&data->vertecies[i].x,&data->vertecies[i].y,&data->vertecies[i].z);
 
-        (*data).center[0]+= (*data).vertecies[i][0];
-        (*data).center[1]+= (*data).vertecies[i][1];
-        (*data).center[2]+= (*data).vertecies[i][2];
+        (*data).center.x+= (*data).vertecies[i].x;
+        (*data).center.y+= (*data).vertecies[i].y;
+        (*data).center.z+= (*data).vertecies[i].z;
     }
 
-    (*data).center[0] /= (*data).nVert;
-    (*data).center[1] /= (*data).nVert;
-    (*data).center[2] /= (*data).nVert;
+    (*data).center.x /= (*data).nVert;
+    (*data).center.y /= (*data).nVert;
+    (*data).center.z /= (*data).nVert;
 
 
     //reads in triangles/faces
@@ -80,33 +80,41 @@ void renderOFF(struct OFFFile *object3D,vect3D offset,vect3D scale)
     {
         glBegin(GL_TRIANGLES);
 
-        point3D tri[3];
+
         glColor3f(0,0,1);
         if(i > object3D->nFace/2)
         {
             glColor3f(1,0,0);
         }
 
+        point3D tri[3];
+
         for(int j = 0; j<3; j++)
         {
-            tri[j][0] = object3D->vertecies[object3D->faces[i][j]][0];
-            tri[j][1] = object3D->vertecies[object3D->faces[i][j]][1];
-            tri[j][2] = object3D->vertecies[object3D->faces[i][j]][2];
+            tri[j].x = object3D->vertecies[object3D->faces[i][j]].x;
+            tri[j].y = object3D->vertecies[object3D->faces[i][j]].y;
+            tri[j].z = object3D->vertecies[object3D->faces[i][j]].z;
         }
 
         //modifiers
-        vectAddVect(&tri[0],offset);
-        vectAddVect(&tri[1],offset);
-        vectAddVect(&tri[2],offset);
 
-        vectMultScalars(tri[0],scale[0],scale[1],scale[2]);
-        vectMultScalars(tri[1],scale[0],scale[1],scale[2]);
-        vectMultScalars(tri[2],scale[0],scale[1],scale[2]);
+        tri[0] = vectAddVect(tri[0],offset);
+        tri[1] = vectAddVect(tri[1],offset);
+        tri[2] = vectAddVect(tri[2],offset);
+/*
+        tri[0] = vectMultScalars(tri[0],scale.x,scale.x,scale.x);
+        tri[1] = vectMultScalars(tri[1],scale.y,scale.y,scale.y);
+        tri[2] = vectMultScalars(tri[2],scale.z,scale.z,scale.z);
         //end modifiers
+        */
+        GLfloat vert1[3] = {tri[2].x,tri[2].y,tri[2].z};
+        GLfloat vert2[3] = {tri[0].x,tri[0].y,tri[0].z};
+        GLfloat vert3[3] = {tri[1].x,tri[1].y,tri[1].z};
 
-        glVertex3fv(tri[2]);
-        glVertex3fv(tri[0]);
-        glVertex3fv(tri[1]);
+
+        glVertex3fv(vert1);
+        glVertex3fv(vert2);
+        glVertex3fv(vert3);
 
         glEnd();
     }
@@ -165,15 +173,15 @@ void drawGridXZ(int size)
         {
             glBegin(GL_LINES);
             glColor3fv(color);
-            point3D point1 = {i,0,j};
-            point3D point2 = {-i,0,j};
+            GLfloat point1[3] = {i,0,j};
+            GLfloat point2[3] = {-i,0,j};
             glVertex3fv(point1);
             glVertex3fv(point2);
             glEnd();
             glBegin(GL_LINES);
             glColor3fv(color);
-            point3D point3 = {i,0,j};
-            point3D point4 = {i,0,-j};
+            GLfloat point3[3] = {i,0,j};
+            GLfloat point4[3] = {i,0,-j};
             glVertex3fv(point3);
             glVertex3fv(point4);
             glEnd();

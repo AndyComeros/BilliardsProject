@@ -2,8 +2,8 @@
 #define HITBOX_H_INCLUDED
 
 #include <gl/freeglut.h>
-#include "VectorMath.h"
-#include "ObjectFileLib.h"
+#include "Vector.h"
+#include "OFFFILE.h"
 #include "GameObject.h"
 
 /**
@@ -48,5 +48,5 @@ int HitSphereBox(HitBox * h1, HitBox * h2);
 int HitBoxBox(HitBox * h1, HitBox * h2);
 
 //helper function
-void AABBClosestPoint(point3D * result,HitBox * boundBox,point3D point);
+vect3D AABBClosestPoint(HitBox * boundBox,point3D point);
 #endif // HITBOX_H_INCLUDED

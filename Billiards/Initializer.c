@@ -1,5 +1,5 @@
 #include "Initializer.h"
-#include "ObjectFileLib.h"
+#include "OFFFILE.h"
 
 
    GLdouble fov	 = 30;		// degrees

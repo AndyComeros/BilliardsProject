@@ -1,9 +1,9 @@
 #ifndef GAMEOBJECT_H_INCLUDED
 #define GAMEOBJECT_H_INCLUDED
 
-#include "ObjectFileLib.h"
+#include "OFFFILE.h"
 #include "HitBox.h"
-#include "VectorMath.h"
+#include "Vector.h"
 
 //---Data---//
 struct GameObject
@@ -15,8 +15,8 @@ struct GameObject
 
     //position data
     point3D center;
-    GLfloat scale[3];
-    GLfloat rotation[3];
+    vect3D scale;
+    vect3D rotation;
     vect3D offset;//offsets transformations so center of object is center of model.
 
     //physics data

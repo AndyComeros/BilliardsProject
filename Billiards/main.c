@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gl/freeglut.h>
-#include "VectorMath.h"
-#include "ObjectFileLib.h"
+#include "Vector.h"
+#include "OFFFILE.h"
 #include "Initializer.h"
 #include "GameObject.h"
 #include "HitBox.h"
@@ -25,9 +25,8 @@ HitBox floor;
 void display(void);
 void PhysicsUpdate(int num);
 
-int pog = 0;
 void collideBallz(GameObject *b1,GameObject *b2){
-
+/*
     if(HitSphereSphere(b1->hitBox,b2->hitBox)== 1){
             vect3D iv1;
             iv1[0] = b1->velocity[0];
@@ -38,13 +37,13 @@ void collideBallz(GameObject *b1,GameObject *b2){
             iv2[1] = b2->velocity[1];
             iv2[2] = b2->velocity[2];
             //printf("pos: %f, %f, %f\n",b1->center[0],b1->center[1],b1->center[2]);
-            pog++;
         vectCrossProd(b1->velocity,iv2);
         vectCrossProd(b2->velocity,iv1);
         vectMultScalar(&b1->velocity,0.5);
         vectMultScalar(&b2->velocity,0.5);
 
     }
+    */
 }
 
 int main(int argc, char** argv)
@@ -63,9 +62,9 @@ int main(int argc, char** argv)
 
         go[i].hitBox->Radius = ballsize;
 
-        go[i].velocity[0] = rand()%maxSpeed;
-        go[i].velocity[1] = rand()%maxSpeed;
-        go[i].velocity[2] = rand()%maxSpeed;
+        go[i].velocity.x = rand()%maxSpeed;
+        go[i].velocity.y = rand()%maxSpeed;
+        go[i].velocity.z = rand()%maxSpeed;
     }
 
     //go.hitBox = &sphere;
@@ -96,8 +95,6 @@ int main(int argc, char** argv)
 
     //main event loop, callbacks made here
     glutMainLoop();
-    GLfloat scale[3];
-    GLfloat rotation[3];
     return 0;
 
 }
@@ -133,6 +130,7 @@ PhysicsUpdate(int num){
     glutTimerFunc(40,PhysicsUpdate,0);
 
     for(int i=0;i<balls;i++){
+            //printf("position: %f,%f,%f\n",go[i].center.x,go[i].center.y,go[i].center.z);
             //ball on ball collision
         for(int j=i; j< balls; j++){
             if(&go[i] != &go[j]){
@@ -141,28 +139,28 @@ PhysicsUpdate(int num){
         }
 
         //add velocity
-        go[i].center[0]+= go[i].velocity[0];
-        go[i].center[1]+= go[i].velocity[1];
-        go[i].center[2]+= go[i].velocity[2];
+        go[i].center.x+= go[i].velocity.x;
+        go[i].center.y+= go[i].velocity.y;
+        go[i].center.z+= go[i].velocity.z;
 
         //decrease velocity due to drag
-        go[i].velocity[0] /=drag;
-        go[i].velocity[1] /=drag;
-        go[i].velocity[2] /=drag;
+        go[i].velocity.x /=drag;
+        go[i].velocity.y /=drag;
+        go[i].velocity.z /=drag;
 
         //bouncy boi
-        if(go[i].center[1] <= 12){
-            go[i].velocity[1] = abs(go[i].velocity[1])*friction;//bounce back up
+        if(go[i].center.y <= 12){
+            go[i].velocity.y = abs(go[i].velocity.y)*friction;//bounce back up
         }else{
-            go[i].velocity[1] -= gravity;
+            go[i].velocity.y -= gravity;
         }
 
         //real fake walls
-        if(abs(go[i].center[0]) > boxSize){
-            go[i].velocity[0] *= -0.98;
+        if(abs(go[i].center.x) > boxSize){
+            go[i].velocity.x *= -0.98;
         }
-        if(abs(go[i].center[2]) > boxSize){
-            go[i].velocity[2] *= -0.98;
+        if(abs(go[i].center.z) > boxSize){
+            go[i].velocity.z *= -0.98;
         }
     }
 
