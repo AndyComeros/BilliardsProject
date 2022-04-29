@@ -1,11 +1,10 @@
 #include "Vector.h"
 #include "OFFFILE.h"
 #include "GameObject.h"
-
-typedef struct HitBox HitBox;//dont know why its needed when ive already typedefed but k
+#include "HitBox.h"
 
 //generic hit detection funciton.
-int HitBoxIsColliding(HitBox * h1,HitBox * h2)
+int HitBoxIsColliding(HitBox *h1, HitBox *h2)
 {
     int hitType = h1->hitBoxType + h2->hitBoxType;
 
@@ -24,9 +23,10 @@ int HitBoxIsColliding(HitBox * h1,HitBox * h2)
 }
 
 //check if shere hitboxes collide
-int HitSphereSphere(HitBox * h1, HitBox * h2)
+int HitSphereSphere(HitBox *h1, HitBox *h2)
 {
-    vect3D vect1 = vectMinus(h1->parent->center,h2->parent->center);
+    /*
+    vect3D vect1 = vectMinus(h1->parent->center, h2->parent->center);
     GLfloat mag = vectMagnitude(vect1);
 
     if(mag <= (h1->Radius + h2->Radius))
@@ -45,10 +45,11 @@ int HitSphereSphere(HitBox * h1, HitBox * h2)
         h2->lastHit = NULL;
         return 0;
     }
+    */
 }
 
 //if sphere collides with box
-int HitSphereBox(HitBox * h1, HitBox * h2)
+int HitSphereBox(HitBox *h1, HitBox *h2)
 {
     /*
     HitBox * sphere;
@@ -86,13 +87,13 @@ int HitSphereBox(HitBox * h1, HitBox * h2)
     */
 }
 
-int HitBoxBox(HitBox * h1, HitBox * h2)
+int HitBoxBox(HitBox *h1, HitBox *h2)
 {
     return 0;
 }
 
 //returns closest point on a AABB to a point- NOT TESTED
-vect3D AABBClosestPoint(HitBox * boundBox,point3D point)
+vect3D AABBClosestPoint(HitBox *boundBox, point3D point)
 {
     point3D result;
 

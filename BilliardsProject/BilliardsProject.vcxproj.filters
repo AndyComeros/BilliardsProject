@@ -33,6 +33,9 @@
     <ClCompile Include="Vector.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Triangles.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -48,6 +51,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Triangles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,14 +4,14 @@
 #include "OFFFILE.h"
 #include "HitBox.h"
 #include "Vector.h"
+#include "Triangles.h"
 
 //---Data---//
-struct GameObject
-{
+typedef struct {
     char name[20];
 
-    OFFFile * modelData;
-    HitBox * hitBox;
+    OFFFile *modelData;
+    HitBox *hitBox;
 
     //position data
     point3D center;
@@ -23,32 +23,31 @@ struct GameObject
     vect3D velocity;
     GLfloat mass;
 
-};
-typedef struct GameObject GameObject;
+}GameObject;
 
 
 //---functions---//
 //initialize game object memory...
-void GameObjInitialize(struct GameObject * GameObj);
+void GameObjInitialize(GameObject *GameObj);
 //load in a 3d model
-void GameObjSetModel(struct GameObject * GameObj,char * fileName);
+void GameObjSetModel(GameObject *GameObj,char * fileName);
 
 //redner in model with offsets and scale accounted for
-void GameObjRender(struct GameObject * GameObj);
+void GameObjRender(GameObject *GameObj);
 
 //set position and translate model to new location
-void GameObjSetPosition(struct GameObject * GameObj, GLfloat nX, GLfloat nY,GLfloat nZ);
+void GameObjSetPosition(GameObject *GameObj, GLfloat nX, GLfloat nY,GLfloat nZ);
 
 //transform the object in worldspace
-void GameObjTransform(struct GameObject * GameObj, GLfloat nX, GLfloat nY,GLfloat nZ);
+void GameObjTransform(GameObject *GameObj, GLfloat nX, GLfloat nY,GLfloat nZ);
 
 //rotate the object in worldspace
-void GameObjRotate(struct GameObject * GameObj, GLfloat rX, GLfloat rY,GLfloat rZ, GLfloat deg);
+void GameObjRotate(GameObject *GameObj, GLfloat rX, GLfloat rY,GLfloat rZ, GLfloat deg);
 
 //scale the object
-void GameObjScale(struct GameObject * GameObj, GLfloat sX, GLfloat sY,GLfloat sZ);
+void GameObjScale(GameObject *GameObj, GLfloat sX, GLfloat sY,GLfloat sZ);
 
 //prints info of game obj
-void GameObjPrintInfo(struct GameObject * GameObj);
+void GameObjPrintInfo(GameObject *GameObj);
 
 #endif // GAMEOBJECT_H_INCLUDED

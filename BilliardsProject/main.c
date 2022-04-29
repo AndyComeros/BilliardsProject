@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gl/freeglut.h>
-#include "Vector.h"
 #include "OFFFILE.h"
 #include "Initializer.h"
 #include "GameObject.h"
@@ -18,7 +17,6 @@
 //int balls = 1;
 GameObject go[balls];
 HitBox sphere;
-
 
 HitBox floor;
 

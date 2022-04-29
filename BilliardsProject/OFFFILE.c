@@ -7,7 +7,7 @@ This class contains useful functions related to reading OFFFiles
 #include "Vector.h"
 
 //free offile memory
-void freeOFFile(struct OFFFile *off)
+void freeOFFile(OFFFile *off)
 {
     free(off->vertecies);
     free(off->faces);
@@ -15,7 +15,7 @@ void freeOFFile(struct OFFFile *off)
 }
 
 //Read in OFF file to a OFFFile struct
-void readOFFFile(struct OFFFile *data, char *fileName)
+void readOFFFile(OFFFile *data, char *fileName)
 {
     strcpy(data->modelName, fileName);
     //open file
@@ -71,7 +71,7 @@ void readOFFFile(struct OFFFile *data, char *fileName)
     fclose(inFile);
 }
 
-void renderOFF(struct OFFFile *object3D,vect3D offset,vect3D scale)
+void renderOFF(OFFFile *object3D, vect3D offset, vect3D scale)
 {
     //printf("wWADSADSD : %f\n",offset[2]);
     GLfloat color[][3] = {{1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0}};
@@ -128,7 +128,7 @@ GLfloat CalcRadius(){
 
 }
 
-void printOFFInfo(struct OFFFile *data){
+void printOFFInfo(OFFFile *data){
     printf("3D File Name: %s\n",data->modelName);
 }
 
