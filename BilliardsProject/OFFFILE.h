@@ -17,14 +17,14 @@ typedef struct
 }OFFFile;
 
 //free offile memory
-void freeOFFile(struct OFFFile *off);
+void freeOFFile(OFFFile *off);
 //Read in OFF file to a OFFFile struct
-void readOFFFile(struct OFFFile *data, char *fileName);
+void readOFFFile(OFFFile *data, char *fileName);
 //renders rawOFF object
-void renderOFF(struct OFFFile *object3D,vect3D offset,vect3D scale);
+void renderOFF(OFFFile *object3D,vect3D offset,vect3D scale);
 
 
-void printOFFInfo(struct OFFFile *data);
+void printOFFInfo(OFFFile *data);
 
 
 //3D utilities
