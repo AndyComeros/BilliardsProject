@@ -46,6 +46,73 @@ void collideBallz(GameObject *b1,GameObject *b2){
     */
 }
 
+void display(void){
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glClearColor(0.0,0.0,0.0,1);//black backdrop
+
+    //set camera data - need to set to variables, perhps give game object data...
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    gluLookAt(600,300,600,//pos
+              0,0,0,//target
+              0.0,1.0,0.0//whats up dog
+              );
+
+    //glutWireSphere(ballsize,20,20);
+    drawAxis();//debug
+
+    drawGridXZ(5);//debug
+    //ScenePhysUpdate(&mainScene);
+    for(int i=0;i< balls;i++){
+        GameObjRender(&go[i]);
+    }
+    //SceneRenderUpdate(&mainScene);
+    glutSwapBuffers();
+}
+
+
+void PhysicsUpdate(int num){
+    glutTimerFunc(40,PhysicsUpdate,0);
+
+    for(int i=0;i<balls;i++){
+            //printf("position: %f,%f,%f\n",go[i].center.x,go[i].center.y,go[i].center.z);
+            //ball on ball collision
+        for(int j=i; j< balls; j++){
+            if(&go[i] != &go[j]){
+                collideBallz(&go[i],&go[j]);
+            }
+        }
+
+        //add velocity
+        go[i].center.x+= go[i].velocity.x;
+        go[i].center.y+= go[i].velocity.y;
+        go[i].center.z+= go[i].velocity.z;
+
+        //decrease velocity due to drag
+        go[i].velocity.x /=drag;
+        go[i].velocity.y /=drag;
+        go[i].velocity.z /=drag;
+
+        //bouncy boi
+        if(go[i].center.y <= 12){
+            go[i].velocity.y = abs(go[i].velocity.y)*friction;//bounce back up
+        }else{
+            go[i].velocity.y -= gravity;
+        }
+
+        //real fake walls
+        if(abs(go[i].center.x) > boxSize){
+            go[i].velocity.x *= -0.98;
+        }
+        if(abs(go[i].center.z) > boxSize){
+            go[i].velocity.z *= -0.98;
+        }
+    }
+
+    glutPostRedisplay();
+}
+
 int main(int argc, char** argv)
 {
     //go = malloc(sizeof(struct GameObject) * balls);
@@ -97,72 +164,4 @@ int main(int argc, char** argv)
     glutMainLoop();
     return 0;
 
-}
-
-
-void display(void){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glClearColor(0.0,0.0,0.0,1);//black backdrop
-
-    //set camera data - need to set to variables, perhps give game object data...
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(600,300,600,//pos
-              0,0,0,//target
-              0.0,1.0,0.0//whats up dog
-              );
-
-    //glutWireSphere(ballsize,20,20);
-    drawAxis();//debug
-
-    drawGridXZ(5);//debug
-    //ScenePhysUpdate(&mainScene);
-    for(int i=0;i< balls;i++){
-        GameObjRender(&go[i]);
-    }
-    //SceneRenderUpdate(&mainScene);
-    glutSwapBuffers();
-}
-
-
-PhysicsUpdate(int num){
-    glutTimerFunc(40,PhysicsUpdate,0);
-
-    for(int i=0;i<balls;i++){
-            //printf("position: %f,%f,%f\n",go[i].center.x,go[i].center.y,go[i].center.z);
-            //ball on ball collision
-        for(int j=i; j< balls; j++){
-            if(&go[i] != &go[j]){
-                collideBallz(&go[i],&go[j]);
-            }
-        }
-
-        //add velocity
-        go[i].center.x+= go[i].velocity.x;
-        go[i].center.y+= go[i].velocity.y;
-        go[i].center.z+= go[i].velocity.z;
-
-        //decrease velocity due to drag
-        go[i].velocity.x /=drag;
-        go[i].velocity.y /=drag;
-        go[i].velocity.z /=drag;
-
-        //bouncy boi
-        if(go[i].center.y <= 12){
-            go[i].velocity.y = abs(go[i].velocity.y)*friction;//bounce back up
-        }else{
-            go[i].velocity.y -= gravity;
-        }
-
-        //real fake walls
-        if(abs(go[i].center.x) > boxSize){
-            go[i].velocity.x *= -0.98;
-        }
-        if(abs(go[i].center.z) > boxSize){
-            go[i].velocity.z *= -0.98;
-        }
-    }
-
-    glutPostRedisplay();
 }
