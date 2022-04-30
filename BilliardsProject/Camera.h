@@ -19,7 +19,7 @@ typedef struct {
 	GLdouble farVal;
 }CameraViewing;
 
-void viewingInit();
+void updateCameraViewing(const CameraViewing* c);
 
 void changeSize(int w, int h);
 

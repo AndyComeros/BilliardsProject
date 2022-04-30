@@ -14,6 +14,14 @@ HitBox sphere;
 
 HitBox floor;
 
+// can only be 1 camera perspective active. can create a 2nd instance if we want to switch
+static CameraViewing camView = {
+    30, // degrees
+    1, // aspect ratio
+    0.5, // near clip
+    5000 // far clip
+};
+
 void initGlut(void)
 {
     //GLUT_DOUBLE for double buffering, GLUT_DEPTH to create depth buffer
@@ -37,7 +45,30 @@ void initGlut(void)
     //size of lines drawnS
     glLineWidth(2.0);
 
-    viewingInit();
+    updateCameraViewing(&camView);
+}
+
+//changes size of viewport when window size changes. use as callback function
+//for when it does change//not my code. removed stuff.
+void changeSize(int w, int h)
+{
+    float ratio = 1.0 * w / h;
+    camView.aspect = ratio;
+
+    // Use the Projection Matrix
+    glMatrixMode(GL_PROJECTION);
+
+    // Reset Matrix
+    glLoadIdentity();
+
+    // Set the viewport to be the entire window
+    glViewport(0, 0, w, h);
+
+    // Set the correct perspective.
+    gluPerspective(camView.fov, camView.aspect, camView.nearVal, camView.farVal);
+
+    // Get Back to the Modelview
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void initObjects()
