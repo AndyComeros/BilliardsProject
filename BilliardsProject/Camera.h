@@ -12,7 +12,15 @@ typedef struct {
 	Vec3 up; // Camera up vector
 }Camera;
 
+typedef struct {
+	GLdouble fov;		// degrees
+	GLdouble aspect;		// aspect ratio aspect = height/width
+	GLdouble nearVal;     // near and far clipping planes
+	GLdouble farVal;
+}CameraViewing;
+
 void viewingInit();
 
+void changeSize(int w, int h);
 
 #endif

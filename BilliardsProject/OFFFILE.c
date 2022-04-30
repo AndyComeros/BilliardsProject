@@ -71,7 +71,7 @@ void readOFFFile(OFFFile *data, char *fileName)
     fclose(inFile);
 }
 
-void renderOFF(OFFFile *object3D, vect3D offset, vect3D scale)
+void renderOFF(OFFFile *object3D, Vec3 offset, Vec3 scale)
 {
     //printf("wWADSADSD : %f\n",offset[2]);
     GLfloat color[][3] = {{1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0}};

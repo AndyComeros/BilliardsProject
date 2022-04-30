@@ -14,12 +14,12 @@ typedef struct {
 
     //position data
     point3D center;
-    vect3D scale;
-    vect3D rotation;
-    vect3D offset;//offsets transformations so center of object is center of model.
+    Vec3 scale;
+    Vec3 rotation;
+    Vec3 offset;//offsets transformations so center of object is center of model.
 
     //physics data
-    vect3D velocity;
+    Vec3 velocity;
     GLfloat mass;
 
 }GameObject;

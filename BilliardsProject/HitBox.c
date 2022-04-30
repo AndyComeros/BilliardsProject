@@ -26,7 +26,7 @@ int HitBoxIsColliding(HitBox *h1, HitBox *h2)
 int HitSphereSphere(HitBox *h1, HitBox *h2)
 {
     /*
-    vect3D vect1 = vectMinus(h1->parent->center, h2->parent->center);
+    Vec3 vect1 = vectMinus(h1->parent->center, h2->parent->center);
     GLfloat mag = vectMagnitude(vect1);
 
     if(mag <= (h1->Radius + h2->Radius))
@@ -68,7 +68,7 @@ int HitSphereBox(HitBox *h1, HitBox *h2)
     }
 
     point3D closePoint;
-    vect3D difVect;//vect between the 2 points
+    Vec3 difVect;//vect between the 2 points
     GLfloat distance;
 
     AABBClosestPoint(&closePoint,box,sphere->parent->center);
@@ -93,7 +93,7 @@ int HitBoxBox(HitBox *h1, HitBox *h2)
 }
 
 //returns closest point on a AABB to a point- NOT TESTED
-vect3D AABBClosestPoint(HitBox *boundBox, point3D point)
+Vec3 AABBClosestPoint(HitBox *boundBox, point3D point)
 {
     point3D result;
 

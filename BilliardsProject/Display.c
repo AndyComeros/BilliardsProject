@@ -8,11 +8,6 @@
 
 #define ballsize 12 //hitbox of balls
 
-GLdouble fov = 30;		// degrees
-GLdouble aspect = 1;		// aspect ratio aspect = height/width
-GLdouble nearVal = 0.5;     // near and far clipping planes
-GLdouble farVal = 5000;
-
 //int balls = 1;
 GameObject go[balls];
 HitBox sphere;
@@ -43,29 +38,6 @@ void initGlut(void)
     glLineWidth(2.0);
 
     viewingInit();
-}
-
-
-//changes size of viewport when window size changes. use as callback function
-//for when it does change//not my code. removed stuff.
-void changeSize(int w, int h)
-{
-    float ratio = 1.0 * w / h;
-
-    // Use the Projection Matrix
-    glMatrixMode(GL_PROJECTION);
-
-    // Reset Matrix
-    glLoadIdentity();
-
-    // Set the viewport to be the entire window
-    glViewport(0, 0, w, h);
-
-    // Set the correct perspective.
-    gluPerspective(fov, ratio, nearVal, farVal);
-
-    // Get Back to the Modelview
-    glMatrixMode(GL_MODELVIEW);
 }
 
 void initObjects()
@@ -237,11 +209,11 @@ void drawGridXZ(int size)
 void collideBallz(GameObject* b1, GameObject* b2) {
     /*
         if(HitSphereSphere(b1->hitBox,b2->hitBox)== 1){
-                vect3D iv1;
+                Vec3 iv1;
                 iv1[0] = b1->velocity[0];
                 iv1[1] = b1->velocity[1];
                 iv1[2] = b1->velocity[2];
-                vect3D iv2;
+                Vec3 iv2;
                 iv2[0] = b2->velocity[0];
                 iv2[1] = b2->velocity[1];
                 iv2[2] = b2->velocity[2];

@@ -8,26 +8,26 @@ typedef struct
     GLfloat x;
     GLfloat y;
     GLfloat z;
-} vect3D;
+} Vec3;
 
 
-vect3D vectMinus(vect3D p1, vect3D p2);
+Vec3 vectMinus(Vec3 p1, Vec3 p2);
 
-vect3D vectMultScalar(vect3D v1, GLfloat s);
-vect3D vectMultScalars(vect3D v1, GLfloat sx,GLfloat sy,GLfloat sz);
+Vec3 vectMultScalar(Vec3 v1, GLfloat s);
+Vec3 vectMultScalars(Vec3 v1, GLfloat sx,GLfloat sy,GLfloat sz);
 
-vect3D vectAddScalar(vect3D v1, GLfloat s);
-vect3D vectAddScalars(vect3D v1, GLfloat ax,GLfloat ay,GLfloat az);
+Vec3 vectAddScalar(Vec3 v1, GLfloat s);
+Vec3 vectAddScalars(Vec3 v1, GLfloat ax,GLfloat ay,GLfloat az);
 
-vect3D vectAddVect(vect3D v1, vect3D v2);
+Vec3 vectAddVect(Vec3 v1, Vec3 v2);
 
-GLfloat vectDotProd(vect3D v1, vect3D v2);
+GLfloat vectDotProd(Vec3 v1, Vec3 v2);
 
-vect3D vectCrossProd(vect3D v1, vect3D v2);
+Vec3 vectCrossProd(Vec3 v1, Vec3 v2);
 
-GLfloat vectMagnitude(vect3D v);
+GLfloat vectMagnitude(Vec3 v);
 
-vect3D vectNormalize(vect3D v1);
+Vec3 vectNormalize(Vec3 v1);
 
 
 #endif // VECTOR_H_INCLUDED

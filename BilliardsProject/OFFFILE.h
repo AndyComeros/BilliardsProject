@@ -21,7 +21,7 @@ void freeOFFile(OFFFile *off);
 //Read in OFF file to a OFFFile struct
 void readOFFFile(OFFFile *data, char *fileName);
 //renders rawOFF object
-void renderOFF(OFFFile *object3D,vect3D offset,vect3D scale);
+void renderOFF(OFFFile *object3D,Vec3 offset,Vec3 scale);
 
 
 void printOFFInfo(OFFFile *data);
