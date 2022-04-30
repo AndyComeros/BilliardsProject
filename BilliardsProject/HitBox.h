@@ -2,28 +2,25 @@
 #define HITBOX_H_INCLUDED
 
 #include <gl/freeglut.h>
-#include "Vector.h"
-#include "OFFFILE.h"
-#include "GameObject.h"
+#include "Triangles.h"
+//#include "GameObject.h"
 
 /**
 * @brief struct holding hitbox data and reference to parent
 * Game object
 *
 */
-typedef struct HitBox
-{
+typedef struct HitBox HitBox;
 
-    struct GameObject * parent;
-    struct HitBox * lastHit;
+struct HitBox {
+    //GameObject* parent;
+    struct HitBox *lastHit;
     int hitBoxType;//0 if sphere 1 if AABB
     GLfloat Radius;
     GLfloat minX,maxX;
     GLfloat minY,maxY;
     GLfloat minZ,maxZ;
-} HitBox;
-
-
+};
 
 /**
 * @brief determines if two hitboxes intersect
@@ -34,7 +31,7 @@ typedef struct HitBox
 *
 * @return int - 0 if not colliding 1 if colliding, -1 if there is an error
 */
-int HitBoxIsColliding(HitBox * h1, HitBox * h2);
+int HitBoxIsColliding(HitBox *h1, HitBox *h2);
 /**
 * @brief determines if two sphere hitboxes intersect
 *
@@ -43,10 +40,10 @@ int HitBoxIsColliding(HitBox * h1, HitBox * h2);
 *
 * @return int - 0 if not colliding 1 if colliding, -1 if there is an error
 */
-int HitSphereSphere(HitBox * h1, HitBox * h2);
-int HitSphereBox(HitBox * h1, HitBox * h2);
-int HitBoxBox(HitBox * h1, HitBox * h2);
+int HitSphereSphere(HitBox *h1, HitBox *h2);
+int HitSphereBox(HitBox *h1, HitBox *h2);
+int HitBoxBox(HitBox *h1, HitBox *h2);
 
 //helper function
-vect3D AABBClosestPoint(HitBox * boundBox,point3D point);
+vect3D AABBClosestPoint(HitBox *boundBox, point3D point);
 #endif // HITBOX_H_INCLUDED

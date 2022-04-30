@@ -1,13 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gl/freeglut.h>
-#include "OFFFILE.h"
 #include "GameObject.h"
 
 
-void GameObjInitialize(struct GameObject *GameObj)
+void GameObjInitialize(GameObject *GameObj)
 {
-    GameObj->modelData = malloc(sizeof(struct OFFFile));
+    GameObj->modelData = malloc(sizeof(OFFFile));
 
     //intialize logical centre to 0,0,0
     (*GameObj).center.x = 0;
@@ -24,12 +23,12 @@ void GameObjInitialize(struct GameObject *GameObj)
     (*GameObj).offset.y = 0;
     (*GameObj).offset.z = 0;
 
-    GameObj->hitBox = malloc(sizeof(struct HitBox));
-    GameObj->hitBox->parent = GameObj;
+    GameObj->hitBox = malloc(sizeof(HitBox));
+    //GameObj->hitBox->parent = GameObj;
 }
 
 //load in a 3d model
-void GameObjSetModel(struct GameObject * GameObj,char * fileName)
+void GameObjSetModel(GameObject *GameObj,char * fileName)
 {
     readOFFFile(GameObj->modelData,fileName);
 
@@ -51,7 +50,7 @@ void GameObjSetModel(struct GameObject * GameObj,char * fileName)
 }
 
 //render model with offsets,poisiton and scale accounted for
-void GameObjRender(struct GameObject * GameObj)
+void GameObjRender(GameObject *GameObj)
 {
 
     point3D pos;
@@ -63,7 +62,7 @@ void GameObjRender(struct GameObject * GameObj)
 }
 
 //set position and translate model to new location
-void GameObjSetPosition(struct GameObject * GameObj, GLfloat nX, GLfloat nY,GLfloat nZ)
+void GameObjSetPosition(GameObject *GameObj, GLfloat nX, GLfloat nY,GLfloat nZ)
 {
     (*GameObj).center.x = nX;
     (*GameObj).center.y = nY;
@@ -72,7 +71,7 @@ void GameObjSetPosition(struct GameObject * GameObj, GLfloat nX, GLfloat nY,GLfl
 
 
 //transform the object in worldspace
-void GameObjTransform(struct GameObject * GameObj, GLfloat nX, GLfloat nY,GLfloat nZ)
+void GameObjTransform(GameObject *GameObj, GLfloat nX, GLfloat nY,GLfloat nZ)
 {
     //(*GameObj).offset[0] += nX;
     //(*GameObj).offset[1] += nY;
@@ -85,13 +84,13 @@ void GameObjTransform(struct GameObject * GameObj, GLfloat nX, GLfloat nY,GLfloa
 }
 
 //rotate the object in worldspace
-void GameObjRotate(struct GameObject * GameObj, GLfloat rX, GLfloat rY,GLfloat rZ, GLfloat deg);
+void GameObjRotate(GameObject *GameObj, GLfloat rX, GLfloat rY,GLfloat rZ, GLfloat deg);
 
 //scale the object
-void GameObjScale(struct GameObject * GameObj, GLfloat sX, GLfloat sY,GLfloat sZ);
+void GameObjScale(GameObject *GameObj, GLfloat sX, GLfloat sY,GLfloat sZ);
 
 //print all info of game object
-void GameObjPrintInfo(struct GameObject * GameObj){
+void GameObjPrintInfo(GameObject *GameObj){
     printf("%s Data:\n",GameObj->name);
     printf("Center: (%f %f %f)\n",GameObj->center.x,GameObj->center.y,GameObj->center.z);
     printf("Offset: (%f %f %f)\n,",GameObj->offset.x,GameObj->offset.y,GameObj->offset.z);

@@ -1,35 +1,29 @@
 #ifndef OFFFILE_H_INCLUDED
 #define OFFFILE_H_INCLUDED
 #include <gl/freeglut.h>
-#include "Vector.h"
+#include "Triangles.h"
 
 //triangles similar to point but ints
 typedef int triangle[3];
 
 //OFF file representation
-struct OFFFile
+typedef struct
 {
     char modelName[50];
     int nVert,nFace,nEdge;
     point3D* vertecies;
     triangle* faces;
     point3D center;
-};
-typedef struct OFFFile OFFFile;
+}OFFFile;
 
 //free offile memory
-void freeOFFile(struct OFFFile *off);
+void freeOFFile(OFFFile *off);
 //Read in OFF file to a OFFFile struct
-void readOFFFile(struct OFFFile *data, char *fileName);
+void readOFFFile(OFFFile *data, char *fileName);
 //renders rawOFF object
-void renderOFF(struct OFFFile *object3D,vect3D offset,vect3D scale);
+void renderOFF(OFFFile *object3D,vect3D offset,vect3D scale);
 
 
-void printOFFInfo(struct OFFFile *data);
-
-
-//3D utilities
-void drawAxis();
-void drawGridXZ(int size);
+void printOFFInfo(OFFFile *data);
 
 #endif // OFFFILE_H_INCLUDED
