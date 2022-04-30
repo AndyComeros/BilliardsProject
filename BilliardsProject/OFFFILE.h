@@ -26,9 +26,4 @@ void renderOFF(OFFFile *object3D,vect3D offset,vect3D scale);
 
 void printOFFInfo(OFFFile *data);
 
-
-//3D utilities
-void drawAxis();
-void drawGridXZ(int size);
-
 #endif // OFFFILE_H_INCLUDED

@@ -13,5 +13,10 @@ void initObjects();
 
 void display(void);
 void PhysicsUpdate(int num);
+//3D utilities
+void drawAxis();
+void drawGridXZ(int size);
+
+void collideBallz(GameObject* b1, GameObject* b2);
 
 #endif // DISPLAY_H_INCLUDED

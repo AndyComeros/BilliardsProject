@@ -97,27 +97,6 @@ void initObjects()
     //go.hitBox = &sphere;
 }
 
-void collideBallz(GameObject* b1, GameObject* b2) {
-    /*
-        if(HitSphereSphere(b1->hitBox,b2->hitBox)== 1){
-                vect3D iv1;
-                iv1[0] = b1->velocity[0];
-                iv1[1] = b1->velocity[1];
-                iv1[2] = b1->velocity[2];
-                vect3D iv2;
-                iv2[0] = b2->velocity[0];
-                iv2[1] = b2->velocity[1];
-                iv2[2] = b2->velocity[2];
-                //printf("pos: %f, %f, %f\n",b1->center[0],b1->center[1],b1->center[2]);
-            vectCrossProd(b1->velocity,iv2);
-            vectCrossProd(b2->velocity,iv1);
-            vectMultScalar(&b1->velocity,0.5);
-            vectMultScalar(&b2->velocity,0.5);
-
-        }
-        */
-}
-
 void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -142,7 +121,6 @@ void display(void) {
     //SceneRenderUpdate(&mainScene);
     glutSwapBuffers();
 }
-
 
 void PhysicsUpdate(int num) {
     glutTimerFunc(40, PhysicsUpdate, 0);
@@ -184,4 +162,81 @@ void PhysicsUpdate(int num) {
     }
 
     glutPostRedisplay();
+}
+
+//debug stuff, not sure if it belongs here
+void drawAxis()
+{
+    GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
+    const GLfloat bigNum = 999.0;
+    const GLfloat farpointX[] = { bigNum,0.0,0.0 };
+    const GLfloat farpointY[] = { 0.0,bigNum,0.0 };
+    const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
+    const GLfloat origin[] = { 0.0,0.0,0.0 };
+
+    glLineWidth(3.0);
+    glBegin(GL_LINES);
+
+    glColor3fv(axisCol[0]);
+    glVertex3fv(origin);
+    glVertex3fv(farpointX);
+
+    glColor3fv(axisCol[1]);
+    glVertex3fv(origin);
+    glVertex3fv(farpointY);
+
+    glColor3fv(axisCol[2]);
+    glVertex3fv(origin);
+    glVertex3fv(farpointZ);
+    glEnd();
+}
+
+
+//debug stuff, not sure if it belongs here
+void drawGridXZ(int size)
+{
+    GLfloat color[3] = { 1,1,1 };
+
+    glLineWidth(0.2);
+    for (GLfloat i = (1 - size); i < size; i++)
+    {
+        for (GLfloat j = (1 - size); j < size; j++)
+        {
+            glBegin(GL_LINES);
+            glColor3fv(color);
+            GLfloat point1[3] = { i,0,j };
+            GLfloat point2[3] = { -i,0,j };
+            glVertex3fv(point1);
+            glVertex3fv(point2);
+            glEnd();
+            glBegin(GL_LINES);
+            glColor3fv(color);
+            GLfloat point3[3] = { i,0,j };
+            GLfloat point4[3] = { i,0,-j };
+            glVertex3fv(point3);
+            glVertex3fv(point4);
+            glEnd();
+        }
+    }
+}
+
+void collideBallz(GameObject* b1, GameObject* b2) {
+    /*
+        if(HitSphereSphere(b1->hitBox,b2->hitBox)== 1){
+                vect3D iv1;
+                iv1[0] = b1->velocity[0];
+                iv1[1] = b1->velocity[1];
+                iv1[2] = b1->velocity[2];
+                vect3D iv2;
+                iv2[0] = b2->velocity[0];
+                iv2[1] = b2->velocity[1];
+                iv2[2] = b2->velocity[2];
+                //printf("pos: %f, %f, %f\n",b1->center[0],b1->center[1],b1->center[2]);
+            vectCrossProd(b1->velocity,iv2);
+            vectCrossProd(b2->velocity,iv1);
+            vectMultScalar(&b1->velocity,0.5);
+            vectMultScalar(&b2->velocity,0.5);
+
+        }
+        */
 }
