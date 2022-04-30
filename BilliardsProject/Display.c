@@ -1,15 +1,12 @@
-#include "Initializer.h"
-#include "OFFFILE.h"
+#include "Display.h"
 
-
-   GLdouble fov	 = 30;		// degrees
-    GLdouble aspect	 = 1;		// aspect ratio aspect = height/width
-    GLdouble nearVal = 0.5;     // near and far clipping planes
-    GLdouble farVal  = 5000;
+GLdouble fov = 30;		// degrees
+GLdouble aspect = 1;		// aspect ratio aspect = height/width
+GLdouble nearVal = 0.5;     // near and far clipping planes
+GLdouble farVal = 5000;
 
 void init(void)
 {
-
     //GLUT_DOUBLE for double buffering, GLUT_DEPTH to create depth buffer
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     //setLight();
@@ -19,7 +16,6 @@ void init(void)
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);
-
 
     /*---- attributes ----*/
     //size of points drawn
@@ -36,7 +32,6 @@ void init(void)
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
-
     gluPerspective(fov, aspect, nearVal, farVal);
 
     glMatrixMode(GL_MODELVIEW);
@@ -47,8 +42,7 @@ void init(void)
 //for when it does change//not my code. removed stuff.
 void changeSize(int w, int h)
 {
-
-    float ratio = 1.0* w / h;
+    float ratio = 1.0 * w / h;
 
     // Use the Projection Matrix
     glMatrixMode(GL_PROJECTION);
@@ -60,7 +54,7 @@ void changeSize(int w, int h)
     glViewport(0, 0, w, h);
 
     // Set the correct perspective.
-    gluPerspective(fov,ratio,nearVal,farVal);
+    gluPerspective(fov, ratio, nearVal, farVal);
 
     // Get Back to the Modelview
     glMatrixMode(GL_MODELVIEW);

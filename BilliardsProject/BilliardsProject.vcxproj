@@ -139,18 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.c" />
+    <ClCompile Include="Display.c" />
     <ClCompile Include="GameObject.c" />
     <ClCompile Include="HitBox.c" />
-    <ClCompile Include="Initializer.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="OFFFILE.c" />
     <ClCompile Include="Triangles.c" />
     <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HitBox.h" />
-    <ClInclude Include="Initializer.h" />
     <ClInclude Include="OFFFILE.h" />
     <ClInclude Include="Triangles.h" />
     <ClInclude Include="Vector.h" />

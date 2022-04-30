@@ -2,8 +2,8 @@
 /*
 This class contains useful functions related to reading OFFFiles
 */
-#include "OFFFILE.h"
 #include <stdio.h>
+#include "OFFFILE.h"
 #include "Vector.h"
 
 //free offile memory

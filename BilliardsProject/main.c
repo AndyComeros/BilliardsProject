@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <gl/freeglut.h>
-#include "OFFFILE.h"
-#include "Initializer.h"
+#include "Display.h"
 #include "GameObject.h"
 #include "HitBox.h"
 
@@ -115,7 +114,6 @@ int main(int argc, char** argv)
 {
     //go = malloc(sizeof(struct GameObject) * balls);
     int maxSpeed = 5;
-
 
     for(int i =0; i < balls;i++){
         GameObjInitialize(&go[i]);
