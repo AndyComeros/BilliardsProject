@@ -3,7 +3,6 @@
 
 #include "OFFFILE.h"
 #include "HitBox.h"
-#include "Vector.h"
 #include "Triangles.h"
 
 //---Data---//

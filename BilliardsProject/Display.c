@@ -113,7 +113,7 @@ void display(void) {
     //glutWireSphere(ballsize,20,20);
     drawAxis();//debug
 
-    drawGridXZ(5);//debug
+    drawGridXZ(40);//debug
     //ScenePhysUpdate(&mainScene);
     for (int i = 0; i < balls; i++) {
         GameObjRender(&go[i]);
@@ -195,6 +195,7 @@ void drawAxis()
 //debug stuff, not sure if it belongs here
 void drawGridXZ(int size)
 {
+    /*
     GLfloat color[3] = { 1,1,1 };
 
     glLineWidth(0.2);
@@ -217,6 +218,28 @@ void drawGridXZ(int size)
             glVertex3fv(point4);
             glEnd();
         }
+    }
+    */
+    GLfloat i = 0.0, j = 0.0;
+    GLfloat gridscale = 20; // spacing between grid lines, depends on how close/far you are
+    glColor3f(1.0, 1.0, 0.0);
+
+    for (i = 0.0; i < size; i++)
+    {
+        //for (j = 0; j < maxsize; j++)
+        //{
+            // z direction
+        glBegin(GL_LINES);
+        glVertex3f(i * gridscale - size / 2, 0.0, 0.0 - size / 2);
+        glVertex3f(i * gridscale - size / 2, 0.0, 1'000.0);
+        glEnd();
+
+        // x direction
+        glBegin(GL_LINES);
+        glVertex3f(0.0 - size / 2, 0.0, i * gridscale - size / 2);
+        glVertex3f(1'000.0, 0.0, i * gridscale - size / 2);
+        glEnd();
+        //}
     }
 }
 

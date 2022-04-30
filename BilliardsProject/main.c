@@ -14,7 +14,7 @@ int main(int argc, char** argv)
     glutInitWindowPosition(0,0); // place window top left on display
 
     //create window and name it
-    glutCreateWindow("poggers");
+    glutCreateWindow("Billiards Game");
 
     //initailize Glut project
     initGlut();
