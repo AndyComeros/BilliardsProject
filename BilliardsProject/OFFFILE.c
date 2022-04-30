@@ -87,7 +87,7 @@ void renderOFF(OFFFile *object3D, Vec3 offset, Vec3 scale)
             glColor3f(1,0,0);
         }
 
-        point3D tri[3];
+        Vec3 tri[3];
 
         for(int j = 0; j<3; j++)
         {

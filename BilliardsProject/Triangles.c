@@ -1,6 +1,6 @@
 #include "Triangles.h"
 
-GLfloat triangleArea(point3D p1, point3D p2, point3D p3)
+GLfloat triangleArea(Vec3 p1, Vec3 p2, Vec3 p3)
 {
     Vec3 vect1 = vectMinus(p1, p2);
     Vec3 vect2 = vectMinus(p1, p3);
@@ -11,7 +11,7 @@ GLfloat triangleArea(point3D p1, point3D p2, point3D p3)
 }
 
 //not tested
-Vec3 triangleNormal(point3D p1, point3D p2, point3D p3)
+Vec3 triangleNormal(Vec3 p1, Vec3 p2, Vec3 p3)
 {
     Vec3 vect1 = vectMinus(p1, p2);
     Vec3 vect2 = vectMinus(p1, p3);
@@ -20,7 +20,7 @@ Vec3 triangleNormal(point3D p1, point3D p2, point3D p3)
 }
 
 //not tested
-Vec3 triangleUnitNormal(point3D p1, point3D p2, point3D p3)
+Vec3 triangleUnitNormal(Vec3 p1, Vec3 p2, Vec3 p3)
 {
     Vec3 v = triangleNormal(p1, p2, p3);
     v = vectNormalize(v);

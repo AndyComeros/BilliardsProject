@@ -53,7 +53,7 @@ void GameObjSetModel(GameObject *GameObj,char * fileName)
 void GameObjRender(GameObject *GameObj)
 {
 
-    point3D pos;
+    Vec3 pos;
     pos.x = GameObj->center.x+GameObj->offset.x;
     pos.y = GameObj->center.y+GameObj->offset.y;
     pos.z = GameObj->center.z+GameObj->offset.z;

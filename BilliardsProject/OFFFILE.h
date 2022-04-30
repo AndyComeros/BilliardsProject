@@ -11,9 +11,9 @@ typedef struct
 {
     char modelName[50];
     int nVert,nFace,nEdge;
-    point3D* vertecies;
+    Vec3* vertecies;
     triangle* faces;
-    point3D center;
+    Vec3 center;
 }OFFFile;
 
 //free offile memory

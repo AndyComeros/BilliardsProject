@@ -45,5 +45,5 @@ int HitSphereBox(HitBox *h1, HitBox *h2);
 int HitBoxBox(HitBox *h1, HitBox *h2);
 
 //helper function
-Vec3 AABBClosestPoint(HitBox *boundBox, point3D point);
+Vec3 AABBClosestPoint(HitBox *boundBox, Vec3 point);
 #endif // HITBOX_H_INCLUDED

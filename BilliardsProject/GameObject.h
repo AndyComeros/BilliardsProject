@@ -13,7 +13,7 @@ typedef struct {
     HitBox *hitBox;
 
     //position data
-    point3D center;
+    Vec3 center;
     Vec3 scale;
     Vec3 rotation;
     Vec3 offset;//offsets transformations so center of object is center of model.

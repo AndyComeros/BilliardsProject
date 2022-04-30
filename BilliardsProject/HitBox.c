@@ -93,9 +93,9 @@ int HitBoxBox(HitBox *h1, HitBox *h2)
 }
 
 //returns closest point on a AABB to a point- NOT TESTED
-Vec3 AABBClosestPoint(HitBox *boundBox, point3D point)
+Vec3 AABBClosestPoint(HitBox *boundBox, Vec3 point)
 {
-    point3D result;
+    Vec3 result;
 
     /*
     for(int i=0; i<3; i++)
