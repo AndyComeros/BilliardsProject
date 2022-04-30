@@ -6,7 +6,12 @@
 #include <gl\freeglut.h>
 #include "GameObject.h"
 
-void init();
+void initGlut();
 void changeSize(int w, int h);
+
+void initObjects();
+
+void display(void);
+void PhysicsUpdate(int num);
 
 #endif // DISPLAY_H_INCLUDED
