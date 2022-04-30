@@ -22,6 +22,12 @@ static CameraViewing camView = {
     5000 // far clip
 };
 
+static Camera cam = {
+    600, 300, 600, //position
+    0, 0, 0, // lookat target
+    0, 1, 0, // upvector
+};
+
 void initGlut(void)
 {
     //GLUT_DOUBLE for double buffering, GLUT_DEPTH to create depth buffer
@@ -45,6 +51,7 @@ void initGlut(void)
     //size of lines drawnS
     glLineWidth(2.0);
 
+    initCam(&cam);
     updateCameraViewing(&camView);
 }
 
@@ -98,14 +105,6 @@ void display(void) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glClearColor(0.0, 0.0, 0.0, 1);//black backdrop
-
-    //set camera data - need to set to variables, perhps give game object data...
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(600, 300, 600,//pos
-        0, 0, 0,//target
-        0.0, 1.0, 0.0//whats up dog
-    );
 
     //glutWireSphere(ballsize,20,20);
     drawAxis();//debug

@@ -6,21 +6,22 @@
 #include "GL\freeglut.h"
 #include "Vector.h"
 
-typedef struct {
-	Vec3 pos; // Camera position
-	Vec3 look; // Look at position
-	Vec3 up; // Camera up vector
-}Camera;
 
-typedef struct {
+typedef struct{
 	GLdouble fov;		// degrees
 	GLdouble aspect;		// aspect ratio aspect = height/width
 	GLdouble nearVal;     // near and far clipping planes
 	GLdouble farVal;
 }CameraViewing;
 
-void updateCameraViewing(const CameraViewing* c);
+typedef struct{
+	Vec3 pos; // Camera position
+	Vec3 look; // Look at position
+	Vec3 up; // Camera up vector
+}Camera;
 
-void changeSize(int w, int h);
+void initCam(const Camera *c);
+void updateCameraViewing(const CameraViewing *c);
+void updateCamera(const Camera *c);
 
 #endif

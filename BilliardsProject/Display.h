@@ -8,6 +8,7 @@
 #include "Camera.h"
 
 void initGlut();
+void changeSize(int w, int h);
 
 void initObjects();
 
