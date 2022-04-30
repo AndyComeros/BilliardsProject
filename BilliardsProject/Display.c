@@ -42,13 +42,7 @@ void initGlut(void)
     //size of lines drawnS
     glLineWidth(2.0);
 
-    //set up a perspective projection
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    gluPerspective(fov, aspect, nearVal, farVal);
-
-    glMatrixMode(GL_MODELVIEW);
+    viewingInit();
 }
 
 
@@ -220,15 +214,13 @@ void drawGridXZ(int size)
         }
     }
     */
-    GLfloat i = 0.0, j = 0.0;
+    GLfloat i = 0.0;
     GLfloat gridscale = 20; // spacing between grid lines, depends on how close/far you are
     glColor3f(1.0, 1.0, 0.0);
 
     for (i = 0.0; i < size; i++)
     {
-        //for (j = 0; j < maxsize; j++)
-        //{
-            // z direction
+        // z direction
         glBegin(GL_LINES);
         glVertex3f(i * gridscale - size / 2, 0.0, 0.0 - size / 2);
         glVertex3f(i * gridscale - size / 2, 0.0, 1'000.0);
@@ -239,7 +231,6 @@ void drawGridXZ(int size)
         glVertex3f(0.0 - size / 2, 0.0, i * gridscale - size / 2);
         glVertex3f(1'000.0, 0.0, i * gridscale - size / 2);
         glEnd();
-        //}
     }
 }
 

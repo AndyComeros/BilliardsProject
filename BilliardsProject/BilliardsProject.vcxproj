@@ -157,6 +157,7 @@
     <ClCompile Include="HitBox.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="OFFFILE.c" />
+    <ClCompile Include="Physics.c" />
     <ClCompile Include="Triangles.c" />
     <ClCompile Include="Vector.c" />
   </ItemGroup>
@@ -166,6 +167,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="HitBox.h" />
     <ClInclude Include="OFFFILE.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Triangles.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
