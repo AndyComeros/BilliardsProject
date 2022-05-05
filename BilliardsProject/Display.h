@@ -3,20 +3,32 @@
 #ifndef DISPLAY_H_INCLUDED
 #define DISPLAY_H_INCLUDED
 
-#include <gl\freeglut.h>
-#include "GameObject.h"
+#include <GL\freeglut.h>
+#include "Object.h"
+#include "Physics.h"
 
-void initGlut();
-void changeSize(int w, int h);
+typedef struct {
+	Vec3 pos;// position
+	Vec3 look; // lookat
+	Vec3 up; // up vector
+}Camera;
 
-void initObjects();
+void loadComplexObj();
+void init();
+void randObjBody(Object* obj);
+void randColor(Face* f);
+void reshape(int w, int h);
+void keyboard(unsigned char key, int x, int y);
 
-void display(void);
-void PhysicsUpdate(int num);
-//3D utilities
-void drawAxis();
-void drawGridXZ(int size);
+void display();
+void animate(int value);
 
-void collideBallz(GameObject* b1, GameObject* b2);
+void drawFlatGrid();
+void drawAngGrid();
+void drawBallObjects();
+void drawBoneObjects();
+void rotateObjects(Object* obj);
+
+void applyForceToAllObjects(Object* obj, int max, Vec3* f);
 
 #endif // DISPLAY_H_INCLUDED
