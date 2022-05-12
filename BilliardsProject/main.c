@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <gl/freeglut.h>
 #include "Display.h"
+#include "BilliardsMenu.h"
 
 int main(int argc, char** argv)
 {
@@ -20,10 +21,14 @@ int main(int argc, char** argv)
     initGlut();
     // init starting objects
     initObjects();
+    //init UI
+    initGUI();
+    InitBilliardUI();
 
     //specify function to be called when display is opened or asked to redisplay
     glutDisplayFunc(display);
-
+    //specify input mouse callback
+    glutMouseFunc(handleMenuInput);
     //initiaize the main loop which uses bunch of callbacks for IO
     glutTimerFunc(100,PhysicsUpdate,0);
     glutReshapeFunc(changeSize);

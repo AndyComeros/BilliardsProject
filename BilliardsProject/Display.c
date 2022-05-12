@@ -1,5 +1,6 @@
 #include "Display.h"
 
+
 #define balls 5
 #define boxSize 200
 #define drag 1.05
@@ -118,6 +119,7 @@ void display(void) {
     for (int i = 0; i < balls; i++) {
         GameObjRender(&go[i]);
     }
+    renderMenus();
     //SceneRenderUpdate(&mainScene);
     glutSwapBuffers();
 }
@@ -195,31 +197,7 @@ void drawAxis()
 //debug stuff, not sure if it belongs here
 void drawGridXZ(int size)
 {
-    /*
-    GLfloat color[3] = { 1,1,1 };
 
-    glLineWidth(0.2);
-    for (GLfloat i = (1 - size); i < size; i++)
-    {
-        for (GLfloat j = (1 - size); j < size; j++)
-        {
-            glBegin(GL_LINES);
-            glColor3fv(color);
-            GLfloat point1[3] = { i,0,j };
-            GLfloat point2[3] = { -i,0,j };
-            glVertex3fv(point1);
-            glVertex3fv(point2);
-            glEnd();
-            glBegin(GL_LINES);
-            glColor3fv(color);
-            GLfloat point3[3] = { i,0,j };
-            GLfloat point4[3] = { i,0,-j };
-            glVertex3fv(point3);
-            glVertex3fv(point4);
-            glEnd();
-        }
-    }
-    */
     GLfloat i = 0.0, j = 0.0;
     GLfloat gridscale = 20; // spacing between grid lines, depends on how close/far you are
     glColor3f(1.0, 1.0, 0.0);
@@ -231,13 +209,13 @@ void drawGridXZ(int size)
             // z direction
         glBegin(GL_LINES);
         glVertex3f(i * gridscale - size / 2, 0.0, 0.0 - size / 2);
-        glVertex3f(i * gridscale - size / 2, 0.0, 1'000.0);
+        glVertex3f(i * gridscale - size / 2, 0.0, 1000.0);
         glEnd();
 
         // x direction
         glBegin(GL_LINES);
         glVertex3f(0.0 - size / 2, 0.0, i * gridscale - size / 2);
-        glVertex3f(1'000.0, 0.0, i * gridscale - size / 2);
+        glVertex3f(1000.0, 0.0, i * gridscale - size / 2);
         glEnd();
         //}
     }

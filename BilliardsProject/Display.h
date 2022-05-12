@@ -5,6 +5,7 @@
 
 #include <gl\freeglut.h>
 #include "GameObject.h"
+#include "BilliardsMenu.h"
 
 void initGlut();
 void changeSize(int w, int h);
