@@ -1,5 +1,6 @@
 #include "Display.h"
 #include <stdio.h>
+#include "GUI.h"
 
 #define STARTING_HEIGHT 10
 #define TIMER 15
@@ -161,6 +162,8 @@ void reshape(int w, int h)
 		cam.pos.x, cam.pos.y, cam.pos.z,
 		cam.look.x, cam.look.y, cam.look.z,
 		cam.up.x, cam.up.y, cam.up.z);
+
+	reshapeGUI(w,h);
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -212,6 +215,7 @@ void display()
 	drawAngGrid();
 	//drawBallObjects();
 	drawBoneObjects();
+	renderMenus();
 
 	glutSwapBuffers();
 }
@@ -265,7 +269,7 @@ void animate(int value)
 		updatePrevObject(&bones[i]);
 	}*/
 
-	printf("Accel %f\nVel: %f\n", bones[1].body.acceleration.y, bones[1].body.velocity.y);
+	//printf("Accel %f\nVel: %f\n", bones[1].body.acceleration.y, bones[1].body.velocity.y);
 
 	glutPostRedisplay();
 }

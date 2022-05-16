@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BilliardsMenu.c" />
     <ClCompile Include="Display.c" />
     <ClCompile Include="Face.c" />
+    <ClCompile Include="GUI.c" />
     <ClCompile Include="Object.c" />
     <ClCompile Include="OffFile.c" />
     <ClCompile Include="Physics.c" />
@@ -28,8 +30,10 @@
     <ClCompile Include="VectorMath.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BilliardsMenu.h" />
     <ClInclude Include="Display.h" />
     <ClInclude Include="Face.h" />
+    <ClInclude Include="GUI.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OffFile.h" />
     <ClInclude Include="Physics.h" />

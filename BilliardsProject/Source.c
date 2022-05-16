@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <GL\freeglut.h>
 #include "Display.h"
+#include "BilliardsMenu.h"
 
 #define TIMER 15
 
@@ -16,10 +17,13 @@ int main(int argc, char**argv)
 	glutCreateWindow(argv[0]);
 
 	init();
+	initGUI();
+	InitBilliardUI();
 
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutKeyboardFunc(keyboard);
+	glutMouseFunc(handleMenuInput);
 
 	//glutIdleFunc(animate);
 
