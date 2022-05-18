@@ -6,7 +6,7 @@
 #define STARTING_HEIGHT 10
 #define TIMER 15
 #define BALLCOUNT 6
-#define BONECOUNT 6
+#define BONECOUNT 2
 #define USER_APPLIED_FORCE 20
 #define GRAVITY 9.8
 
@@ -115,7 +115,7 @@ void init()
 	}
 	for (int i = 0; i < BONECOUNT; i++)
 	{
-		randObjBody(&bones[i]);
+		testObjBody(&bones[i],i);
 	}
 
 	planeAng.UnitNormal = normalize(planeAng.UnitNormal);
@@ -125,6 +125,18 @@ void init()
 	initGUI();
 	InitBilliardUI();
 	initGameInput(&bones[0]);//taking some bone for testing-will change
+}
+
+void testObjBody(Object* obj,int index) {
+	obj->body.position.z = 0 + index * 2;
+	obj->body.position.x = 0 + index * 2;
+	obj->body.position.y = 3;
+	obj->body.rotAngle = rand() % 360;
+	obj->body.scale.x = 2;
+	obj->body.scale.y = 2;
+	obj->body.scale.z = 2;
+	obj->body.mass *= 2;
+
 }
 
 void randObjBody(Object* obj)
@@ -222,6 +234,16 @@ void animate(int value)
 			bones[i].body.velocity = collisionResolution(&bones[i].body.velocity, &plane.UnitNormal);
 		}
 		updateObject(&bones[i], deltaTime);
+	}
+
+	//simulate elastic collision between bones
+	for (size_t i = 0; i < BONECOUNT; i++)
+	{
+		for (size_t j = i+1; j < BONECOUNT; j++)
+		{
+			physicSphereCollide(&bones[i].body,&bones[j].body);
+
+		}
 	}
 
 	prevTime = currTime;
@@ -327,10 +349,3 @@ void rotateObjects(Object* obj)
 	}
 }
 
-void applyForceToAllObjects(Object* obj, int max, Vec3* f)
-{
-	for (int i = 0; i < max; i++)
-	{
-		applyForce(&obj[i], *f);
-	}
-}

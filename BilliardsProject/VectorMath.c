@@ -44,3 +44,14 @@ GLfloat dot(const Vec3 a, const Vec3 b)
 {
 	return (a.x*b.x + a.y*b.y + a.z*b.z);
 }
+
+Vec3 addVec(const Vec3 a, const Vec3 b) 
+{
+	return (Vec3) {
+		a.x + b.x,
+		a.y + b.y,
+		a.z + b.z
+
+	};
+
+}

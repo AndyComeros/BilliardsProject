@@ -19,4 +19,6 @@ Vec3 normalize(const Vec3 a);
 Vec3 cross(const Vec3 a, const Vec3 b);
 GLfloat dot(const Vec3 a, const Vec3 b);
 
+Vec3 addVec(const Vec3 a, const Vec3 b);
+
 #endif // VECTORMATH_H_INCLUDED

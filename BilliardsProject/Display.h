@@ -15,10 +15,13 @@ typedef struct {
 
 void loadComplexObj();
 void init();
+
+//temp
+void testObjBody(Object* obj, int index);
+
 void randObjBody(Object* obj);
 void randColor(Face* f);
 void reshape(int w, int h);
-void keyboard(unsigned char key, int x, int y);
 
 void display();
 void animate(int value);
@@ -29,6 +32,6 @@ void drawBallObjects();
 void drawBoneObjects();
 void rotateObjects(Object* obj);
 
-void applyForceToAllObjects(Object* obj, int max, Vec3* f);
+
 
 #endif // DISPLAY_H_INCLUDED
