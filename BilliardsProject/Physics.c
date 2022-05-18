@@ -1,7 +1,7 @@
 #include "Physics.h"
 #include <stdio.h>
 
-#define BOUNCEDECAY 0.7
+#define BOUNCEDECAY 0.9
 
 void resolveCollisionObjPlane(Object* obj, Face* f)
 {

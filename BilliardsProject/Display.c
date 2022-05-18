@@ -1,6 +1,7 @@
 #include "Display.h"
 #include <stdio.h>
 #include "GUI.h"
+#include "GameInput.h"
 
 #define STARTING_HEIGHT 10
 #define TIMER 15
@@ -120,6 +121,10 @@ void init()
 	planeAng.UnitNormal = normalize(planeAng.UnitNormal);
 
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
+
+	initGUI();
+	InitBilliardUI();
+	initGameInput(&bones[0]);//taking some bone for testing-will change
 }
 
 void randObjBody(Object* obj)
@@ -166,55 +171,16 @@ void reshape(int w, int h)
 	reshapeGUI(w,h);
 }
 
-void keyboard(unsigned char key, int x, int y)
-{
-	switch (key)
-	{
-	case 'd':
-	case 'D':
-		applyForceToAllObjects(&balls, BALLCOUNT, &vectorRight);
-		applyForceToAllObjects(&bones, BONECOUNT, &vectorRight);
-		break;
-	case 'w':
-	case 'W':
-		applyForceToAllObjects(&balls, BALLCOUNT, &vectorForward);
-		applyForceToAllObjects(&bones, BONECOUNT, &vectorForward);
-		break;
-	case 's':
-	case 'S':
-		applyForceToAllObjects(&balls, BALLCOUNT, &vectorBack);
-		applyForceToAllObjects(&bones, BONECOUNT, &vectorBack);
-		break;
-	case 'a':
-	case 'A':
-		applyForceToAllObjects(&balls, BALLCOUNT, &vectorLeft);
-		applyForceToAllObjects(&bones, BONECOUNT, &vectorLeft);
-		break;
-	case ' ':
-		applyForceToAllObjects(&balls, BALLCOUNT, &vectorUp);
-		applyForceToAllObjects(&bones, BONECOUNT, &vectorUp);
-		applyForceToAllObjects(&bones, BONECOUNT, &vectorUp);
-		break;
-	case 'Q':
-	case 'q':
-		for (int i = 0; i < BONECOUNT; i++)
-		{
-			FreeObject(&bones[i].off);
-		}
-		exit(0);
-	default:
-		break;
-	}
-}
-
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	drawFlatGrid();
-	drawAngGrid();
+	//drawAngGrid();
 	//drawBallObjects();
 	drawBoneObjects();
+	
+	RenderShotIndicator();
 	renderMenus();
 
 	glutSwapBuffers();
@@ -248,7 +214,7 @@ void animate(int value)
 		if (DistanceBetweenObjPlane(&bones[i], &planeAng) < 1.0f)
 		{
 			//resolveCollisionObjPlane(&bones[i], &plane); // this is getting called again before bounce gets past threshold
-			bones[i].body.velocity = collisionResolution(&bones[i].body.velocity, &planeAng.UnitNormal);
+			//bones[i].body.velocity = collisionResolution(&bones[i].body.velocity, &planeAng.UnitNormal);
 		}
 		if (DistanceBetweenObjPlane(&bones[i], &plane) < 1.0f)
 		{

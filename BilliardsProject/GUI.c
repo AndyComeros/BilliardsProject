@@ -54,8 +54,6 @@ void handleMenuInput(int Button,int state,int x,int y)
 }
 
 
-
-
 //renderMenu(menu,1);
 void renderMenus()
 {
@@ -102,8 +100,7 @@ void renderUIElement(GUI_Element * element)
     glutBitmapString(GLUT_BITMAP_HELVETICA_18,element->Text);
 
     glBegin(GL_QUADS);
-    glColor3f(1.0f, 0.0f, 0.0);
-
+    glColor3f(0.0f, 0.5f, 1.0);
     glVertex2f(windowPosX,windowPosY);//top left
     glVertex2f(element->lengthX+windowPosX, windowPosY);//top-right
     glVertex2f(element->lengthX+windowPosX, element->lengthY+windowPosY);//bottom-right
