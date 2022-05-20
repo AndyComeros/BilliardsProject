@@ -2,16 +2,12 @@
 
 void updateObject(Object* obj, float deltaTime)
 {
-	obj->body.position = add(
-		add(
-			obj->body.position, multiply(obj->body.velocity, deltaTime)
-		),
-		multiply(
-			(multiply(obj->body.acceleration, 0.5)),
-			(deltaTime * deltaTime)
-		)
-	); // prev pos + (prevVel*deltaTime) + (1/2* prevAccel*deltaTime^2)
+	obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
 
+	//friction
+	obj->body.velocity.x * 0.996;
+	obj->body.velocity.y * 0.996;
+	/*
 	obj->body.velocity = add(
 		obj->body.velocity,
 		multiply(
@@ -21,6 +17,7 @@ void updateObject(Object* obj, float deltaTime)
 	); // prevVel + prevAccel*deltatime
 
 	obj->body.acceleration = multiply(obj->body.acceleration, deltaTime); // update acceleration
+	*/
 }
 
 void updatePrevObject(Object* obj)

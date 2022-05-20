@@ -5,15 +5,15 @@
 
 #define STARTING_HEIGHT 10
 #define TIMER 15
-#define BALLCOUNT 6
+#define BALLCOUNT 7
 #define BONECOUNT 2
 #define USER_APPLIED_FORCE 20
 #define GRAVITY 9.8
 
 static Camera cam =
 {
-	{-20, 15, 30},
-	{0, 10, 10},
+	{50, 50, 0},
+	{0, 0, 0},
 	{0, 1, 0}
 };
 
@@ -111,7 +111,7 @@ void init()
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
 		balls[i] = ball;
-		randObjBody(&balls[i]);
+		testObjBody(&balls[i],i);
 	}
 	for (int i = 0; i < BONECOUNT; i++)
 	{
@@ -124,14 +124,50 @@ void init()
 
 	initGUI();
 	InitBilliardUI();
-	initGameInput(&bones[0]);//taking some bone for testing-will change
+	initGameInput(&balls[0]);//taking some bone for testing-will change
 }
 
 void testObjBody(Object* obj,int index) {
-	obj->body.position.z = 0 + index * 2;
-	obj->body.position.x = 0 + index * 2;
+	
+	obj->body.radius = 2;
+	obj->body.mass = 3;
+	switch (index) {
+	case 0:
+		obj->body.position.x = 20;
+		obj->body.position.z = 0;
+		//obj->body.mass = 30;
+		break;
+	case 1:
+		obj->body.position.x = 0;
+		obj->body.position.z = 0;
+		break;
+	case 2:
+		obj->body.position.x = -5;
+		obj->body.position.z = 2.2;
+		break;
+	case 3:
+		obj->body.position.x = -5;
+		obj->body.position.z = -2.2;
+		break;
+	case 4:
+		obj->body.position.x = -10;
+		obj->body.position.z = 0;
+		break;
+	case 5:
+		obj->body.position.x = -10;
+		obj->body.position.z = 4.0;
+		break;
+	case 6:
+		obj->body.position.x = -10;
+		obj->body.position.z = -4.0;
+		break;	
+	
+	}
+	
+
+
 	obj->body.position.y = 3;
-	obj->body.rotAngle = rand() % 360;
+	//obj->body.rotAngle = rand() % 360;
 	obj->body.scale.x = 2;
 	obj->body.scale.y = 2;
 	obj->body.scale.z = 2;
@@ -189,10 +225,14 @@ void display()
 
 	drawFlatGrid();
 	//drawAngGrid();
-	//drawBallObjects();
-	drawBoneObjects();
+	drawBallObjects();
+	//drawBoneObjects();
+	
+	
 	
 	RenderShotIndicator();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
@@ -207,8 +247,8 @@ void animate(int value)
 
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
-		applyForce(&balls[i], gravity); // gravity
-		rotateObjects(&balls[i]);
+		//applyForce(&balls[i], gravity); // gravity
+		//rotateObjects(&balls[i]);
 		if (DistanceBetweenObjPlane(&balls[i], &plane) < 1.0f)
 		{
 			resolveCollisionObjPlane(&balls[i], &plane);
@@ -237,11 +277,11 @@ void animate(int value)
 	}
 
 	//simulate elastic collision between bones
-	for (size_t i = 0; i < BONECOUNT; i++)
+	for (size_t i = 0; i < BALLCOUNT; i++)
 	{
-		for (size_t j = i+1; j < BONECOUNT; j++)
+		for (size_t j = i+1; j < BALLCOUNT; j++)
 		{
-			physicSphereCollide(&bones[i].body,&bones[j].body);
+			physicSphereCollide(&balls[i].body,&balls[j].body);
 
 		}
 	}
@@ -266,7 +306,7 @@ void drawFlatGrid()
 {
 	GLfloat i = 0.0, j = 0.0;
 	GLint maxSize = 100;
-	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(1.0, 1.0, 1.0);
 
 	glBegin(GL_POLYGON);
 	glVertex3f(-maxSize, 0, -maxSize);
@@ -349,3 +389,28 @@ void rotateObjects(Object* obj)
 	}
 }
 
+void drawAxis()
+{
+	GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
+	const GLfloat bigNum = 999.0;
+	const GLfloat farpointX[] = { bigNum,0.0,0.0 };
+	const GLfloat farpointY[] = { 0.0,bigNum,0.0 };
+	const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
+	const GLfloat origin[] = { 0.0,0.0,0.0 };
+
+	glLineWidth(3.0);
+	glBegin(GL_LINES);
+
+	glColor3fv(axisCol[0]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointX);
+
+	glColor3fv(axisCol[1]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointY);
+
+	glColor3fv(axisCol[2]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointZ);
+	glEnd();
+}

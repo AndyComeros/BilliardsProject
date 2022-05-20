@@ -22,11 +22,11 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 		break;
 	case GLUT_KEY_LEFT:
 		//change angle
-		cueAngle += 0.1;
+		cueAngle += 0.05;
 		break;
 	case GLUT_KEY_RIGHT:
 		//change angle
-		cueAngle -= 0.1;
+		cueAngle -= 0.05;
 		break;
 	case GLUT_KEY_F2://reset poition for testing
 		cueBall->position.x = 0;
@@ -53,17 +53,17 @@ void shotInputKeyBoard(unsigned char key, int x, int y)
 	case 's':
 	case 'S':
 		//decrease output velocity
-		cueForce -= 1;
+		cueForce -= 1.0;
 		break;
 	case 'a':
 	case 'A':
 		//change angle
-		cueAngle += 0.1;
+		cueAngle += 0.05;
 		break;
 	case 'd':
 	case 'D':
 		//change angle
-		cueAngle -= 0.1;
+		cueAngle -= 0.05;
 		break;
 	case 32://SPACEBAR
 		cueBall->velocity = calcForceVector();
@@ -79,8 +79,8 @@ void RenderShotIndicator()
 	GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z};
 	GLfloat zwo[3] = { 0,0,0 };
 	
-
-	glColor3f(1.0,1.0,1.0);
+	glLineWidth(1.0);
+	glColor3f(0.0,0.5,1.0);
 
 	//draw line pointing to used object for testing
 	glBegin(GL_LINES);

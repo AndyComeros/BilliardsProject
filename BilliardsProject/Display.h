@@ -32,6 +32,6 @@ void drawBallObjects();
 void drawBoneObjects();
 void rotateObjects(Object* obj);
 
-
+void drawAxis();
 
 #endif // DISPLAY_H_INCLUDED
