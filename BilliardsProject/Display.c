@@ -256,25 +256,6 @@ void animate(int value)
 		updateObject(&balls[i], deltaTime);
 	}
 
-	for (int i = 0; i < BONECOUNT; i++)
-	{
-		//if (DistanceBetweenObjPlane(&bones[i], &plane) > 1.0f)
-		{
-			applyForce(&bones[i], gravity); // gravity
-			rotateObjects(&bones[i]);
-		}
-		if (DistanceBetweenObjPlane(&bones[i], &planeAng) < 1.0f)
-		{
-			//resolveCollisionObjPlane(&bones[i], &plane); // this is getting called again before bounce gets past threshold
-			//bones[i].body.velocity = collisionResolution(&bones[i].body.velocity, &planeAng.UnitNormal);
-		}
-		if (DistanceBetweenObjPlane(&bones[i], &plane) < 1.0f)
-		{
-			//resolveCollisionObjPlane(&bones[i], &plane); // this is getting called again before bounce gets past threshold
-			bones[i].body.velocity = collisionResolution(&bones[i].body.velocity, &plane.UnitNormal);
-		}
-		updateObject(&bones[i], deltaTime);
-	}
 
 	//simulate elastic collision between bones
 	for (size_t i = 0; i < BALLCOUNT; i++)
@@ -282,22 +263,14 @@ void animate(int value)
 		for (size_t j = i+1; j < BALLCOUNT; j++)
 		{
 			physicSphereCollide(&balls[i].body,&balls[j].body);
-
+			
 		}
+		//rotate balls. not final, not sure if correct but looks convining
+		balls[i].body.rotation = normalize(balls[i].body.velocity);
+		balls[i].body.rotAngle += length(balls[i].body.velocity);
 	}
 
 	prevTime = currTime;
-
-	/*for (int i = 0; i < BALLCOUNT; i++)
-	{
-		updatePrevObject(&balls[i]);
-	}
-	for (int i = 0; i < BONECOUNT; i++)
-	{
-		updatePrevObject(&bones[i]);
-	}*/
-
-	//printf("Accel %f\nVel: %f\n", bones[1].body.acceleration.y, bones[1].body.velocity.y);
 
 	glutPostRedisplay();
 }
@@ -366,14 +339,6 @@ void drawBallObjects()
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
 		drawSphereObject(&balls[i]);
-	}
-}
-
-void drawBoneObjects()
-{
-	for (int i = 0; i < BALLCOUNT; i++)
-	{
-		drawComplexObject(&bones[i]);
 	}
 }
 

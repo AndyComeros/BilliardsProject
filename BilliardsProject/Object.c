@@ -115,10 +115,13 @@ void drawSphereObject(Object* obj)
 {
 	glColor3f(0.0, 1.0, 0.0);
 
+	
 	glPushMatrix();
+	
 	glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
+	glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
-	glRotatef(obj->body.rotAngle, obj->body.rotation.x, obj->body.rotation.y, obj->body.rotation.z);
+	
 	glutWireSphere(1, 10, 8);
 	glPopMatrix();
 }

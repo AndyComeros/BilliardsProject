@@ -29,7 +29,6 @@ void animate(int value);
 void drawFlatGrid();
 void drawAngGrid();
 void drawBallObjects();
-void drawBoneObjects();
 void rotateObjects(Object* obj);
 
 void drawAxis();

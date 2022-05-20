@@ -40,7 +40,6 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 	//multiple passes make collisions more accurate(for multiple collisions in one frame), reduce number for perfomance
 	for (size_t x = 0; x < 5; x++)
 	{
-
 		//expensive square root... anyother way?- might not be relavant when so little objects are on screen
 		GLfloat distance = length(minus(ball1->position, ball2->position));
 
