@@ -96,7 +96,7 @@ void renderUIElement(GUI_Element * element)
     glClear(GL_DEPTH_BUFFER_BIT);
     //DRAW TEXT
     glColor3f(0.0f, 1.0f, 0.0f);
-    glRasterPos2i(windowPosX, windowPosY+element->lengthY/1.5);//trying to position text in center of button, probably needs to be something to do with font as well...
+    glRasterPos2i(windowPosX+5, windowPosY+element->lengthY/1.5);//trying to position text in center of button, probably needs to be something to do with font as well...
     glutBitmapString(GLUT_BITMAP_HELVETICA_18,element->Text);
 
     glBegin(GL_QUADS);

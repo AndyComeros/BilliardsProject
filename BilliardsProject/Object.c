@@ -4,12 +4,23 @@
 
 void updateObject(Object* obj, float deltaTime)
 {
+
+	//scuff clamping, 1 seems like a reasonable for now
+	if (length(obj->body.velocity) < 1) {
+		obj->body.velocity.x = 0;
+		obj->body.velocity.y = 0;
+		obj->body.velocity.z = 0;
+	}
+
 	obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
 
 	//friction
 	obj->body.velocity.x *= FRICTION;
 	obj->body.velocity.y *= FRICTION;
 	obj->body.velocity.z *= FRICTION;
+	
+
+
 	/*
 	obj->body.velocity = add(
 		obj->body.velocity,
@@ -100,11 +111,13 @@ void drawComplexObject(Object* obj)
     for (int i = 0; i < obj->off.nFace; i++)
     {
 		glColor3fv(obj->off.faces[i].colour);
+		
 
 		glPushMatrix();
 		glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
 		glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
 		glRotatef(obj->body.rotAngle, obj->body.rotation.x, obj->body.rotation.y, obj->body.rotation.z);
+
         glBegin(GL_POLYGON);
 			glVertex3f(obj->off.faces[i].p1->x, obj->off.faces[i].p1->y, obj->off.faces[i].p1->z);
 			glVertex3f(obj->off.faces[i].p2->x, obj->off.faces[i].p2->y, obj->off.faces[i].p2->z);
@@ -118,11 +131,16 @@ void drawSphereObject(Object* obj)
 {
 	glColor3f(0.0, 0.0, 1.0);
 
-	
+	glLineWidth(0.5);
 	glPushMatrix();
 	
 	glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
-	glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
+
+	//dont know why but when velocity is 0 and a rotation is made the ball dissapears. so this check is here i guess...
+	if (length(obj->body.velocity) > 0) {
+		glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
+	}
+	
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
 	
 	glutWireSphere(1, 10, 8);

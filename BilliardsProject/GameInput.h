@@ -6,8 +6,8 @@
 #include <gl/freeglut.h>
 #include "GUI.h"//creates GUI elements 
 #include "Object.h"//interracts with game objects
-
 #include "Display.h"//temp include for testing
+#include <stdio.h>
 
 //###############--DATA_MEMBERS--###############//
 

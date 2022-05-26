@@ -3,12 +3,17 @@
 
 #include "GUI.h"
 
+//initializes all menus
 void InitBilliardUI();
 
 //fills menu pointer with elements for billiards game.
 void CreateBillardsMenu();
 
 void CreateSettingsMenu();
+
+void CreateGameMenu();
+
+void CreatePauseMenu();
 
 //--button_callbacks--//
 void testCallback();
@@ -20,4 +25,12 @@ void CloseProgram();
 void OpenSettings();
 
 void OpenMainMenu();
+
+void OpenPauseMenu();
+
+void ClosePauseMenu();
+
+void RestartGame();
+
+
 #endif // BILLIARDSMENU_H_INCLUDED

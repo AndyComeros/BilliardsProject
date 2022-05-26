@@ -75,7 +75,12 @@ void shotInputKeyBoard(unsigned char key, int x, int y)
 
 void RenderShotIndicator() 
 {
+	//modify ui element
+	char cueForceChar[255];
+	sprintf(cueForceChar, "Force: %d", (int)cueForce);
+	strcpy(GetUI(3)->element[1].Text, cueForceChar);
 
+	//render line
 	GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z};
 	GLfloat zwo[3] = { 0,0,0 };
 	
@@ -96,6 +101,8 @@ void RenderShotIndicator()
 	glVertex3fv(ballPos);
 	glVertex3f(outEnd.x,outEnd.y,outEnd.z);
 	glEnd();
+
+	
 
 	/*temp follow ball
 	glLoadIdentity();
