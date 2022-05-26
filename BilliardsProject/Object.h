@@ -21,6 +21,7 @@ typedef struct Body {
 typedef struct Object {
 	OffModel off;
 	Body body;
+	GLfloat color[3];
 	int  isAvtive;
 }Object;
 

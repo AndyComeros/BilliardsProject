@@ -90,7 +90,7 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 void tableAABB(Body* ball)
 {
 	//printf("x: %f\n", ball->position.x);
-	GLfloat rad = ball->radius*1.2f; // minus or plus 1 for radius of ball
+	GLfloat rad = ball->radius * 1.2f; // minus or plus 1 for radius of ball
 	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
 	GLfloat floorLen = FLOORLENGTH - rad;
 	GLfloat floorWid = FLOORWIDTH - rad;

@@ -129,7 +129,8 @@ void drawComplexObject(Object* obj)
 
 void drawSphereObject(Object* obj)
 {
-	glColor3f(0.0, 0.0, 1.0);
+	
+	glColor3f(obj->color[0], obj->color[1], obj->color[2]);
 
 	glLineWidth(0.5);
 	glPushMatrix();
@@ -143,6 +144,8 @@ void drawSphereObject(Object* obj)
 	
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
 	
-	glutWireSphere(1, 10, 8);
+
+	glutSolidSphere(1, 10, 8);
+	//glutWireSphere(1, 10, 8);
 	glPopMatrix();
 }

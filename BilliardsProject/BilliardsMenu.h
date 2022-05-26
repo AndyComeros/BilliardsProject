@@ -3,6 +3,7 @@
 
 #include "GUI.h"
 #include "GameInput.h"
+#include "Display.h"
 
 //initializes all menus
 void InitBilliardUI();

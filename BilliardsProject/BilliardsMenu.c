@@ -131,5 +131,5 @@ void ClosePauseMenu() {
 }
 
 void RestartGame() {
-    //restart game code goes here
+    spawnBalls();
 }

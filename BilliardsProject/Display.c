@@ -105,7 +105,13 @@ void loadComplexObj()
 		bones[i].body.radius = radiusOfBoundingSphere(&bones[i].off);
 	}
 }
-
+void spawnBalls() {
+	for (int i = 0; i < BALLCOUNT; i++)
+	{
+		balls[i] = ball;
+		testObjBody(&balls[i], i);
+	}
+}
 void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -119,10 +125,6 @@ void init()
 		balls[i] = ball;
 		testObjBody(&balls[i],i);
 	}
-	for (int i = 0; i < BONECOUNT; i++)
-	{
-		testObjBody(&bones[i],i);
-	}
 
 	planeAng.UnitNormal = normalize(planeAng.UnitNormal);
 
@@ -135,11 +137,18 @@ void init()
 
 void testObjBody(Object* obj,int index) {
 	
+	obj->color[0] = cos(index*5);
+	obj->color[1] = sin(index*5);
+	obj->color[2] = tan(index*5);
+
 	obj->body.radius = 2;
 	obj->body.mass = 3;
 	obj->isAvtive = 0;
 	switch (index) {
 	case 0:
+		obj->color[0] = 1.0;
+		obj->color[1] = 1.0;
+		obj->color[2] = 1.0;
 		obj->body.position.x = 20;
 		obj->body.position.z = 0;
 		//obj->body.mass = 30;
@@ -170,8 +179,6 @@ void testObjBody(Object* obj,int index) {
 		break;	
 	
 	}
-	
-
 
 	obj->body.position.y = 3;
 	//obj->body.rotAngle = rand() % 360;
@@ -241,7 +248,7 @@ void display()
 	glutSwapBuffers();
 }
 
-float rotAngle = 0;
+float rotAngle = 0;//move to top
 void animate(int value)
 {
 	glutTimerFunc(TIMER, animate, 0);
@@ -262,41 +269,47 @@ void animate(int value)
 	cam.pos.x = sin(rotAngle) * 100;
 	cam.pos.z = cos(rotAngle) * 100;
 
-
-	for (int i = 0; i < BALLCOUNT; i++)
-	{
-		//applyForce(&balls[i], gravity); // gravity
-		//rotateObjects(&balls[i]);
-		if (DistanceBetweenObjPlane(&balls[i], &plane) < 1.0f)
+	
+	if (activeMenu != 4) {
+		for (int i = 0; i < BALLCOUNT; i++)
 		{
-			resolveCollisionObjPlane(&balls[i], &plane);
+			//applyForce(&balls[i], gravity); // gravity
+			//rotateObjects(&balls[i]);
+			if (DistanceBetweenObjPlane(&balls[i], &plane) < 1.0f)
+			{
+				resolveCollisionObjPlane(&balls[i], &plane);
+			}
+			tableAABB(&balls[i].body);
+			updateObject(&balls[i], deltaTime);
 		}
-		tableAABB(&balls[i].body);
-		updateObject(&balls[i], deltaTime);
-	}
 
-
-	//simulate elastic collision between balls
-	int activeCount = 0;
-	for (size_t i = 0; i < BALLCOUNT; i++)
-	{
-		if (balls[i].isAvtive != 0) {
-			activeCount++;
-			isHittable = 0;
-		}
-			
-		for (size_t j = i+1; j < BALLCOUNT; j++)
+		//simulate elastic collision between balls
+		int activeCount = 0;
+		for (size_t i = 0; i < BALLCOUNT; i++)
 		{
-			physicSphereCollide(&balls[i].body,&balls[j].body);
-		}
-		//rotate balls. not final, not sure if correct but looks convining
-		balls[i].body.rotation = normalize(balls[i].body.velocity);
-		balls[i].body.rotAngle += length(balls[i].body.velocity);
-	}
+			if (balls[i].isAvtive != 0) {
+				activeCount++;
+				isHittable = 0;
+			}
 
-	if (activeCount == 0 && activeMenu == 3) {
-		isHittable = 1;
+			for (size_t j = i + 1; j < BALLCOUNT; j++)
+			{
+				physicSphereCollide(&balls[i].body, &balls[j].body);
+			}
+
+			//rotate balls. not final, not sure if correct but looks convining
+			balls[i].body.rotation = normalize(balls[i].body.velocity);
+			balls[i].body.rotAngle -= length(balls[i].body.velocity) / 2;
+
+		}
+
+		if (activeCount == 0 && activeMenu == 3) {
+			isHittable = 1;
+
+		}
+	
 	}
+	
 
 	prevTime = currTime;
 
