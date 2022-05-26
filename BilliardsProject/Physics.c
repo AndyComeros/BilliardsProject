@@ -91,14 +91,68 @@ void tableAABB(Body* ball)
 {
 	//printf("x: %f\n", ball->position.x);
 	
-	// back wall
-	Vec3 v_backwall = { 1.f, 0.f, 0.f }; // unit normal from back wall
-	if (ball->position.x < -FLOORLENGTH  // further than back wall
-		&& ball->position.z > (-FLOORWIDTH + HALFSIZEOFHOLE) // not in back left hole
-		&& ball->position.z < (FLOORWIDTH - HALFSIZEOFHOLE) // not in back right hole
-	)
+	// if its within bounds, just return. saves computation
+	if (ball->position.x < FLOORLENGTH && ball->position.x > -FLOORLENGTH && ball->position.z < FLOORWIDTH && ball->position.z > -FLOORWIDTH)
 	{
-		printf("BOUNCE BACK WALL\n");
-		ball->velocity = collisionResolution(&ball->velocity, &v_backwall);
+		return;
+	}
+
+	// back wall
+	Vec3 v_backwall = { 1.f, 0.f, 0.f }, // unit normal from back wall
+		v_frontwall = { -1.f, 0.f, 0.f }, // unit mornal for front wall
+		v_leftwall = { 0.f, 0.f, -1.f }, // unit normal for left wall
+		v_rightwall = { 0.f, 0.f, 1.f }; // unit normal for right wall
+
+	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
+	GLfloat rad = 1; // minus or plus 1 for radius of ball
+	if (posX-rad < -FLOORLENGTH  // further than back wall
+		&& posZ-rad > (-FLOORWIDTH + HALFSIZEOFHOLE) // not in back left hole
+		&& posZ+rad < (FLOORWIDTH - HALFSIZEOFHOLE) // not in back right hole
+		)
+	{
+		//printf("BOUNCE BACK WALL\n");
+		ball->velocity = collisionResolution(&ball->velocity, &v_backwall); // collided with back wall, reflect ball
+	}
+
+	// front wall
+	if (posX+rad > FLOORLENGTH  // further than front wall
+		&& posZ-rad > (-FLOORWIDTH + HALFSIZEOFHOLE) // not in front left hole
+		&& posZ+rad < (FLOORWIDTH - HALFSIZEOFHOLE) // not in front right hole
+		)
+	{
+		//printf("BOUNCE FRONT WALL\n");
+		ball->velocity = collisionResolution(&ball->velocity, &v_frontwall); // collided with front wall, reflect ball
+	}
+
+	// top left wall and bottom left wall
+	if (
+		// top left wall
+		posZ+rad > FLOORWIDTH // further than left wall
+		&& posX-rad > -FLOORLENGTH // not in top left hole
+		&& posX+rad < -HALFSIZEOFHOLE // not in middle hole
+		|| // or in bottom half
+		posZ+rad > FLOORWIDTH // further than left wall
+		&& posX-rad < FLOORLENGTH // not in middle hole
+		&& posX+rad > HALFSIZEOFHOLE // not in bottom left hole
+		) 
+	{
+		//printf("BOUNCE LEFT WALL\n");
+		ball->velocity = collisionResolution(&ball->velocity, &v_leftwall);
+	}
+
+	// top right wall and bottom right wall
+	if (
+		// top right wall
+		posZ+rad < -FLOORWIDTH // further than right wall
+		&& posX-rad > -FLOORLENGTH // not in top right hole
+		&& posX+rad < -HALFSIZEOFHOLE // not in middle hole
+		|| // or in bottom half
+		posZ+rad < -FLOORWIDTH // further than right wall
+		&& posX-rad < FLOORLENGTH // not in middle hole
+		&& posX+rad > HALFSIZEOFHOLE // not in bottom right hole
+		)
+	{
+		//printf("BOUNCE LEFT WALL\n");
+		ball->velocity = collisionResolution(&ball->velocity, &v_rightwall);
 	}
 }

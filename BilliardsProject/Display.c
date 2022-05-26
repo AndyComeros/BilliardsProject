@@ -259,6 +259,7 @@ void animate(int value)
 		{
 			resolveCollisionObjPlane(&balls[i], &plane);
 		}
+		tableAABB(&balls[i].body);
 		updateObject(&balls[i], deltaTime);
 	}
 
@@ -268,8 +269,7 @@ void animate(int value)
 	{
 		for (size_t j = i+1; j < BALLCOUNT; j++)
 		{
-			//physicSphereCollide(&balls[i].body,&balls[j].body);
-			tableAABB(&balls[i].body);
+			physicSphereCollide(&balls[i].body,&balls[j].body);
 		}
 		//rotate balls. not final, not sure if correct but looks convining
 		balls[i].body.rotation = normalize(balls[i].body.velocity);
