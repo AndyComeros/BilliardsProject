@@ -20,5 +20,6 @@ Vec3 calcForce(Object* obj);
 
 //checks if 2 spheres are colliding, simulates a collision between the 2.
 void physicSphereCollide(Body *ball1, Body *ball2);
+void tableAABB(Body* ball);
 
 #endif // !PHYSICS_H_INCLUDED

@@ -1,7 +1,11 @@
 #include "Physics.h"
 #include <stdio.h>
 
-#define BOUNCEDECAY 0.9
+#define BOUNCEDECAY 0.996
+#define FLOORWIDTH 50.f
+#define FLOORLENGTH 75.f
+#define WALLHEIGHT 10.f
+#define HALFSIZEOFHOLE 5.f
 
 
 void resolveCollisionObjPlane(Object* obj, Face* f)
@@ -80,5 +84,21 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 			//ball1->velocity.y= b1Vel.y - b1MassRatio * dotProd1 * (b1Pos.y - b2Pos.y);
 			//ball2->velocity.y = b2Vel.y - b2MassRatio * dotProd2 * (b2Pos.y - b1Pos.y);
 		}
+	}
+}
+
+void tableAABB(Body* ball)
+{
+	//printf("x: %f\n", ball->position.x);
+	
+	// back wall
+	Vec3 v_backwall = { 1.f, 0.f, 0.f }; // unit normal from back wall
+	if (ball->position.x < -FLOORLENGTH  // further than back wall
+		&& ball->position.z > (-FLOORWIDTH + HALFSIZEOFHOLE) // not in back left hole
+		&& ball->position.z < (FLOORWIDTH - HALFSIZEOFHOLE) // not in back right hole
+	)
+	{
+		printf("BOUNCE BACK WALL\n");
+		ball->velocity = collisionResolution(&ball->velocity, &v_backwall);
 	}
 }

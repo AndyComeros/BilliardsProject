@@ -33,4 +33,6 @@ void rotateObjects(Object* obj);
 
 void drawAxis();
 
+void drawTable();
+
 #endif // DISPLAY_H_INCLUDED

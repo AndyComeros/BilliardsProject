@@ -9,10 +9,14 @@
 #define BONECOUNT 2
 #define USER_APPLIED_FORCE 20
 #define GRAVITY 9.8
+#define FLOORWIDTH 50.f
+#define FLOORLENGTH 75.f
+#define WALLHEIGHT 10.f
+#define HALFSIZEOFHOLE 5.f
 
 static Camera cam =
 {
-	{50, 50, 0},
+	{100, 100, 100},
 	{0, 0, 0},
 	{0, 1, 0}
 };
@@ -223,10 +227,12 @@ void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	drawFlatGrid();
+
+	//drawFlatGrid();
 	//drawAngGrid();
 	drawBallObjects();
 	//drawBoneObjects();
+	drawTable();
 	
 	
 	
@@ -257,13 +263,13 @@ void animate(int value)
 	}
 
 
-	//simulate elastic collision between bones
+	//simulate elastic collision between balls
 	for (size_t i = 0; i < BALLCOUNT; i++)
 	{
 		for (size_t j = i+1; j < BALLCOUNT; j++)
 		{
-			physicSphereCollide(&balls[i].body,&balls[j].body);
-			
+			//physicSphereCollide(&balls[i].body,&balls[j].body);
+			tableAABB(&balls[i].body);
 		}
 		//rotate balls. not final, not sure if correct but looks convining
 		balls[i].body.rotation = normalize(balls[i].body.velocity);
@@ -377,5 +383,65 @@ void drawAxis()
 	glColor3fv(axisCol[2]);
 	glVertex3fv(origin);
 	glVertex3fv(farpointZ);
+	glEnd();
+}
+
+void drawTable()
+{
+	//green
+	glColor3f(0.0, 1.0, 0.0);
+
+	// floor
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH);
+	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH);
+	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH);
+	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH);
+	glEnd();
+
+	// brown
+	glColor3f(0.5f, 0.35f, 0.05f);
+	// back wall
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(-FLOORLENGTH, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(-FLOORLENGTH, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glEnd();
+
+	// front wall
+	glBegin(GL_POLYGON);
+	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(FLOORLENGTH, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(FLOORLENGTH, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glEnd();
+
+	//right wall
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH);
+	glEnd();
+
+	//left wall
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH);
 	glEnd();
 }

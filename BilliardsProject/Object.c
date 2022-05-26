@@ -1,12 +1,15 @@
 #include "Object.h"
 
+#define FRICTION 0.996
+
 void updateObject(Object* obj, float deltaTime)
 {
 	obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
 
 	//friction
-	obj->body.velocity.x * 0.996;
-	obj->body.velocity.y * 0.996;
+	obj->body.velocity.x *= FRICTION;
+	obj->body.velocity.y *= FRICTION;
+	obj->body.velocity.z *= FRICTION;
 	/*
 	obj->body.velocity = add(
 		obj->body.velocity,
@@ -113,7 +116,7 @@ void drawComplexObject(Object* obj)
 
 void drawSphereObject(Object* obj)
 {
-	glColor3f(0.0, 1.0, 0.0);
+	glColor3f(0.0, 0.0, 1.0);
 
 	
 	glPushMatrix();
