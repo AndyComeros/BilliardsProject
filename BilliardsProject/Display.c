@@ -1,243 +1,453 @@
 #include "Display.h"
+#include <stdio.h>
+#include "GUI.h"
+#include "GameInput.h"
 
+#define STARTING_HEIGHT 10
+#define TIMER 15
+#define BALLCOUNT 7
+#define BONECOUNT 2
+#define USER_APPLIED_FORCE 20
+#define GRAVITY 9.8
+#define FLOORWIDTH 50.f
+#define FLOORLENGTH 75.f
+#define WALLHEIGHT 5.f
+#define HALFSIZEOFHOLE 5.f
+#define WALLOFFSET 1.f
+#define WALLWIDTH 5.f
 
-#define balls 5
-#define boxSize 200
-#define drag 1.05
-#define gravity 0.98
-#define friction 0.98//bounciness??
-
-#define ballsize 12 //hitbox of balls
-
-GLdouble fov = 30;		// degrees
-GLdouble aspect = 1;		// aspect ratio aspect = height/width
-GLdouble nearVal = 0.5;     // near and far clipping planes
-GLdouble farVal = 5000;
-
-//int balls = 1;
-GameObject go[balls];
-HitBox sphere;
-
-HitBox floor;
-
-void initGlut(void)
+static Camera cam =
 {
-    //GLUT_DOUBLE for double buffering, GLUT_DEPTH to create depth buffer
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-    //setLight();
+	{100, 100, 100},
+	{0, 0, 0},
+	{0, 1, 0}
+};
 
-    //Face Culling
-    glEnable(GL_DEPTH_TEST);//per pixex depth testing
-    glEnable(GL_CULL_FACE);
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);
+static Object ball = {
+	{NULL, // faces ptr
+	NULL, // vertex ptr
+	0, 0, 0}, // number of vertex, faces, edges
 
-    /*---- attributes ----*/
-    //size of points drawn
-    glPointSize(2.0);
-    //specifies default pixel color probs
-    glClearColor(0.0, 0.0, 0.0, 1.0);
+	{1, // mass
+	{0, 0, 0}, // velocity
+	{0, 0, 0}, // acceleration
+	{0, STARTING_HEIGHT, 0}, // position;
+	{1, 1, 1}, // scale;
+	{0, 1, 0}, // rotation;
+	0, // rotation angle
+	1 // radius
+	}
+};
 
-    //specifies the "current color" used to draw
-    glColor3f(1.0, 0.0, 0.0); /* draw in red */
-    //size of lines drawnS
-    glLineWidth(2.0);
+static Object bone = {
+	{NULL, // faces ptr
+	NULL, // vertex ptr
+	0, 0, 0}, // number of vertex, faces, edges
 
-    //set up a perspective projection
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+	{1, // mass
+	{0, 0, 0}, // velocity
+	{0, 0, 0}, // acceleration
+	{0, STARTING_HEIGHT, 0}, // position;
+	{1, 1, 1}, // scale;
+	{0, 1, 0}, // rotation;
+	0, // rotation angle
+	}
+};
 
-    gluPerspective(fov, aspect, nearVal, farVal);
+static Vec3 planeP1 = { 2, 0, 2 }, planeP2 = { 1, 0, 1 }, planeP3 = { -1, 0, -1 };
 
-    glMatrixMode(GL_MODELVIEW);
-}
+static Face plane = {
+	&planeP1,
+	&planeP2,
+	&planeP3,
+	{0},
+	{0, 1, 0}
+};
 
+static Vec3 planeAngP1 = { 0, 0, 2 }, planeAngP2 =  {-1, -1, -1}, planeAngP3 = {1, 1, 1}; // this isn't correct i think, manually assigned unit normal
 
-//changes size of viewport when window size changes. use as callback function
-//for when it does change//not my code. removed stuff.
-void changeSize(int w, int h)
+static Face planeAng = {
+	&planeAngP1,
+	&planeAngP2,
+	&planeAngP3,
+	{0},
+	{-1, 1, 0}
+};
+
+static Vec3 vectorLeft = { -USER_APPLIED_FORCE, 0.0, 0.0 };
+static Vec3 vectorRight = { USER_APPLIED_FORCE, 0.0, 0.0 };
+static Vec3 vectorForward = { 0.0, 0.0, -USER_APPLIED_FORCE };
+static Vec3 vectorBack = { 0.0, 0.0, USER_APPLIED_FORCE };
+static Vec3 vectorUp = { 0.0, USER_APPLIED_FORCE, 0.0 };
+
+static const Vec3 gravity = { 0.0, -GRAVITY, 0.0 };
+
+static float prevTime = 0;
+static float currTime = 0;
+static float deltaTime = 0;
+static float timeScale = 1000; // converting time into milliseconds
+
+Object balls[BALLCOUNT];
+Object bones[BONECOUNT];
+
+void loadComplexObj()
 {
-    float ratio = 1.0 * w / h;
-
-    // Use the Projection Matrix
-    glMatrixMode(GL_PROJECTION);
-
-    // Reset Matrix
-    glLoadIdentity();
-
-    // Set the viewport to be the entire window
-    glViewport(0, 0, w, h);
-
-    // Set the correct perspective.
-    gluPerspective(fov, ratio, nearVal, farVal);
-
-    // Get Back to the Modelview
-    glMatrixMode(GL_MODELVIEW);
+	//const char* c = getFileName();
+	for (int i = 0; i < BALLCOUNT; i++)
+	{
+		bones[i] = bone;
+		loadOffObject("bone.off", &bones[i]);
+		for (int j = 0; j < bones[i].off.nFace; j++)
+		{
+			bones[i].off.faces[j].colour = (GLfloat*)malloc(sizeof(GLfloat)*3);
+			randColor(&bones[i].off.faces[j]);
+		}
+		bones[i].body.radius = radiusOfBoundingSphere(&bones[i].off);
+	}
 }
 
-void initObjects()
+void init()
 {
-    //go = malloc(sizeof(struct GameObject) * balls);
-    int maxSpeed = 5;
+	glClearColor(0.0, 0.0, 0.0, 0.0);
 
-    for (int i = 0; i < balls; i++) {
-        GameObjInitialize(&go[i]);
-        GameObjSetModel(&go[i], "bone.off");
-        GameObjSetPosition(&go[i], rand() % 200, 100 + (25 * i), rand() % 200);
-        go[i].name[0] = 'p';
+	glEnable(GL_DEPTH_TEST);
 
-        //add physics boi
+	srand(time(0));
 
-        go[i].hitBox->Radius = ballsize;
+	for (int i = 0; i < BALLCOUNT; i++)
+	{
+		balls[i] = ball;
+		testObjBody(&balls[i],i);
+	}
+	for (int i = 0; i < BONECOUNT; i++)
+	{
+		testObjBody(&bones[i],i);
+	}
 
-        go[i].velocity.x = rand() % maxSpeed;
-        go[i].velocity.y = rand() % maxSpeed;
-        go[i].velocity.z = rand() % maxSpeed;
-    }
+	planeAng.UnitNormal = normalize(planeAng.UnitNormal);
 
-    //go.hitBox = &sphere;
+	prevTime = glutGet(GLUT_ELAPSED_TIME);
+
+	initGUI();
+	InitBilliardUI();
+	initGameInput(&balls[0]);//taking some bone for testing-will change
 }
 
-void display(void) {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+void testObjBody(Object* obj,int index) {
+	
+	obj->body.radius = 2;
+	obj->body.mass = 3;
+	switch (index) {
+	case 0:
+		obj->body.position.x = 20;
+		obj->body.position.z = 0;
+		//obj->body.mass = 30;
+		break;
+	case 1:
+		obj->body.position.x = 0;
+		obj->body.position.z = 0;
+		break;
+	case 2:
+		obj->body.position.x = -5;
+		obj->body.position.z = 2.2;
+		break;
+	case 3:
+		obj->body.position.x = -5;
+		obj->body.position.z = -2.2;
+		break;
+	case 4:
+		obj->body.position.x = -10;
+		obj->body.position.z = 0;
+		break;
+	case 5:
+		obj->body.position.x = -10;
+		obj->body.position.z = 4.0;
+		break;
+	case 6:
+		obj->body.position.x = -10;
+		obj->body.position.z = -4.0;
+		break;	
+	
+	}
+	
 
-    glClearColor(0.0, 0.0, 0.0, 1);//black backdrop
 
-    //set camera data - need to set to variables, perhps give game object data...
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    gluLookAt(600, 300, 600,//pos
-        0, 0, 0,//target
-        0.0, 1.0, 0.0//whats up dog
-    );
+	obj->body.position.y = 3;
+	//obj->body.rotAngle = rand() % 360;
+	obj->body.scale.x = 2;
+	obj->body.scale.y = 2;
+	obj->body.scale.z = 2;
+	obj->body.mass *= 2;
 
-    //glutWireSphere(ballsize,20,20);
-    drawAxis();//debug
-
-    drawGridXZ(40);//debug
-    //ScenePhysUpdate(&mainScene);
-    for (int i = 0; i < balls; i++) {
-        GameObjRender(&go[i]);
-    }
-    renderMenus();
-    //SceneRenderUpdate(&mainScene);
-    glutSwapBuffers();
 }
 
-void PhysicsUpdate(int num) {
-    glutTimerFunc(40, PhysicsUpdate, 0);
-
-    for (int i = 0; i < balls; i++) {
-        //printf("position: %f,%f,%f\n",go[i].center.x,go[i].center.y,go[i].center.z);
-        //ball on ball collision
-        for (int j = i; j < balls; j++) {
-            if (&go[i] != &go[j]) {
-                collideBallz(&go[i], &go[j]);
-            }
-        }
-
-        //add velocity
-        go[i].center.x += go[i].velocity.x;
-        go[i].center.y += go[i].velocity.y;
-        go[i].center.z += go[i].velocity.z;
-
-        //decrease velocity due to drag
-        go[i].velocity.x /= drag;
-        go[i].velocity.y /= drag;
-        go[i].velocity.z /= drag;
-
-        //bouncy boi
-        if (go[i].center.y <= 12) {
-            go[i].velocity.y = abs(go[i].velocity.y) * friction;//bounce back up
-        }
-        else {
-            go[i].velocity.y -= gravity;
-        }
-
-        //real fake walls
-        if (abs(go[i].center.x) > boxSize) {
-            go[i].velocity.x *= -0.98;
-        }
-        if (abs(go[i].center.z) > boxSize) {
-            go[i].velocity.z *= -0.98;
-        }
-    }
-
-    glutPostRedisplay();
+void randObjBody(Object* obj)
+{
+	obj->body.position.z = rand() % 20 - 10;
+	obj->body.position.x = rand() % 10 - 5;
+	obj->body.position.y = rand() % 30 + 15;
+	obj->body.rotAngle = rand() % 360;
+	GLfloat r = (rand() % 3);
+	if (r == 0) r = 1;
+	obj->body.scale.x = r;
+	obj->body.scale.y = r;
+	obj->body.scale.z = r;
+	obj->body.mass *= r;
 }
 
-//debug stuff, not sure if it belongs here
+void randColor(Face* f)
+{
+	GLfloat c1 = (GLfloat)rand() / (GLfloat)RAND_MAX;
+	GLfloat c2 = (GLfloat)rand() / (GLfloat)RAND_MAX;
+	GLfloat c3 = (GLfloat)rand() / (GLfloat)RAND_MAX;
+	f->colour[0] = c1;
+	f->colour[1] = c2;
+	f->colour[2] = c3;
+}
+
+void reshape(int w, int h)
+{
+	glViewport(0, 0, (GLsizei)w, (GLsizei)h);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+
+	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 0.1, 10000);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	gluLookAt(
+		cam.pos.x, cam.pos.y, cam.pos.z,
+		cam.look.x, cam.look.y, cam.look.z,
+		cam.up.x, cam.up.y, cam.up.z);
+
+	reshapeGUI(w,h);
+}
+
+void display()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
+	//drawFlatGrid();
+	//drawAngGrid();
+	drawBallObjects();
+	//drawBoneObjects();
+	drawTable();
+	
+	
+	
+	RenderShotIndicator();
+	glClear(GL_DEPTH_BUFFER_BIT);
+	drawAxis();
+	renderMenus();
+
+	glutSwapBuffers();
+}
+
+void animate(int value)
+{
+	glutTimerFunc(TIMER, animate, 0);
+
+	currTime = glutGet(GLUT_ELAPSED_TIME);
+	deltaTime = (currTime - prevTime) / timeScale;
+
+	for (int i = 0; i < BALLCOUNT; i++)
+	{
+		//applyForce(&balls[i], gravity); // gravity
+		//rotateObjects(&balls[i]);
+		if (DistanceBetweenObjPlane(&balls[i], &plane) < 1.0f)
+		{
+			resolveCollisionObjPlane(&balls[i], &plane);
+		}
+		tableAABB(&balls[i].body);
+		updateObject(&balls[i], deltaTime);
+	}
+
+
+	//simulate elastic collision between balls
+	for (size_t i = 0; i < BALLCOUNT; i++)
+	{
+		for (size_t j = i+1; j < BALLCOUNT; j++)
+		{
+			physicSphereCollide(&balls[i].body,&balls[j].body);
+		}
+		//rotate balls. not final, not sure if correct but looks convining
+		balls[i].body.rotation = normalize(balls[i].body.velocity);
+		balls[i].body.rotAngle += length(balls[i].body.velocity);
+	}
+
+	prevTime = currTime;
+
+	glutPostRedisplay();
+}
+
+void drawFlatGrid()
+{
+	GLfloat i = 0.0, j = 0.0;
+	GLint maxSize = 100;
+	glColor3f(1.0, 1.0, 1.0);
+
+	glBegin(GL_POLYGON);
+	glVertex3f(-maxSize, 0, -maxSize);
+	glVertex3f(-maxSize, 0, maxSize);
+	glVertex3f(maxSize, 0, maxSize);
+	glVertex3f(maxSize, 0, -maxSize);
+	glEnd();
+
+	//for (i = 0.0; i < maxsize; i++)
+	//{
+	//	 z direction
+	//	glBegin(GL_LINES);
+	//	glVertex3f(i * 2 - maxsize / 2, 0.0, 0.0 - maxsize / 2);
+	//	glVertex3f(i * 2 - maxsize / 2, 0.0, 1'000.0);
+	//	glEnd();
+
+	//	 x direction
+	//	glBegin(GL_LINES);
+	//	glVertex3f(0.0 - maxsize / 2, 0.0, i * 2.0 - maxsize / 2);
+	//	glVertex3f(1'000.0, 0.0, i * 2.0 - maxsize / 2);
+	//	glEnd();
+	//}
+}
+
+void drawAngGrid()
+{
+	GLfloat i = 0.0;
+	GLint maxSize = 100;
+	GLfloat halfMaxSize = maxSize / 2;
+	glColor3f(1.0, 0.0, 0.0);
+	glColor3f(0.0, 1.0, 0.0);
+
+	glBegin(GL_POLYGON);
+	glVertex3f(-maxSize, -maxSize, -maxSize);
+	glVertex3f(-maxSize, -maxSize, maxSize);
+	glVertex3f(maxSize, maxSize, maxSize);
+	glVertex3f(maxSize, maxSize, -maxSize);
+	glEnd();
+
+	/*for (i = 0.0; i < maxSize; i++)
+	{
+		glBegin(GL_LINES);
+		glVertex3f(-1000, -1000, -halfMaxSize + i);
+		glVertex3f(1000, 1000, -halfMaxSize + i);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glVertex3f(-halfMaxSize +i, -halfMaxSize +i, -halfMaxSize);
+		glVertex3f(-halfMaxSize +i, -halfMaxSize +i, halfMaxSize);
+		glEnd();
+	}*/
+
+}
+
+void drawBallObjects()
+{
+	for (int i = 0; i < BALLCOUNT; i++)
+	{
+		drawSphereObject(&balls[i]);
+	}
+}
+
+void rotateObjects(Object* obj)
+{
+	if (obj->body.rotAngle >= 360)
+	{
+		obj->body.rotAngle = 0;
+	}
+	else
+	{
+		obj->body.rotAngle += 1;
+	}
+}
+
 void drawAxis()
 {
-    GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
-    const GLfloat bigNum = 999.0;
-    const GLfloat farpointX[] = { bigNum,0.0,0.0 };
-    const GLfloat farpointY[] = { 0.0,bigNum,0.0 };
-    const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
-    const GLfloat origin[] = { 0.0,0.0,0.0 };
+	GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
+	const GLfloat bigNum = 999.0;
+	const GLfloat farpointX[] = { bigNum,0.0,0.0 };
+	const GLfloat farpointY[] = { 0.0,bigNum,0.0 };
+	const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
+	const GLfloat origin[] = { 0.0,0.0,0.0 };
 
-    glLineWidth(3.0);
-    glBegin(GL_LINES);
+	glLineWidth(3.0);
+	glBegin(GL_LINES);
 
-    glColor3fv(axisCol[0]);
-    glVertex3fv(origin);
-    glVertex3fv(farpointX);
+	glColor3fv(axisCol[0]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointX);
 
-    glColor3fv(axisCol[1]);
-    glVertex3fv(origin);
-    glVertex3fv(farpointY);
+	glColor3fv(axisCol[1]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointY);
 
-    glColor3fv(axisCol[2]);
-    glVertex3fv(origin);
-    glVertex3fv(farpointZ);
-    glEnd();
+	glColor3fv(axisCol[2]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointZ);
+	glEnd();
 }
 
-
-//debug stuff, not sure if it belongs here
-void drawGridXZ(int size)
+void drawTable()
 {
+	//green
+	glColor3f(0.0, 1.0, 0.0);
 
-    GLfloat i = 0.0, j = 0.0;
-    GLfloat gridscale = 20; // spacing between grid lines, depends on how close/far you are
-    glColor3f(1.0, 1.0, 0.0);
+	// floor
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH);
+	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH);
+	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH);
+	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH);
+	glEnd();
 
-    for (i = 0.0; i < size; i++)
-    {
-        //for (j = 0; j < maxsize; j++)
-        //{
-            // z direction
-        glBegin(GL_LINES);
-        glVertex3f(i * gridscale - size / 2, 0.0, 0.0 - size / 2);
-        glVertex3f(i * gridscale - size / 2, 0.0, 1000.0);
-        glEnd();
+	// brown
+	//glColor3f(0.5f, 0.35f, 0.05f);
 
-        // x direction
-        glBegin(GL_LINES);
-        glVertex3f(0.0 - size / 2, 0.0, i * gridscale - size / 2);
-        glVertex3f(1000.0, 0.0, i * gridscale - size / 2);
-        glEnd();
-        //}
-    }
-}
 
-void collideBallz(GameObject* b1, GameObject* b2) {
-    /*
-        if(HitSphereSphere(b1->hitBox,b2->hitBox)== 1){
-                vect3D iv1;
-                iv1[0] = b1->velocity[0];
-                iv1[1] = b1->velocity[1];
-                iv1[2] = b1->velocity[2];
-                vect3D iv2;
-                iv2[0] = b2->velocity[0];
-                iv2[1] = b2->velocity[1];
-                iv2[2] = b2->velocity[2];
-                //printf("pos: %f, %f, %f\n",b1->center[0],b1->center[1],b1->center[2]);
-            vectCrossProd(b1->velocity,iv2);
-            vectCrossProd(b2->velocity,iv1);
-            vectMultScalar(&b1->velocity,0.5);
-            vectMultScalar(&b2->velocity,0.5);
+	glColor3f(0.8f, 0.5f, 0.05f);
 
-        }
-        */
+	// back wall
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glEnd();
+
+	// front wall
+	glBegin(GL_POLYGON);
+	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glEnd();
+
+	//right wall
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glEnd();
+
+	//left wall
+	glBegin(GL_POLYGON);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glVertex3f(0 + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glEnd();
 }

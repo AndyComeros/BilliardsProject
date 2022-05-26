@@ -9,7 +9,10 @@ void InitBilliardUI();
 void CreateBillardsMenu();
 
 void CreateSettingsMenu();
+
 //--button_callbacks--//
+void testCallback();
+
 void StartGame();
 
 void CloseProgram();

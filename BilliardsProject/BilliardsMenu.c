@@ -40,12 +40,17 @@ void CreateSettingsMenu()
     button1.btn_CallBack = &OpenMainMenu;
     menuArray[menuCount].element[0] = button1;
 
-    GUI_Element button2 = {0.5,0.5,80,30,"Crash"};
+    GUI_Element button2 = {0.5,0.5,80,30,"Test"};
+    button2.btn_CallBack = &testCallback;
     menuArray[menuCount].element[1] = button2;
     menuCount++;
 }
 
 //###--Menu_Callback_Functions--###//
+void testCallback()
+{
+    printf("TestCallback!");
+}
 
 void StartGame()
 {

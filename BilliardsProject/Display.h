@@ -3,21 +3,36 @@
 #ifndef DISPLAY_H_INCLUDED
 #define DISPLAY_H_INCLUDED
 
-#include <gl\freeglut.h>
-#include "GameObject.h"
-#include "BilliardsMenu.h"
+#include <GL\freeglut.h>
+#include "Object.h"
+#include "Physics.h"
 
-void initGlut();
-void changeSize(int w, int h);
+typedef struct {
+	Vec3 pos;// position
+	Vec3 look; // lookat
+	Vec3 up; // up vector
+}Camera;
 
-void initObjects();
+void loadComplexObj();
+void init();
 
-void display(void);
-void PhysicsUpdate(int num);
-//3D utilities
+//temp
+void testObjBody(Object* obj, int index);
+
+void randObjBody(Object* obj);
+void randColor(Face* f);
+void reshape(int w, int h);
+
+void display();
+void animate(int value);
+
+void drawFlatGrid();
+void drawAngGrid();
+void drawBallObjects();
+void rotateObjects(Object* obj);
+
 void drawAxis();
-void drawGridXZ(int size);
 
-void collideBallz(GameObject* b1, GameObject* b2);
+void drawTable();
 
 #endif // DISPLAY_H_INCLUDED

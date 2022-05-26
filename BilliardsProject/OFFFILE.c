@@ -1,134 +1,60 @@
-
-/*
-This class contains useful functions related to reading OFFFiles
-*/
+#include "OffFile.h"
 #include <stdio.h>
-#include "OFFFILE.h"
-#include "Vector.h"
 
-//free offile memory
-void freeOFFile(OFFFile *off)
+const char* getFileName()
 {
-    free(off->vertecies);
-    free(off->faces);
-    free(off);
+	printf("Please Enter Filename of .off file: ");
+	const char* c = malloc(sizeof(c)*80);
+	scanf("%s", c);
+	return c;
 }
 
-//Read in OFF file to a OFFFile struct
-void readOFFFile(OFFFile *data, char *fileName)
+void readOffFile(char* filename, OffModel* obj)
 {
-    strcpy(data->modelName, fileName);
-    //open file
-    FILE  *inFile = fopen(fileName,"r");
+	FILE* fptr = fopen(filename, "r");
 
-    //check if file exist/can be opened
-    if(inFile == NULL)
-    {
-        printf("Could not open file!");
-        exit(1);
-    }
+	if (fptr == NULL)
+	{
+		printf("Unable to open file, Program will now exit\n");
+		exit(1);
+	}
 
-    //check if OFF firstline is there
-    char *offHeader[3];
-    fscanf(inFile,"%s",offHeader);
+	//check if OFF firstline is there
+	char* offHeader[3];
+	fscanf(fptr, "%s", offHeader);
 
-    if(strcmp(offHeader,"OFF") != 0)
-    {
-        printf("***OFF File is invalid!***");
-        //needs an exit condiiton
-    }
+	if (strcmp(offHeader, "OFF") != 0)
+	{
+		printf("***OFF File is invalid!***");
+		exit(-1);
+	}
 
-    //gets verts faces and edge amounts
-    fscanf(inFile,"%d %d %d",&data->nVert,&data->nFace,&data->nEdge);
+	//gets verts faces and edge amounts
+	fscanf(fptr, "%d %d %d", &obj->nVert, &obj->nFace, &obj->nEdge);
+	size_t lenVec3 = sizeof(Vec3), lenFace = sizeof(Face);
 
-    //reads in vertecies and calulates center based on data
-    data->vertecies = (GLfloat *)malloc(sizeof(GLfloat)*3*(data->nVert));
-    (*data).center.x = 0;
-    (*data).center.y = 0;
-    (*data).center.z = 0;
+	obj->vertice = (Vec3*)malloc(lenVec3 * obj->nVert);
+	obj->faces = (Face*)malloc(lenFace * obj->nFace);
 
-    for(int i = 0; i < data->nVert; i++)
-    {
-        fscanf(inFile,"%f %f %f",&data->vertecies[i].x,&data->vertecies[i].y,&data->vertecies[i].z);
+	for (int i = 0; i < obj->nVert; i++)
+	{
+		fscanf(fptr, "%f %f %f", &obj->vertice[i].x, &obj->vertice[i].y, &obj->vertice[i].z);
+	}
 
-        (*data).center.x+= (*data).vertecies[i].x;
-        (*data).center.y+= (*data).vertecies[i].y;
-        (*data).center.z+= (*data).vertecies[i].z;
-    }
+	for (int i = 0; i < obj->nFace; i++)
+	{
+		int *v1 = malloc(sizeof(int)), *v2 = malloc(sizeof(int)), *v3 = malloc(sizeof(int));
+		fscanf(fptr, "%d %d %d", v1, v2, v3);
+		obj->faces[i].p1 = &obj->vertice[*v1];
+		obj->faces[i].p2 = &obj->vertice[*v2];
+		obj->faces[i].p3 = &obj->vertice[*v3];
+	}
 
-    (*data).center.x /= (*data).nVert;
-    (*data).center.y /= (*data).nVert;
-    (*data).center.z /= (*data).nVert;
-
-
-    //reads in triangles/faces
-    data->faces = (int *)malloc(sizeof(int)*3*(data->nFace));
-
-    for(int i = 0; i < data->nFace; i++)
-    {
-        fscanf(inFile,"%*d %d %d %d",&data->faces[i][0],&data->faces[i][1],&data->faces[i][2]);
-    }
-    fclose(inFile);
+	fclose(fptr);
 }
 
-void renderOFF(OFFFile *object3D, vect3D offset, vect3D scale)
+void FreeObject(OffModel* obj)
 {
-    //printf("wWADSADSD : %f\n",offset[2]);
-    GLfloat color[][3] = {{1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0}};
-
-    for(int i = 0; i < (object3D->nFace)-1; i++)
-    {
-        glBegin(GL_TRIANGLES);
-
-
-        glColor3f(0,0,1);
-        if(i > object3D->nFace/2)
-        {
-            glColor3f(1,0,0);
-        }
-
-        point3D tri[3];
-
-        for(int j = 0; j<3; j++)
-        {
-            tri[j].x = object3D->vertecies[object3D->faces[i][j]].x;
-            tri[j].y = object3D->vertecies[object3D->faces[i][j]].y;
-            tri[j].z = object3D->vertecies[object3D->faces[i][j]].z;
-        }
-
-        //modifiers
-
-        tri[0] = vectAddVect(tri[0],offset);
-        tri[1] = vectAddVect(tri[1],offset);
-        tri[2] = vectAddVect(tri[2],offset);
-/*
-        tri[0] = vectMultScalars(tri[0],scale.x,scale.x,scale.x);
-        tri[1] = vectMultScalars(tri[1],scale.y,scale.y,scale.y);
-        tri[2] = vectMultScalars(tri[2],scale.z,scale.z,scale.z);
-        //end modifiers
-        */
-        GLfloat vert1[3] = {tri[2].x,tri[2].y,tri[2].z};
-        GLfloat vert2[3] = {tri[0].x,tri[0].y,tri[0].z};
-        GLfloat vert3[3] = {tri[1].x,tri[1].y,tri[1].z};
-
-
-        glVertex3fv(vert1);
-        glVertex3fv(vert2);
-        glVertex3fv(vert3);
-
-        glEnd();
-    }
-
+	free(obj->faces);
+	free(obj->vertice);
 }
-
-GLfloat CalcRadius(){
-
-
-
-
-}
-
-void printOFFInfo(OFFFile *data){
-    printf("3D File Name: %s\n",data->modelName);
-}
-

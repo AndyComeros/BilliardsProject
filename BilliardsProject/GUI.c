@@ -1,8 +1,19 @@
 #include "GUI.h"
 
-initGUI()
+void initGUI()
 {
     int menuCount = 0;
+    windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
+    windowWidth = glutGet(GLUT_WINDOW_WIDTH);
+    printf("height: %d", windowHeight);
+    printf("width: %d", windowWidth);
+}
+
+//needs to be called on window reshape
+void reshapeGUI(int w, int h)
+{
+    windowHeight = h;
+    windowWidth = w;
 }
 
 //might seperate into a helper function for cleaner code
@@ -11,6 +22,7 @@ void handleMenuInput(int Button,int state,int x,int y)
 {
     if(state  == GLUT_DOWN)
     {
+        printf("Mouse Location: (%d,%d)\n", x,y);
         int activeIndex = -1;//index of active menu
         for(int i=0; i<menuCount; i++)
         {
@@ -25,10 +37,11 @@ void handleMenuInput(int Button,int state,int x,int y)
         {
             for(int j=0; j<menuArray[activeIndex].elementCount; j++)
             {
-                GLfloat xCoord = menuArray[activeIndex].element[j].posX*(windowWidth);
-                GLfloat yCoord = menuArray[activeIndex].element[j].posY*(windowHeight);
-                GLfloat xlength = menuArray[activeIndex].element[j].lengthX/2;
-                GLfloat ylength = menuArray[activeIndex].element[j].lengthY/2;
+                
+                GLfloat xlength = menuArray[activeIndex].element[j].lengthX / 2;
+                GLfloat ylength = menuArray[activeIndex].element[j].lengthY / 2;
+                GLfloat xCoord = menuArray[activeIndex].element[j].posX * (windowWidth);
+                GLfloat yCoord = menuArray[activeIndex].element[j].posY * (windowHeight) - ylength;
 
                 //if mouse if over button
                 if(y < yCoord + ylength && y > yCoord - ylength && x < xCoord + xlength && x > xCoord - xlength)
@@ -39,8 +52,6 @@ void handleMenuInput(int Button,int state,int x,int y)
         }
     }
 }
-
-
 
 
 //renderMenu(menu,1);
@@ -72,7 +83,7 @@ void renderUIElement(GUI_Element * element)
     //reset matrix
     glLoadIdentity();
     //set 2d projection
-    glOrtho(0.0,windowHeight,windowHeight,0.0,-1.0,10);
+    glOrtho(0.0,windowWidth,windowHeight,0.0,-1.0,10);
     //back to model view
     glMatrixMode(GL_MODELVIEW);
     //save state
@@ -85,12 +96,11 @@ void renderUIElement(GUI_Element * element)
     glClear(GL_DEPTH_BUFFER_BIT);
     //DRAW TEXT
     glColor3f(0.0f, 1.0f, 0.0f);
-    glRasterPos2i(windowPosX, windowPosY+element->lengthY/1.5);//trying to position text in center of button
+    glRasterPos2i(windowPosX, windowPosY+element->lengthY/1.5);//trying to position text in center of button, probably needs to be something to do with font as well...
     glutBitmapString(GLUT_BITMAP_HELVETICA_18,element->Text);
 
     glBegin(GL_QUADS);
-    glColor3f(1.0f, 0.0f, 0.0);
-
+    glColor3f(0.0f, 0.5f, 1.0);
     glVertex2f(windowPosX,windowPosY);//top left
     glVertex2f(element->lengthX+windowPosX, windowPosY);//top-right
     glVertex2f(element->lengthX+windowPosX, element->lengthY+windowPosY);//bottom-right
@@ -116,6 +126,7 @@ Menu * GetUI(int ID)
             return &menuArray[i];
         }
     }
+    return NULL;//uuummm not too sure
 }
 
 void switchUI(int ID)
@@ -124,7 +135,7 @@ void switchUI(int ID)
     {
         if(menuArray[i].menuID != ID)
         {
-            //printf("DEACTIVEATE!: %d, looking for ID %d\n",i,ID);
+            //printf("Deactivate!!: %d, looking for ID %d\n",i,ID);
             menuArray[i].isActive = 0;
 
         }

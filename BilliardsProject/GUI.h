@@ -2,7 +2,6 @@
 #define GUI_H_INCLUDED
 #include <gl/freeglut.h>
 
-
 /**
 * @todo - renderUI, have glOrtho take in window size dynamically, currently built in
 * @todo - make color value in button struct
@@ -10,8 +9,6 @@
 * @todo - have add button func, add this to create billiards menu func, should help stop out of bounds error- not necessary tho
 * @todo - make coordinates relative to center?- poistioning buttons is kinda scuff rn.
 */
-#define windowHeight 500
-#define windowWidth 500
 
 typedef struct
 {
@@ -40,13 +37,21 @@ typedef struct
 
 //global variables storing all menus
 int menuCount;
-Menu menuArray[10];//max 10 menus, saves acllocating memory...
+
+//max 10 menus, saves acllocating memory...
+Menu menuArray[10];
+
+int windowHeight;
+int windowWidth;
 
 //call in initialize method to setup menu variables correctly
 void initGUI();
 
 //put in mouse callback function, call if menu state is active.
 void handleMenuInput(int Button,int state,int x,int y);
+
+//window reshape function- dont forget to put in glut reshape callback
+void reshapeGUI(int w, int h);
 
 //calls renderUIElement for all elements in all active menus, put in display function after scene renders
 void renderMenus();
