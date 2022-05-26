@@ -1,6 +1,8 @@
 #include "BilliardsMenu.h"
+
 void InitBilliardUI()
 {
+    activeMenu = 1;
     CreateBillardsMenu();
     CreateSettingsMenu();
     CreateGameMenu();
@@ -96,6 +98,7 @@ void StartGame()
 {
     //put stuff that starts gameplay here
     //GetUI(1)->isActive = 0;
+    isHittable = 1;
     switchUI(3);
 
 }
@@ -118,10 +121,12 @@ void OpenMainMenu()
 }
 
 void OpenPauseMenu() {
+    isHittable = 0;
     switchUI(4);
 }
 
 void ClosePauseMenu() {
+    isHittable = 1;
     switchUI(3);
 }
 

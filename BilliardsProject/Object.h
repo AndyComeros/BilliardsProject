@@ -21,6 +21,7 @@ typedef struct Body {
 typedef struct Object {
 	OffModel off;
 	Body body;
+	int  isAvtive;
 }Object;
 
 static void getBody(Object* obj) { return obj->body; }

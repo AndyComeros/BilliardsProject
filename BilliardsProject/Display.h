@@ -35,4 +35,6 @@ void drawAxis();
 
 void drawTable();
 
+void updateCamera();
+
 #endif // DISPLAY_H_INCLUDED

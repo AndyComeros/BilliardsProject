@@ -2,6 +2,7 @@
 #define BILLIARDSMENU_H_INCLUDED
 
 #include "GUI.h"
+#include "GameInput.h"
 
 //initializes all menus
 void InitBilliardUI();

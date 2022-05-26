@@ -38,6 +38,7 @@ typedef struct
 
 //global variables storing all menus
 int menuCount;
+int activeMenu;
 
 //max 10 menus, saves acllocating memory...
 Menu menuArray[10];

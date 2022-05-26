@@ -10,16 +10,16 @@ void updateObject(Object* obj, float deltaTime)
 		obj->body.velocity.x = 0;
 		obj->body.velocity.y = 0;
 		obj->body.velocity.z = 0;
+		obj->isAvtive = 0;
 	}
-
-	obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
-
-	//friction
-	obj->body.velocity.x *= FRICTION;
-	obj->body.velocity.y *= FRICTION;
-	obj->body.velocity.z *= FRICTION;
-	
-
+	else {
+		obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
+		obj->isAvtive = 1;
+		//friction
+		obj->body.velocity.x *= FRICTION;
+		obj->body.velocity.y *= FRICTION;
+		obj->body.velocity.z *= FRICTION;
+	}
 
 	/*
 	obj->body.velocity = add(

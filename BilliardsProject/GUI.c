@@ -3,6 +3,7 @@
 void initGUI()
 {
     int menuCount = 0;
+    activeMenu = 0;
     windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
     windowWidth = glutGet(GLUT_WINDOW_WIDTH);
     printf("height: %d", windowHeight);
@@ -140,5 +141,6 @@ void switchUI(int ID)
 
         }
     }
+    activeMenu = ID;
     GetUI(ID)->isActive = 1;
 }

@@ -13,11 +13,14 @@
 
 //object adding force to
 Body *cueBall;
-
 //force to be added to cueBall
 GLfloat cueForce;
 //angle of ball
 GLfloat cueAngle;
+//
+//is ball hittable;
+int isHittable;
+
 
 //whether ball inputs are currently being taken
 //unsigned int isBallHittable = 1;

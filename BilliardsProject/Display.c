@@ -130,13 +130,14 @@ void init()
 
 	initGUI();
 	InitBilliardUI();
-	initGameInput(&balls[0]);//taking some bone for testing-will change
+	initGameInput(&balls[0]);
 }
 
 void testObjBody(Object* obj,int index) {
 	
 	obj->body.radius = 2;
 	obj->body.mass = 3;
+	obj->isAvtive = 0;
 	switch (index) {
 	case 0:
 		obj->body.position.x = 20;
@@ -214,13 +215,7 @@ void reshape(int w, int h)
 
 	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 0.1, 10000);
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	gluLookAt(
-		cam.pos.x, cam.pos.y, cam.pos.z,
-		cam.look.x, cam.look.y, cam.look.z,
-		cam.up.x, cam.up.y, cam.up.z);
+	updateCamera();
 
 	reshapeGUI(w,h);
 }
@@ -228,8 +223,8 @@ void reshape(int w, int h)
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+	
+	updateCamera();
 	//drawFlatGrid();
 	//drawAngGrid();
 	drawBallObjects();
@@ -240,18 +235,33 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	drawAxis();
+	//drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
 }
 
+float rotAngle = 0;
 void animate(int value)
 {
 	glutTimerFunc(TIMER, animate, 0);
 
 	currTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = (currTime - prevTime) / timeScale;
+
+	
+	if(activeMenu == 1 || activeMenu == 2) {
+		rotAngle += deltaTime / 5;
+		cam.pos.y = 100;
+	}
+	else {
+		rotAngle = 0;
+		cam.pos.y = 80;
+	}
+
+	cam.pos.x = sin(rotAngle) * 100;
+	cam.pos.z = cos(rotAngle) * 100;
+
 
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
@@ -267,8 +277,14 @@ void animate(int value)
 
 
 	//simulate elastic collision between balls
+	int activeCount = 0;
 	for (size_t i = 0; i < BALLCOUNT; i++)
 	{
+		if (balls[i].isAvtive != 0) {
+			activeCount++;
+			isHittable = 0;
+		}
+			
 		for (size_t j = i+1; j < BALLCOUNT; j++)
 		{
 			physicSphereCollide(&balls[i].body,&balls[j].body);
@@ -276,6 +292,10 @@ void animate(int value)
 		//rotate balls. not final, not sure if correct but looks convining
 		balls[i].body.rotation = normalize(balls[i].body.velocity);
 		balls[i].body.rotAngle += length(balls[i].body.velocity);
+	}
+
+	if (activeCount == 0 && activeMenu == 3) {
+		isHittable = 1;
 	}
 
 	prevTime = currTime;
@@ -450,4 +470,16 @@ void drawTable()
 	glVertex3f(0 + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
 	glEnd();
+}
+
+
+void updateCamera() 
+{
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	gluLookAt(
+		cam.pos.x, cam.pos.y, cam.pos.z,
+		cam.look.x, cam.look.y, cam.look.z,
+		cam.up.x, cam.up.y, cam.up.z);
 }
