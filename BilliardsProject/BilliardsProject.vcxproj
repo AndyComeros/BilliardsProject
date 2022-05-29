@@ -23,6 +23,7 @@
     <ClCompile Include="Display.c" />
     <ClCompile Include="Face.c" />
     <ClCompile Include="GameInput.c" />
+    <ClCompile Include="GameSession.c" />
     <ClCompile Include="GUI.c" />
     <ClCompile Include="Object.c" />
     <ClCompile Include="OffFile.c" />
@@ -35,6 +36,7 @@
     <ClInclude Include="Display.h" />
     <ClInclude Include="Face.h" />
     <ClInclude Include="GameInput.h" />
+    <ClInclude Include="GameSession.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OffFile.h" />

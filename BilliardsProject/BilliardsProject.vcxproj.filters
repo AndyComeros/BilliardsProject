@@ -45,6 +45,9 @@
     <ClCompile Include="GameInput.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameSession.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Display.h">
@@ -72,6 +75,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GameInput.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameSession.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
