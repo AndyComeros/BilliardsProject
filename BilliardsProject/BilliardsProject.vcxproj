@@ -25,6 +25,7 @@
     <ClCompile Include="GameInput.c" />
     <ClCompile Include="GameSession.c" />
     <ClCompile Include="GUI.c" />
+    <ClCompile Include="Lighting.c" />
     <ClCompile Include="Object.c" />
     <ClCompile Include="OffFile.c" />
     <ClCompile Include="Physics.c" />
@@ -38,6 +39,7 @@
     <ClInclude Include="GameInput.h" />
     <ClInclude Include="GameSession.h" />
     <ClInclude Include="GUI.h" />
+    <ClInclude Include="Lighting.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="OffFile.h" />
     <ClInclude Include="Physics.h" />

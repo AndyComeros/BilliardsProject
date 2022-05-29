@@ -40,6 +40,7 @@ void init()
 	initGUI();
 	InitBilliardUI();
 	initGameSession();
+	initLights();
 }
 
 void reshape(int w, int h)
@@ -61,6 +62,7 @@ void display()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	
 	updateCamera();
+	adjustLight();
 	//drawFlatGrid();
 	//drawAngGrid();
 	drawBallObjects();
@@ -68,7 +70,7 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	//drawAxis();
+	drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
@@ -100,7 +102,33 @@ void animate(int value)
 
 	glutPostRedisplay();
 }
+void drawAxis()
+{
+	GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
+	const GLfloat bigNum = 999.0;
+	const GLfloat farpointX[] = { bigNum,0.0,0.0 };
+	const GLfloat farpointY[] = { 0.0,bigNum,0.0 };
+	const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
+	const GLfloat origin[] = { 0.0,0.0,0.0 };
 
+	glDisable(GL_LIGHTING);
+	glLineWidth(3.0);
+	glBegin(GL_LINES);
+
+	glColor3fv(axisCol[0]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointX);
+
+	glColor3fv(axisCol[1]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointY);
+
+	glColor3fv(axisCol[2]);
+	glVertex3fv(origin);
+	glVertex3fv(farpointZ);
+	glEnd();
+	glEnable(GL_LIGHTING);
+}
 void drawTable()
 {
 	
@@ -110,11 +138,31 @@ void drawTable()
 	* 
 	*/
 	// green
+	Material poolFloor =
+	{
+		{0.12, 0.50, 0.18, 1.0},
+		{0.19, 0.44, 0.0, 1.0},
+		{0.55, 0.81, 0.72, 1.0},
+		50
+	};
+	Material poolWall =
+	{
+		{0.28, 0.14, 0.05, 1.0},
+		{0.79, 0.53, 0.34, 1.0},
+		{1.0, 1.0, 1.0, 1.0},
+		90
+	};
+
+	setMaterial(&poolFloor);
 	glColor3f(0.0, 1.0, 0.0);
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH);
 	glEnd();
 
@@ -184,6 +232,8 @@ void drawTable()
 	glEnd();
 	
 
+
+
 	/*
 	* 
 	*** back wall ***
@@ -191,48 +241,73 @@ void drawTable()
 	*/
 	// lighter brown
 	glColor3f(0.8f, 0.5f, 0.05f);
+	setMaterial(&poolWall);
 	// front
+	
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
 	// redish brown
 	glColor3f(0.4f, 0.20f, 0.05f);
 	// top
+	
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
 	glEnd();
 	// brown
 	glColor3f(0.5f, 0.35f, 0.05f);
 	// back
+	
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// right side
+	
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
 	// left side
+	
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, 0, FLOORWIDTH - HALFSIZEOFHOLE);
 	glEnd();
-
 
 	/*
 	* 
@@ -243,43 +318,63 @@ void drawTable()
 	glColor3f(0.8f, 0.5f, 0.05f);
 	// font
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
 	// redish brown
 	glColor3f(0.4f, 0.20f, 0.05f);
 	// top
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
 	glEnd();
 	// brown
 	glColor3f(0.5f, 0.35f, 0.05f);
 	// back
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// right side
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
 	// left side
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, 0, FLOORWIDTH - HALFSIZEOFHOLE);
 	glEnd();
 
@@ -297,43 +392,62 @@ void drawTable()
 	glColor3f(0.8f, 0.5f, 0.05f);
 	// font
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, -FLOORWIDTH);
 	glVertex3f(-HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// redish brown
 	glColor3f(0.4f, 0.20f, 0.05f);
 	// top
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// brown
 	glColor3f(0.5f, 0.35f, 0.05f);
 	// back
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
 	glEnd();
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// top side
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, -FLOORWIDTH);
 	glEnd();
 	// bottom side
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, -1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glNormal3f(-1, 0, -1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
 	glEnd();
 	/*
@@ -345,43 +459,63 @@ void drawTable()
 	glColor3f(0.8f, 0.5f, 0.05f);
 	// front
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 0, -1);
 	glVertex3f(HALFSIZEOFHOLE, 0, -FLOORWIDTH);
 	glEnd();
 	// redish brown
 	glColor3f(0.4f, 0.20f, 0.05f);
 	// top
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// brown
 	glColor3f(0.5f, 0.35f, 0.05f);
 	// back
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 0, -1);
 	glVertex3f(HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
 	glEnd();
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// top side
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 0, -1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, -FLOORWIDTH);
 	glEnd();
 	// bottom side
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, -1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, -1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, -FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 0, -1);
 	glVertex3f(HALFSIZEOFHOLE, 0, -FLOORWIDTH);
+	glNormal3f(1, 0, -1);
 	glVertex3f(HALFSIZEOFHOLE, 0, -FLOORWIDTH - WALLOFFSET);
 	glEnd();
 
@@ -400,43 +534,63 @@ void drawTable()
 	glColor3f(0.8f, 0.5f, 0.05f);
 	// front
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
 	glEnd();
 	// redish brown
 	glColor3f(0.4f, 0.20f, 0.05f);
 	// top
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// brown
 	glColor3f(0.5f, 0.35f, 0.05f);
 	// back
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// top side
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-FLOORLENGTH + HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// bottom side
 	glBegin(GL_POLYGON);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(-1, 1, 1);
 	glVertex3f(-HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(-1, 0, 1);
 	glVertex3f(-HALFSIZEOFHOLE, 0, FLOORWIDTH);
 	glEnd();
 	/*
@@ -448,43 +602,63 @@ void drawTable()
 	glColor3f(0.8f, 0.5f, 0.05f);
 	// front
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glNormal3f(1, 0, 1);
 	glVertex3f(HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glNormal3f(1, 1, 1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
 	glEnd();
 	// redish brown
 	glColor3f(0.4f, 0.20f, 0.05f);
 	// top
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// brown
 	glColor3f(0.5f, 0.35f, 0.05f);
 	// back
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 0, 1);
 	glVertex3f(HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// top side
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, FLOORWIDTH);
+	glNormal3f(1, 0, 1);
 	glVertex3f(FLOORLENGTH - HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
 	glEnd();
 	// bottom side
 	glBegin(GL_POLYGON);
+	glNormal3f(1, 1, 1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH - WALLOFFSET);
+	glNormal3f(1, 1, 1);
 	glVertex3f(HALFSIZEOFHOLE, WALLHEIGHT, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 0, 1);
 	glVertex3f(HALFSIZEOFHOLE, 0, FLOORWIDTH + WALLOFFSET);
+	glNormal3f(1, 0, 1);
 	glVertex3f(HALFSIZEOFHOLE, 0, FLOORWIDTH);
 	glEnd();
 }

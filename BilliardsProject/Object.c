@@ -137,7 +137,8 @@ void drawSphereObject(Object* obj)
 	}
 	
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
-	
-	glutWireSphere(1, 10, 8);
+	glutSolidSphere(1,10,8);
+	//glutSolidTeapot(1);
+	//glutWireSphere(1, 10, 8);
 	glPopMatrix();
 }

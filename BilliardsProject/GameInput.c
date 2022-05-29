@@ -86,6 +86,7 @@ void RenderShotIndicator()
 		GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z };
 		GLfloat zwo[3] = { 0,0,0 };
 
+		glDisable(GL_LIGHTING);
 		glLineWidth(3.0);
 		glColor3f(0.0, 0.5, 1.0);
 
@@ -105,7 +106,7 @@ void RenderShotIndicator()
 		glVertex3fv(ballPos);
 		glVertex3f(outEnd.x, outEnd.y, outEnd.z);
 		glEnd();
-
+		glEnable(GL_LIGHTING);
 	}
 	/*temp follow ball
 	glLoadIdentity();

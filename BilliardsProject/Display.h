@@ -5,6 +5,7 @@
 
 #include <GL\freeglut.h>
 #include "GameSession.h"
+#include "Lighting.h"
 
 typedef struct {
 	Vec3 pos;// position
@@ -18,7 +19,7 @@ void reshape(int w, int h);
 
 void display();
 void animate(int value);
-
+void drawAxis();
 void drawTable();
 
 void updateCamera();

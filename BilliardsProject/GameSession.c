@@ -64,6 +64,7 @@ void animateGameObjects(float deltaTime)
 	{
 		printf("WIN");
 		// win screen
+		//create win menu and call switchUI func here
 		return;
 	}
 
@@ -109,7 +110,7 @@ void animateGameObjects(float deltaTime)
 
 		//rotate balls. not final, not sure if correct but looks convining
 		balls[i].body.rotation = normalize(balls[i].body.velocity);
-		balls[i].body.rotAngle += length(balls[i].body.velocity);
+		balls[i].body.rotAngle -= length(balls[i].body.velocity)/2;
 	}
 
 	if (activeCount == 0 && activeMenu == 3) 
