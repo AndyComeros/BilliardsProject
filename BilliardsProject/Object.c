@@ -34,17 +34,6 @@ void updateObject(Object* obj, float deltaTime)
 	*/
 }
 
-void updatePrevObject(Object* obj)
-{
-	/*
-	obj->body.position = obj->body.position;
-	obj->body.velocity = obj->body.velocity;
-	obj->body.acceleration = obj->body.acceleration;
-	obj->body.scale = obj->body.scale;
-	obj->body.rotation = obj->body.rotation;
-	*/
-}
-
 Vec3 centerOfMass(OffModel* cModel)
 {
 	Vec3 centre = { 0, 0, 0 };

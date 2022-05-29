@@ -28,7 +28,6 @@ static void getBody(Object* obj) { return obj->body; }
 static void getOffModel(Object* obj) { return obj->off; }
 
 void updateObject(Object* obj, float deltaTime);
-void updatePrevObject(Object* obj);
 
 Vec3 centerOfMass(OffModel* cModel);
 GLfloat radiusOfBoundingSphere(OffModel* cModel);
