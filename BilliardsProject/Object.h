@@ -16,12 +16,13 @@ typedef struct Body {
 	Vec3 rotation;
 	GLfloat rotAngle;
 	GLfloat radius;
+	int  isMoving;
 }Body;
 
 typedef struct Object {
 	OffModel off;
 	Body body;
-	int  isAvtive;
+	int isActive; // 0 is inactive (false), 1 is active (true)
 }Object;
 
 static void getBody(Object* obj) { return obj->body; }

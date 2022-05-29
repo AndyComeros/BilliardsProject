@@ -19,12 +19,6 @@ void reshape(int w, int h);
 void display();
 void animate(int value);
 
-void drawFlatGrid();
-void drawAngGrid();
-
-
-void drawAxis();
-
 void drawTable();
 
 void updateCamera();

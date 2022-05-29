@@ -21,15 +21,11 @@ static Camera cam =
 	{0, 1, 0}
 };
 
-
 static float prevTime = 0;
 static float currTime = 0;
 static float deltaTime = 0;
 static float timeScale = 1000; // converting time into milliseconds
 static float camRotAngle = 0;
-
-
-
 
 void init()
 {
@@ -85,8 +81,8 @@ void animate(int value)
 	currTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = (currTime - prevTime) / timeScale;
 
-	
-	if(activeMenu == 1 || activeMenu == 2) {
+
+	if (activeMenu == 1 || activeMenu == 2) {
 		camRotAngle += deltaTime / 5;
 		cam.pos.y = 100;
 	}
@@ -103,93 +99,6 @@ void animate(int value)
 	prevTime = currTime;
 
 	glutPostRedisplay();
-}
-
-void drawFlatGrid()
-{
-	GLfloat i = 0.0, j = 0.0;
-	GLint maxSize = 100;
-	glColor3f(1.0, 1.0, 1.0);
-
-	glBegin(GL_POLYGON);
-	glVertex3f(-maxSize, 0, -maxSize);
-	glVertex3f(-maxSize, 0, maxSize);
-	glVertex3f(maxSize, 0, maxSize);
-	glVertex3f(maxSize, 0, -maxSize);
-	glEnd();
-
-	//for (i = 0.0; i < maxsize; i++)
-	//{
-	//	 z direction
-	//	glBegin(GL_LINES);
-	//	glVertex3f(i * 2 - maxsize / 2, 0.0, 0.0 - maxsize / 2);
-	//	glVertex3f(i * 2 - maxsize / 2, 0.0, 1'000.0);
-	//	glEnd();
-
-	//	 x direction
-	//	glBegin(GL_LINES);
-	//	glVertex3f(0.0 - maxsize / 2, 0.0, i * 2.0 - maxsize / 2);
-	//	glVertex3f(1'000.0, 0.0, i * 2.0 - maxsize / 2);
-	//	glEnd();
-	//}
-}
-
-void drawAngGrid()
-{
-	GLfloat i = 0.0;
-	GLint maxSize = 100;
-	GLfloat halfMaxSize = maxSize / 2;
-	glColor3f(1.0, 0.0, 0.0);
-	glColor3f(0.0, 1.0, 0.0);
-
-	glBegin(GL_POLYGON);
-	glVertex3f(-maxSize, -maxSize, -maxSize);
-	glVertex3f(-maxSize, -maxSize, maxSize);
-	glVertex3f(maxSize, maxSize, maxSize);
-	glVertex3f(maxSize, maxSize, -maxSize);
-	glEnd();
-
-	/*for (i = 0.0; i < maxSize; i++)
-	{
-		glBegin(GL_LINES);
-		glVertex3f(-1000, -1000, -halfMaxSize + i);
-		glVertex3f(1000, 1000, -halfMaxSize + i);
-		glEnd();
-
-		glBegin(GL_LINES);
-		glVertex3f(-halfMaxSize +i, -halfMaxSize +i, -halfMaxSize);
-		glVertex3f(-halfMaxSize +i, -halfMaxSize +i, halfMaxSize);
-		glEnd();
-	}*/
-
-}
-
-
-
-void drawAxis()
-{
-	GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
-	const GLfloat bigNum = 999.0;
-	const GLfloat farpointX[] = { bigNum,0.0,0.0 };
-	const GLfloat farpointY[] = { 0.0,bigNum,0.0 };
-	const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
-	const GLfloat origin[] = { 0.0,0.0,0.0 };
-
-	glLineWidth(3.0);
-	glBegin(GL_LINES);
-
-	glColor3fv(axisCol[0]);
-	glVertex3fv(origin);
-	glVertex3fv(farpointX);
-
-	glColor3fv(axisCol[1]);
-	glVertex3fv(origin);
-	glVertex3fv(farpointY);
-
-	glColor3fv(axisCol[2]);
-	glVertex3fv(origin);
-	glVertex3fv(farpointZ);
-	glEnd();
 }
 
 void drawTable()
@@ -579,7 +488,6 @@ void drawTable()
 	glVertex3f(HALFSIZEOFHOLE, 0, FLOORWIDTH);
 	glEnd();
 }
-
 
 void updateCamera() 
 {

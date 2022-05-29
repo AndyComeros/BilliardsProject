@@ -7,6 +7,7 @@
 #include "Object.h"
 
 void initGameSession();
+void gameStartingSetup();
 
 void animateGameObjects(float deltaTime);
 

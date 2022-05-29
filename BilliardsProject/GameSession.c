@@ -17,8 +17,11 @@ static Object ball = {
 	{1, 1, 1}, // scale;
 	{0, 1, 0}, // rotation;
 	0, // rotation angle
-	1 // radius
-	}
+	1, // radius
+	0 // isMoving
+	},
+
+	1 // isActive (true)
 };
 
 //static const Vec3 gravity = { 0.0, -GRAVITY, 0.0 };
@@ -33,36 +36,20 @@ static Face plane = {
 	{0, 1, 0}
 };
 
-//
-//static Vec3 planeAngP1 = { 0, 0, 2 }, planeAngP2 =  {-1, -1, -1}, planeAngP3 = {1, 1, 1}; // this isn't correct i think, manually assigned unit normal
-//
-//static Face planeAng = {
-//	&planeAngP1,
-//	&planeAngP2,
-//	&planeAngP3,
-//	{0},
-//	{-1, 1, 0}
-//};
-
-//
-//static Vec3 vectorLeft = { -USER_APPLIED_FORCE, 0.0, 0.0 };
-//static Vec3 vectorRight = { USER_APPLIED_FORCE, 0.0, 0.0 };
-//static Vec3 vectorForward = { 0.0, 0.0, -USER_APPLIED_FORCE };
-//static Vec3 vectorBack = { 0.0, 0.0, USER_APPLIED_FORCE };
-//static Vec3 vectorUp = { 0.0, USER_APPLIED_FORCE, 0.0 };
-
-
 Object balls[BALLCOUNT];
 
 void initGameSession()
+{
+	gameStartingSetup();
+}
+
+void gameStartingSetup()
 {
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
 		balls[i] = ball;
 		testObjBody(&balls[i], i);
 	}
-
-	//planeAng.UnitNormal = normalize(planeAng.UnitNormal);
 
 	initGameInput(&balls[0]);
 }
@@ -85,7 +72,7 @@ void animateGameObjects(float deltaTime)
 	int activeCount = 0;
 	for (size_t i = 0; i < BALLCOUNT; i++)
 	{
-		if (balls[i].isAvtive != 0) {
+		if (balls[i].body.isMoving != 0) {
 			activeCount++;
 			isHittable = 0;
 		}
@@ -108,7 +95,7 @@ void testObjBody(Object* obj, int index) {
 
 	obj->body.radius = 2;
 	obj->body.mass = 3;
-	obj->isAvtive = 0;
+	obj->body.isMoving = 0;
 	switch (index) {
 	case 0:
 		obj->body.position.x = 20;
@@ -142,14 +129,13 @@ void testObjBody(Object* obj, int index) {
 
 	}
 
-
-
 	obj->body.position.y = 3;
 	//obj->body.rotAngle = rand() % 360;
 	obj->body.scale.x = 2;
 	obj->body.scale.y = 2;
 	obj->body.scale.z = 2;
 	obj->body.mass *= 2;
+	obj->isActive = 1;
 
 }
 
@@ -183,6 +169,9 @@ void drawBallObjects()
 {
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
-		drawSphereObject(&balls[i]);
+		if (&balls[i].isActive != 0) // true
+		{
+			drawSphereObject(&balls[i]);
+		}
 	}
 }

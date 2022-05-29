@@ -4,17 +4,21 @@
 
 void updateObject(Object* obj, float deltaTime)
 {
+	if (obj->isActive != 1)
+	{
+		return;
+	}
 
 	//scuff clamping, 1 seems like a reasonable for now
 	if (length(obj->body.velocity) < 1) {
 		obj->body.velocity.x = 0;
 		obj->body.velocity.y = 0;
 		obj->body.velocity.z = 0;
-		obj->isAvtive = 0;
+		obj->body.isMoving = 0;
 	}
 	else {
 		obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
-		obj->isAvtive = 1;
+		obj->body.isMoving = 1;
 		//friction
 		obj->body.velocity.x *= FRICTION;
 		obj->body.velocity.y *= FRICTION;

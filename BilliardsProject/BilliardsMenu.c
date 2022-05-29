@@ -1,4 +1,5 @@
 #include "BilliardsMenu.h"
+#include "GameSession.h"
 
 void InitBilliardUI()
 {
@@ -131,5 +132,5 @@ void ClosePauseMenu() {
 }
 
 void RestartGame() {
-    //restart game code goes here
+    gameStartingSetup();
 }
