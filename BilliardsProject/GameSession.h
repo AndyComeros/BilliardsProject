@@ -11,6 +11,9 @@ void gameStartingSetup();
 
 void animateGameObjects(float deltaTime);
 
+void ballToTableHandler(float deltaTime);
+void ballToBallHandler();
+
 //temp
 void testObjBody(Object* obj, int index);
 

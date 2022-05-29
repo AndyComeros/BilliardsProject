@@ -1,7 +1,7 @@
 #include "Physics.h"
 #include <stdio.h>
 
-#define BOUNCEDECAY 0.996
+#define BOUNCEDECAY 0.99
 #define FLOORWIDTH 50.f
 #define FLOORLENGTH 75.f
 #define WALLHEIGHT 10.f
@@ -68,8 +68,8 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 			
 			
 			GLfloat tMass = (ball1->mass + ball2->mass);
-			GLfloat b1MassRatio = (2 * ball2->mass)/tMass;
-			GLfloat b2MassRatio = (2 * ball1->mass)/tMass;
+			GLfloat b1MassRatio = (ball2->mass)/tMass;
+			GLfloat b2MassRatio = (ball1->mass)/tMass;
 
 			//dot products
 			GLfloat dotProd1 = dot(minus(b1Vel,b2Vel),minus(b1Pos,b2Pos)) / (distance * distance);

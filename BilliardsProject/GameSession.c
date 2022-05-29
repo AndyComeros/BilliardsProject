@@ -2,7 +2,7 @@
 #include "GameInput.h"
 
 #define STARTING_HEIGHT 10
-#define BALLCOUNT 7
+#define BALLCOUNT 16
 
 
 static Object ball = {
@@ -56,6 +56,12 @@ void gameStartingSetup()
 
 void animateGameObjects(float deltaTime)
 {
+	ballToTableHandler(deltaTime);
+	ballToBallHandler();
+}
+
+void ballToTableHandler(float deltaTime)
+{
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
 		//applyForce(&balls[i], gravity); // gravity
@@ -67,7 +73,10 @@ void animateGameObjects(float deltaTime)
 		tableAABB(&balls[i].body);
 		updateObject(&balls[i], deltaTime);
 	}
+}
 
+void ballToBallHandler()
+{
 	//simulate elastic collision between balls
 	int activeCount = 0;
 	for (size_t i = 0; i < BALLCOUNT; i++)
@@ -98,7 +107,7 @@ void testObjBody(Object* obj, int index) {
 	obj->body.isMoving = 0;
 	switch (index) {
 	case 0:
-		obj->body.position.x = 20;
+		obj->body.position.x = 40;
 		obj->body.position.z = 0;
 		//obj->body.mass = 30;
 		break;
@@ -108,11 +117,11 @@ void testObjBody(Object* obj, int index) {
 		break;
 	case 2:
 		obj->body.position.x = -5;
-		obj->body.position.z = 2.2;
+		obj->body.position.z = 2.5f;
 		break;
 	case 3:
 		obj->body.position.x = -5;
-		obj->body.position.z = -2.2;
+		obj->body.position.z = -2.5f;
 		break;
 	case 4:
 		obj->body.position.x = -10;
@@ -120,11 +129,47 @@ void testObjBody(Object* obj, int index) {
 		break;
 	case 5:
 		obj->body.position.x = -10;
-		obj->body.position.z = 4.0;
+		obj->body.position.z = 5;
 		break;
 	case 6:
 		obj->body.position.x = -10;
-		obj->body.position.z = -4.0;
+		obj->body.position.z = -5;
+		break;
+	case 7:
+		obj->body.position.x = -15;
+		obj->body.position.z = -7.5;
+		break;
+	case 8:
+		obj->body.position.x = -15;
+		obj->body.position.z = -2.5f;
+		break;
+	case 9:
+		obj->body.position.x = -15;
+		obj->body.position.z = 2.5f;
+		break;
+	case 10:
+		obj->body.position.x = -15;
+		obj->body.position.z = 7.5;
+		break;
+	case 11:
+		obj->body.position.x = -20;
+		obj->body.position.z = -10;
+		break;
+	case 12:
+		obj->body.position.x = -20;
+		obj->body.position.z = -5;
+		break;
+	case 13:
+		obj->body.position.x = -20;
+		obj->body.position.z = 0;
+		break;
+	case 14:
+		obj->body.position.x = -20;
+		obj->body.position.z = 5;
+		break;
+	case 15:
+		obj->body.position.x = -20;
+		obj->body.position.z = 10;
 		break;
 
 	}
