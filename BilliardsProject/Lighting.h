@@ -1,6 +1,8 @@
 #pragma once
 #include <gl/freeglut.h>
 
+
+
 typedef struct Material 
 {
 	GLfloat ambient[4];

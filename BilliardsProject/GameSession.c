@@ -119,11 +119,26 @@ void animateGameObjects(float deltaTime)
 	}
 }
 
+float randCol() {
+	return (float)rand() / RAND_MAX;
+}
 void testObjBody(Object* obj, int index) {
+
 
 	obj->body.radius = 2;
 	obj->body.mass = 3;
 	obj->body.isMoving = 0;
+	srand(7873*index);
+	
+	//scuff random colors
+	Material ballMat =
+	{
+		{0.1, 0.01, 0.1, 0.55},
+		{randCol(), randCol(), randCol(), 1},
+		{randCol(), randCol(), randCol(), 0.55},
+		100
+	};
+	obj->material = ballMat;
 	switch (index) {
 	case 0:
 		obj->body.position.x = 40;

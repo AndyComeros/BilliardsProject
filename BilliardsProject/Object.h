@@ -6,6 +6,7 @@
 #include <math.h>
 #include "Face.h"
 #include "OffFile.h"
+#include "Lighting.h"
 
 typedef struct Body {
 	GLfloat mass;
@@ -22,6 +23,7 @@ typedef struct Body {
 typedef struct Object {
 	OffModel off;
 	Body body;
+	Material material;
 	int isActive; // 0 is inactive (false), 1 is active (true)
 }Object;
 

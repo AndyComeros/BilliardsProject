@@ -70,7 +70,7 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	drawAxis();
+	//drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
@@ -95,7 +95,7 @@ void animate(int value)
 
 	cam.pos.x = sin(camRotAngle) * 100;
 	cam.pos.z = cos(camRotAngle) * 100;
-
+	
 	animateGameObjects(deltaTime);
 
 	prevTime = currTime;

@@ -2,17 +2,16 @@
 
 #include "Lighting.h"
 
-GLfloat lightPos1[] = { 1.0,1.0,0.0,0.0 };
-GLfloat lightDir1[] = { -0.2,-1.0,0.0,0.0 };
 
+GLfloat lightPos1[] = {0.0,1.0,0.0,0.0};
+GLfloat lightDir1[] = {0.0,-1.0,0.0,0.0};
 
 void initLights()
 {
-	
 
-	GLfloat colWhite[] = {1.0,0.0,0.0,1.0};
-	GLfloat colRed[] = {0.5,0.3,0.3,1.0};
-	GLfloat colGrey[] = {0.2,0.2,0.2,1.0};
+	GLfloat colWhite[] = {1.0,1.0,1.0,1.0};
+	GLfloat colRed[] = {0.5,0.3,0.4,1.0};
+	GLfloat colGrey[] = {0.3,0.3,0.3,1.0};
 
 	// Enable lighting
 	glEnable(GL_LIGHTING);
@@ -28,7 +27,7 @@ void initLights()
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, colRed);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_NORMALIZE);//normalizes norms-expensive...
-	//(GL_LIGHT0, GL_SPECULAR, colWhite);
+	(GL_LIGHT0, GL_SPECULAR, colWhite);
 
 }
 

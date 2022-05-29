@@ -124,8 +124,8 @@ void drawComplexObject(Object* obj)
 
 void drawSphereObject(Object* obj)
 {
-	glColor3f(0.0, 0.0, 1.0);
-
+	//glColor3f(0.0, 0.0, 1.0);
+	setMaterial(&obj->material);
 	glLineWidth(0.5);
 	glPushMatrix();
 	
