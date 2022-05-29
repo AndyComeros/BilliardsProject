@@ -6,6 +6,10 @@
 #include <GL\freeglut.h>
 #include "Object.h"
 #include "Physics.h"
+#include <stdio.h>
+#include "GUI.h"
+#include "GameInput.h"
+#include "Lighting.h"
 
 typedef struct {
 	Vec3 pos;// position

@@ -74,6 +74,7 @@ void renderMenus()
 
 void renderUIElement(GUI_Element * element)
 {
+    glDisable(GL_LIGHTING);
     GLfloat windowPosX = (element->posX * windowWidth) - element->lengthX/2;
     GLfloat windowPosY = (element->posY * windowHeight) - element->lengthY/2;
 
@@ -113,7 +114,7 @@ void renderUIElement(GUI_Element * element)
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
-
+    glEnable(GL_LIGHTING);
     //glutSolidCone(100,700,20,30);
 }
 

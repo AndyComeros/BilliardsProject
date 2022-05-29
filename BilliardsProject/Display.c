@@ -1,7 +1,5 @@
 #include "Display.h"
-#include <stdio.h>
-#include "GUI.h"
-#include "GameInput.h"
+
 
 #define STARTING_HEIGHT 10
 #define TIMER 15
@@ -15,6 +13,7 @@
 #define HALFSIZEOFHOLE 5.f
 #define WALLOFFSET 1.f
 #define WALLWIDTH 5.f
+#define WALLTHICKNESS 5.f
 
 static Camera cam =
 {
@@ -133,10 +132,19 @@ void init()
 	initGUI();
 	InitBilliardUI();
 	initGameInput(&balls[0]);
+	initLights();
 }
 
 void testObjBody(Object* obj,int index) {
 	
+	Material ballMaterial =
+	{
+		{0.3, 0.0, 0.0, 1.0},
+		{0.6, 0.0, 0.0, 1.0},
+		{0.8, 0.6, 0.6, 1.0},
+		100.0
+	};
+
 	obj->color[0] = cos(index*5);
 	obj->color[1] = sin(index*5);
 	obj->color[2] = tan(index*5);
@@ -144,6 +152,7 @@ void testObjBody(Object* obj,int index) {
 	obj->body.radius = 2;
 	obj->body.mass = 3;
 	obj->isAvtive = 0;
+	obj->material = ballMaterial;
 	switch (index) {
 	case 0:
 		obj->color[0] = 1.0;
@@ -242,7 +251,7 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	//drawAxis();
+	drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
@@ -404,6 +413,7 @@ void drawAxis()
 	const GLfloat farpointZ[] = { 0.0,0.0,bigNum };
 	const GLfloat origin[] = { 0.0,0.0,0.0 };
 
+	glDisable(GL_LIGHTING);
 	glLineWidth(3.0);
 	glBegin(GL_LINES);
 
@@ -419,27 +429,43 @@ void drawAxis()
 	glVertex3fv(origin);
 	glVertex3fv(farpointZ);
 	glEnd();
+	glEnable(GL_LIGHTING);
 }
 
 void drawTable()
 {
 	//green
 	glColor3f(0.0, 1.0, 0.0);
+	Material poolFloor =
+	{
+		{0.12, 0.22, 0.18, 1.0},
+		{0.19, 0.44, 0.0, 1.0},
+		{0.55, 0.81, 0.72, 1.0},
+		50
+	};
+	//brown
+	Material poolWall =
+	{
+		{0.59, 0.2, 0.3, 1.0},
+		{0.5, 0.59, 0.22, 1.0},
+		{0.54, 0.65, 0.33, 1.0},
+		80
+	};
 
 	// floor
+	setMaterial(&poolFloor);
 	glBegin(GL_POLYGON);
+	glNormal3f(0,1,0);
 	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH);
 	glVertex3f(-FLOORLENGTH, 0, FLOORWIDTH);
 	glVertex3f(FLOORLENGTH, 0, FLOORWIDTH);
 	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH);
 	glEnd();
-
-	// brown
-	//glColor3f(0.5f, 0.35f, 0.05f);
+	
 
 
-	glColor3f(0.8f, 0.5f, 0.05f);
-
+	//glColor3f(0.8f, 0.5f, 0.05f);
+	setMaterial(&poolWall);
 	// back wall
 	glBegin(GL_POLYGON);
 	glVertex3f(-FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);
@@ -447,7 +473,6 @@ void drawTable()
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, FLOORWIDTH - HALFSIZEOFHOLE);
 	glVertex3f(-FLOORLENGTH + WALLOFFSET, WALLHEIGHT, -FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
-
 	// front wall
 	glBegin(GL_POLYGON);
 	glVertex3f(FLOORLENGTH, 0, -FLOORWIDTH + HALFSIZEOFHOLE);

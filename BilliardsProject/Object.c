@@ -1,5 +1,6 @@
 #include "Object.h"
 
+
 #define FRICTION 0.996
 
 void updateObject(Object* obj, float deltaTime)
@@ -144,8 +145,9 @@ void drawSphereObject(Object* obj)
 	
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
 	
-
-	glutSolidSphere(1, 10, 8);
+	setMaterial(&obj->material);
+	glutSolidCube(2);
+	//glutSolidSphere(1, 10, 8);
 	//glutWireSphere(1, 10, 8);
 	glPopMatrix();
 }

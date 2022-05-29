@@ -80,8 +80,9 @@ void RenderShotIndicator()
 	strcpy(GetUI(3)->element[1].Text, cueForceChar);
 
 	if (isHittable == 1) {
-	
+		
 		//render line
+		glDisable(GL_LIGHTING);
 		GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z };
 		GLfloat zwo[3] = { 0,0,0 };
 
@@ -96,7 +97,7 @@ void RenderShotIndicator()
 		glVertex3fv(ballPos);
 		glVertex3f(outEnd.x, outEnd.y, outEnd.z);
 		glEnd();
-
+		glEnable(GL_LIGHTING);
 	}
 }
 
