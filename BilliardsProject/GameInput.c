@@ -5,8 +5,8 @@
 void initGameInput(Object* n_CueBall)
 {
 	isHittable = 0;
-	cueAngle = 0;
-	cueForce = 30;//wierd default?
+	cueAngle = -1.5f;
+	cueForce = 200;//wierd default?
 	cueBall = &n_CueBall->body;
 }
 

@@ -4,8 +4,9 @@
 
 void updateObject(Object* obj, float deltaTime)
 {
-	if (obj->isActive != 1)
+	if (obj->isActive == 0)
 	{
+		printf("ball inactive");
 		return;
 	}
 
@@ -16,7 +17,8 @@ void updateObject(Object* obj, float deltaTime)
 		obj->body.velocity.z = 0;
 		obj->body.isMoving = 0;
 	}
-	else {
+	else 
+	{
 		obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
 		obj->body.isMoving = 1;
 		//friction

@@ -38,6 +38,8 @@ static Face plane = {
 
 Object balls[BALLCOUNT];
 
+static int ballSunkCount = 0;
+
 void initGameSession()
 {
 	gameStartingSetup();
@@ -52,50 +54,66 @@ void gameStartingSetup()
 	}
 
 	initGameInput(&balls[0]);
+
+	ballSunkCount = 0;
 }
 
 void animateGameObjects(float deltaTime)
 {
-	ballToTableHandler(deltaTime);
-	ballToBallHandler();
-}
+	if (ballSunkCount == 15)
+	{
+		printf("WIN");
+		// win screen
+		return;
+	}
 
-void ballToTableHandler(float deltaTime)
-{
+	if (balls[0].isActive == 0) resetWhiteBall(); // reset game ball if it goes inactive
+
+	int activeCount = 0; // counting the amount of moving balls
+
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
-		//applyForce(&balls[i], gravity); // gravity
-		//rotateObjects(&balls[i]);
-		if (DistanceBetweenObjPlane(&balls[i], &plane) < 1.0f)
-		{
-			resolveCollisionObjPlane(&balls[i], &plane);
-		}
-		tableAABB(&balls[i].body);
-		updateObject(&balls[i], deltaTime);
-	}
-}
 
-void ballToBallHandler()
-{
-	//simulate elastic collision between balls
-	int activeCount = 0;
-	for (size_t i = 0; i < BALLCOUNT; i++)
-	{
-		if (balls[i].body.isMoving != 0) {
+		if (balls[i].isActive == 0) // continue to next ball iteration if ball is inactive
+		{
+			//printf("inactive ball %d\n", i);
+			continue;
+		}
+
+		if (balls[i].body.isMoving != 0) 
+		{
 			activeCount++;
 			isHittable = 0;
 		}
 
-		for (size_t j = i + 1; j < BALLCOUNT; j++)
+		//printf("Active %d: %d\n", i, balls[i].isActive);
+
+		tableAABB(&balls[i].body); // if ball hits table walls, collision resolution
+
+		if (holeAABB(&balls[i].body) == 1) // if ball hits one of the holes
 		{
-			physicSphereCollide(&balls[i].body, &balls[j].body);
+			printf("ball in hole\n");
+			ballSunkCount++;
+			printf("SunkCount: %d\n", ballSunkCount);
+			balls[i].isActive = 0;
+			continue;
 		}
+
+		updateObject(&balls[i], deltaTime);
+
+		//simulate elastic collision between balls
+		for (size_t j = 0; j < BALLCOUNT; j++)
+		{
+			if(j != i) physicSphereCollide(&balls[i].body, &balls[j].body);
+		}
+
 		//rotate balls. not final, not sure if correct but looks convining
 		balls[i].body.rotation = normalize(balls[i].body.velocity);
 		balls[i].body.rotAngle += length(balls[i].body.velocity);
 	}
 
-	if (activeCount == 0 && activeMenu == 3) {
+	if (activeCount == 0 && activeMenu == 3) 
+	{
 		isHittable = 1;
 	}
 }
@@ -214,9 +232,27 @@ void drawBallObjects()
 {
 	for (int i = 0; i < BALLCOUNT; i++)
 	{
-		if (&balls[i].isActive != 0) // true
+		if (balls[i].isActive == 0) // false - inactive
 		{
+			printf("Not Drawing obj: %d\n", i);
+			continue;
+		}
+		else
+		{
+			//printf("Drawing obj: %d\n", i);
 			drawSphereObject(&balls[i]);
 		}
 	}
+}
+
+void resetWhiteBall()
+{
+	Vec3 null = { 0, 0, 0 };
+	balls[0].body.position.x = 40;
+	balls[0].body.position.z = 0;
+	balls[0].body.velocity = null;
+	balls[0].body.isMoving = 0;
+	balls[0].isActive = 1;
+	
+	printf("Reset White ball");
 }

@@ -11,9 +11,6 @@ void gameStartingSetup();
 
 void animateGameObjects(float deltaTime);
 
-void ballToTableHandler(float deltaTime);
-void ballToBallHandler();
-
 //temp
 void testObjBody(Object* obj, int index);
 
@@ -21,5 +18,7 @@ void randObjBody(Object* obj);
 void rotateObjects(Object* obj);
 
 void drawBallObjects();
+
+void resetWhiteBall();
 
 #endif // !GAMESESSION_H_INCLUDED

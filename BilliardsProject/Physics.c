@@ -6,6 +6,7 @@
 #define FLOORLENGTH 75.f
 #define WALLHEIGHT 10.f
 #define HALFSIZEOFHOLE 5.f
+#define WALLOFFSET 50.f
 
 
 void resolveCollisionObjPlane(Object* obj, Face* f)
@@ -89,8 +90,7 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 
 void tableAABB(Body* ball)
 {
-	//printf("x: %f\n", ball->position.x);
-	GLfloat rad = ball->radius*1.2f; // minus or plus 1 for radius of ball
+	GLfloat rad = ball->radius*1.2f; // minus or plus 1 for radius of ball, little extra to make is seem more accurate and not phase through walls
 	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
 	GLfloat floorLen = FLOORLENGTH - rad;
 	GLfloat floorWid = FLOORWIDTH - rad;
@@ -158,4 +158,47 @@ void tableAABB(Body* ball)
 		//printf("BOUNCE LEFT WALL\n");
 		ball->velocity = collisionResolution(&ball->velocity, &v_rightwall);
 	}
+}
+
+int holeAABB(Body* ball)
+{
+	GLfloat rad = ball->radius * 1.2f; // minus or plus 1 for radius of ball, little extra to make is seem more accurate and not phase through walls
+	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
+	GLfloat holeSize = HALFSIZEOFHOLE - rad;
+	GLfloat floorLen = FLOORLENGTH - holeSize;
+	GLfloat floorWid = FLOORWIDTH - holeSize;
+
+	// in mid left hole
+	if (posX < holeSize && posX > -holeSize && posZ < -floorWid) return 1;
+	// in mid right hole
+	if (posX < holeSize && posX > -holeSize && posZ > floorWid) return 1;
+
+	// if its within bounds, just return. saves computation
+	if (posX < floorLen && posX > -floorLen && posZ < floorWid && posZ > -floorWid)
+	{
+		return 0; // return false
+	}
+
+
+	// in top left hole
+	if (posX < floorLen && posZ > floorWid) return 1;
+	// in top right hole
+	if (posX < floorLen && posZ < -floorWid) return 1;
+	// in bottom left hole
+	if (posX > floorLen && posZ < floorWid) return 1;
+	// in bottom right hole
+	if (posX > floorLen && posZ < -floorWid) return 1;
+
+	//printf("After Check\n");
+
+	//// if its outside bounds, just return true
+	//if (posX > FLOORLENGTH + WALLOFFSET
+	//	|| posX < -(FLOORLENGTH + WALLOFFSET)
+	//	|| posZ > FLOORWIDTH + WALLOFFSET
+	//	|| posZ < -(FLOORWIDTH + WALLOFFSET))
+	//{
+	//	return 1; // return true
+	//}
+
+	return 0; // default return false
 }
