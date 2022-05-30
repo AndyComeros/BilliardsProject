@@ -181,13 +181,13 @@ int holeAABB(Body* ball)
 
 
 	// in top left hole
-	if (posX < floorLen && posZ > floorWid) return 1;
+	if (posX > floorLen && posZ > floorWid) return 1;
 	// in top right hole
-	if (posX < floorLen && posZ < -floorWid) return 1;
+	if (posX > floorLen && posZ < -floorWid) return 1;
 	// in bottom left hole
-	if (posX > -floorLen && posZ > floorWid) return 1;
+	if (posX < -floorLen && posZ > floorWid) return 1;
 	// in bottom right hole
-	if (posX > -floorLen && posZ < -floorWid) return 1;
+	if (posX < -floorLen && posZ < -floorWid) return 1;
 
 	//printf("After Check\n");
 
