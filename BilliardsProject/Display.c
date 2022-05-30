@@ -69,7 +69,7 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	//drawAxis();
+	drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
@@ -226,12 +226,14 @@ void drawTable()
 	// yellowish brown
 	glColor3f(0.5f, 0.5f, 0.05f);
 	// lines
+	/*
 	glBegin(GL_LINE_LOOP);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, 0.5f, -FLOORWIDTH - WALLOFFSET);
 	glVertex3f(-FLOORLENGTH - WALLOFFSET, 0.5f, FLOORWIDTH + WALLOFFSET);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, 0.5f, FLOORWIDTH + WALLOFFSET);
 	glVertex3f(FLOORLENGTH + WALLOFFSET, 0.5f, -FLOORWIDTH - WALLOFFSET);
 	glEnd();
+	*/
 	
 
 
