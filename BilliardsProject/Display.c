@@ -30,7 +30,6 @@ static float camRotAngle = 0;
 void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
-
 	glEnable(GL_DEPTH_TEST);
 
 	srand(time(0));
@@ -172,6 +171,7 @@ void drawTable()
 	* 
 	*/
 	// black
+	glDisable(GL_LIGHTING);
 	glColor3f(0.0, 0.0, 0.0);
 	// top right
 	glBegin(GL_POLYGON);
@@ -215,7 +215,7 @@ void drawTable()
 	glVertex3f(-HALFSIZEOFHOLE, 0.25f, FLOORWIDTH - HALFSIZEOFHOLE);
 	glVertex3f(-HALFSIZEOFHOLE, 0.25f, FLOORWIDTH + HALFSIZEOFHOLE);
 	glEnd();
-
+	glEnable(GL_LIGHTING);
 	/*
 	*
 	*** line outlines for floor ***

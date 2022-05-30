@@ -38,6 +38,8 @@ void normalizeOffModel(OffModel* cModel);
 
 void loadOffObject(char* filename, Object* obj);
 void drawComplexObject(Object* obj);
+
+void drawSphereShadow();
 void drawSphereObject(Object* obj);
 
 #endif

@@ -122,6 +122,26 @@ void drawComplexObject(Object* obj)
     }
 }
 
+//RTX enabled baby(not really)
+static float pi = 3.1415926536;
+void drawSphereShadow(float resolution,float radius, float x, float y, float z)
+{		
+	glDisable(GL_LIGHTING);
+	glColor3f(0.0, 0.0, 0.0);//black shadow
+
+	float angleStep = pi * 2 / resolution; //space beween each point
+	float angleCur = 0; //current angle
+
+	glBegin(GL_POLYGON);
+	for (size_t i = 0; i < resolution; i++)
+	{
+		glVertex3f(x + radius * cos(angleCur), y, z + radius * sin(angleCur));
+		angleCur += angleStep;
+	}
+	glEnd();
+	glEnable(GL_LIGHTING);
+}
+
 void drawSphereObject(Object* obj)
 {
 	//glColor3f(0.0, 0.0, 1.0);
@@ -130,14 +150,14 @@ void drawSphereObject(Object* obj)
 	glPushMatrix();
 	
 	glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
-
+	drawSphereShadow(20, 2, 0, -2.2, 0);
 	//dont know why but when velocity is 0 and a rotation is made the ball dissapears. so this check is here i guess...
 	if (length(obj->body.velocity) > 0) {
 		glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
 	}
 	
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
-	glutSolidSphere(1,10,8);
+	glutSolidSphere(1,20,20);
 	//glutSolidTeapot(1);
 	//glutWireSphere(1, 10, 8);
 	glPopMatrix();
