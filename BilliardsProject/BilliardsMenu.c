@@ -45,8 +45,8 @@ void CreateSettingsMenu()
     button1.btn_CallBack = &OpenMainMenu;
     menuArray[menuCount].element[0] = button1;
 
-    GUI_Element button2 = {0.5,0.5,80,30,"Test"};
-    button2.btn_CallBack = &testCallback;
+    GUI_Element button2 = {0.5,0.5,80,30,"Shade Model"};
+    button2.btn_CallBack = &op1ChangeShade;
     menuArray[menuCount].element[1] = button2;
     menuCount++;
 }
@@ -133,4 +133,15 @@ void ClosePauseMenu() {
 
 void RestartGame() {
     gameStartingSetup();
+}
+
+void op1ChangeShade(){
+    unsigned int sMod;
+    glGetIntegerv(GL_SHADE_MODEL,&sMod);
+    if (sMod == GL_FLAT) {
+        glShadeModel(GL_SMOOTH);
+    }
+    else {
+        glShadeModel(GL_FLAT);
+    }
 }

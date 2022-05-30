@@ -33,5 +33,7 @@ void ClosePauseMenu();
 
 void RestartGame();
 
+//settings menu callbacks
+void op1ChangeShade();
 
 #endif // BILLIARDSMENU_H_INCLUDED
