@@ -106,7 +106,17 @@ void RenderShotIndicator()
 		glVertex3fv(ballPos);
 		glVertex3f(outEnd.x, outEnd.y, outEnd.z);
 		glEnd();
+
+		glPushMatrix();
+		
+		glTranslatef(ballPos[0], ballPos[1], ballPos[2]);
+		//glRotatef(cos(cueAngle), 0, 1, 0);
+		glutSolidCone(1, 3, 5, 10);
+		glPopMatrix();
+
 		glEnable(GL_LIGHTING);
+
+		
 	}
 	/*temp follow ball
 	glLoadIdentity();
