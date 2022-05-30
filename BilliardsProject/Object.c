@@ -157,7 +157,18 @@ void drawSphereObject(Object* obj)
 	}
 	
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
-	glutSolidSphere(1,20,20);
+
+	if (ballMode == 0)
+	{
+		glutSolidSphere(1, 20, 20);
+	}
+	else if (ballMode == 1) {
+		glutSolidCube(2);
+	}
+	else {
+		glutSolidTeapot(1);
+	}
+	
 	//glutSolidTeapot(1);
 	//glutWireSphere(1, 10, 8);
 	glPopMatrix();

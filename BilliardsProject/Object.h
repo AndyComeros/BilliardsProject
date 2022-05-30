@@ -27,6 +27,8 @@ typedef struct Object {
 	int isActive; // 0 is inactive (false), 1 is active (true)
 }Object;
 
+int ballMode;//whether to draw ball or other object
+
 static void getBody(Object* obj) { return obj->body; }
 static void getOffModel(Object* obj) { return obj->off; }
 

@@ -124,23 +124,39 @@ float randCol() {
 }
 void testObjBody(Object* obj, int index) {
 
-
 	obj->body.radius = 2;
 	obj->body.mass = 3;
 	obj->body.isMoving = 0;
-	srand(7873*index);
+	srand(88754535433 * index);
 	
+	float r = randCol();
+	float g = randCol();
+	float b = randCol();
+
+	//r = r * 1.5;
+	g = g * 0.7;
+	//{0.1, 0.01, 0.1, 0.55}
 	//scuff random colors
 	Material ballMat =
 	{
-		{0.1, 0.01, 0.1, 0.55},
-		{randCol(), randCol(), randCol(), 1},
-		{randCol(), randCol(), randCol(), 0.55},
+		{0.1, 0.1, 0.1, 0.55},
+		{r,g,b, 1},
+		{r,g,b, 0.55},
+		100
+	};
+
+	Material whiteBall =
+	{
+		{1, 1, 1, 0.55},
+		{1, 1, 1, 1},
+		{1, 1, 1, 0.55},
 		100
 	};
 	obj->material = ballMat;
 	switch (index) {
 	case 0:
+
+		obj->material = whiteBall;
 		obj->body.position.x = 40;
 		obj->body.position.z = 0;
 		//obj->body.mass = 30;

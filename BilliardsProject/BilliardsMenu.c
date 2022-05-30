@@ -4,6 +4,7 @@
 void InitBilliardUI()
 {
     activeMenu = 1;
+    ballMode = 0;
     CreateBillardsMenu();
     CreateSettingsMenu();
     CreateGameMenu();
@@ -36,19 +37,24 @@ void CreateBillardsMenu()
 
 void CreateSettingsMenu()
 {
-    menuArray[menuCount].elementCount = 2;
+    menuArray[menuCount].elementCount = 3;
     menuArray[menuCount].isActive = 0;//inactive by default
     menuArray[menuCount].menuID = 2;//used to identify this menu
     menuArray[menuCount].element = (GUI_Element *)malloc(sizeof(GUI_Element)*menuArray[menuCount].elementCount);
 
-    GUI_Element button1 = {0.5,0.6,80,30,"Back"};
+    GUI_Element button1 = {0.5,0.6,120,30,"Back"};
     button1.btn_CallBack = &OpenMainMenu;
     menuArray[menuCount].element[0] = button1;
 
-    GUI_Element button2 = {0.5,0.5,80,30,"Shade Model"};
+    GUI_Element button2 = {0.5,0.5,120,30,"Shade Mode"};
     button2.btn_CallBack = &op1ChangeShade;
     menuArray[menuCount].element[1] = button2;
+
+    GUI_Element button3 = { 0.5,0.4,120,30,"Model Mode" };
+    button3.btn_CallBack = &op2ChangeModel;
+    menuArray[menuCount].element[2] = button3;
     menuCount++;
+    //op2ChangeModel
 }
 
 void CreateGameMenu()
@@ -144,4 +150,10 @@ void op1ChangeShade(){
     else {
         glShadeModel(GL_FLAT);
     }
+}
+
+void op2ChangeModel() {
+    ballMode++;
+    if (ballMode > 3)
+        ballMode = 0;
 }

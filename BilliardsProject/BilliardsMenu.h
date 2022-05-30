@@ -35,5 +35,6 @@ void RestartGame();
 
 //settings menu callbacks
 void op1ChangeShade();
+void op2ChangeModel();
 
 #endif // BILLIARDSMENU_H_INCLUDED

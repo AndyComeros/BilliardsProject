@@ -9,6 +9,7 @@
 #include "Display.h"//temp include for testing
 #include <stdio.h>
 
+#define INPUT_SENSITIVITY 0.1
 //###############--DATA_MEMBERS--###############//
 
 //object adding force to
@@ -17,14 +18,11 @@ Body *cueBall;
 GLfloat cueForce;
 //angle of ball
 GLfloat cueAngle;
-//
 //is ball hittable;
 int isHittable;
 
-
 //whether ball inputs are currently being taken
 //unsigned int isBallHittable = 1;
-
 
 //###############--FUNCTION_MEMBERS--###############//
 
@@ -41,7 +39,7 @@ void shotInputKeyBoard(unsigned char key, int x, int y);
 void RenderShotIndicator();
 
 //calculates end of output line
-Vec3 calcEndPoint();
+Vec3 calcEndPoint(float lengthMod);
 
 //calculates vector used to move ball
 Vec3 calcForceVector();

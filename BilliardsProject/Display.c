@@ -101,6 +101,7 @@ void animate(int value)
 
 	glutPostRedisplay();
 }
+
 void drawAxis()
 {
 	GLfloat axisCol[][3] = { {1.0,0.0,0.0},{0.0,1.0,0.0},{0.0,0.0,1.0} };
@@ -128,6 +129,7 @@ void drawAxis()
 	glEnd();
 	glEnable(GL_LIGHTING);
 }
+
 void drawTable()
 {
 	
