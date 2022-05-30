@@ -109,8 +109,17 @@ void animateGameObjects(float deltaTime)
 		}
 
 		//rotate balls. not final, not sure if correct but looks convining
-		balls[i].body.rotation = normalize(balls[i].body.velocity);
-		balls[i].body.rotAngle -= length(balls[i].body.velocity)/2;
+		Vec3 normRot = normalize(balls[i].body.velocity);
+
+		balls[i].body.rotation.x = normRot.x;
+		balls[i].body.rotation.y = 0;// normRot.y;
+		balls[i].body.rotation.z = -normRot.z;
+
+
+
+		//balls[i].body.rotation = normalize(balls[i].body.velocity);
+
+		balls[i].body.rotAngle -= length(balls[i].body.velocity)/2.45;
 	}
 
 	if (activeCount == 0 && activeMenu == 3) 
