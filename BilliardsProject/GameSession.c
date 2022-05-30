@@ -103,7 +103,7 @@ void animateGameObjects(float deltaTime)
 		updateObject(&balls[i], deltaTime);
 
 		//simulate elastic collision between balls
-		for (size_t j = 0; j < BALLCOUNT; j++)
+		for (size_t j = i; j < BALLCOUNT; j++)
 		{
 			if(j != i) physicSphereCollide(&balls[i].body, &balls[j].body);
 		}

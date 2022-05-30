@@ -24,11 +24,11 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 	{
 	case GLUT_KEY_UP:
 		//increase output velocity
-		cueForce += INPUT_SENSITIVITY*10;
+		cueForce += INPUT_SENSITIVITY*20;
 		break;
 	case GLUT_KEY_DOWN:
 		//decrease output velocity
-		cueForce -= INPUT_SENSITIVITY*10;
+		cueForce -= INPUT_SENSITIVITY*20;
 		break;
 	case GLUT_KEY_LEFT:
 		//change angle
