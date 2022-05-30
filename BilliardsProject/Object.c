@@ -150,7 +150,9 @@ void drawSphereObject(Object* obj)
 	glPushMatrix();
 	
 	glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
-	drawSphereShadow(20, 2, 0, -2.2, 0);
+
+
+	drawSphereShadow(20, 2, 0, -2.2,0);
 	//dont know why but when velocity is 0 and a rotation is made the ball dissapears. so this check is here i guess...
 	if (length(obj->body.velocity) > 0) {
 		glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
