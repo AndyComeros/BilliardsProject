@@ -7,16 +7,13 @@
 #define TIMER 15
 
 int main(int argc, char**argv)
-{
-	loadComplexObj(); // within display.c
-	
+{	
 	glutInit(&argc, argv);
 
-	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(1200, 800);
 	glutInitWindowPosition(100, 100);
 	glutCreateWindow(argv[0]);
-
 	
 	init();
 

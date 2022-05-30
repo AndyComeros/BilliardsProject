@@ -1,102 +1,137 @@
 #include "GameInput.h"
 #include "VectorMath.h"
 
+
 void initGameInput(Object* n_CueBall)
 {
-	cueAngle = 0;
-	cueForce = 10;//wierd default?
+	isHittable = 0;
+	cueAngle = 4.71239;//270DEG
+	cueForce = 30;//wierd default?
 	cueBall = &n_CueBall->body;
 }
 
+float currTime;
+float deltaTime;
+float prevTime;
+float timeScale = 10000;
 void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 {
+	currTime = glutGet(GLUT_ELAPSED_TIME);
+	deltaTime = (currTime - prevTime) / timeScale;
+	printf("DeltaTime %f\n",deltaTime);
+
 	switch (key)
 	{
 	case GLUT_KEY_UP:
 		//increase output velocity
-		cueForce += 1;
+		cueForce += INPUT_SENSITIVITY*20;
 		break;
 	case GLUT_KEY_DOWN:
 		//decrease output velocity
-		cueForce -= 1;
+		cueForce -= INPUT_SENSITIVITY*20;
 		break;
 	case GLUT_KEY_LEFT:
 		//change angle
-		cueAngle += 0.05;
+		cueAngle += INPUT_SENSITIVITY;
 		break;
 	case GLUT_KEY_RIGHT:
 		//change angle
-		cueAngle -= 0.05;
-		break;
-	case GLUT_KEY_F2://reset poition for testing
-		cueBall->position.x = 0;
-		cueBall->position.y = 5;
-		cueBall->position.z = 0;
-		cueBall->velocity.x = 0;
-		cueBall->velocity.z = 0;
+		cueAngle -= INPUT_SENSITIVITY;
 		break;
 	default:
 		break;
 	}
+	prevTime = currTime;
 }
 
 
 void shotInputKeyBoard(unsigned char key, int x, int y)
 {	
-	switch (key)
-	{
-	case 'w':
-	case 'W':
-		//increase output velocity
-		cueForce += 1;
-		break;
-	case 's':
-	case 'S':
-		//decrease output velocity
-		cueForce -= 1.0;
-		break;
-	case 'a':
-	case 'A':
-		//change angle
-		cueAngle += 0.05;
-		break;
-	case 'd':
-	case 'D':
-		//change angle
-		cueAngle -= 0.05;
-		break;
-	case 32://SPACEBAR
-		cueBall->velocity = calcForceVector();
-		break;
-	default:
-		break;
+
+
+	if(isHittable == 1){
+		switch (key)
+		{
+		case 'w':
+		case 'W':
+			//increase output velocity
+			cueForce += 1;
+			break;
+		case 's':
+		case 'S':
+			//decrease output velocity
+			cueForce -= 1.0;
+			break;
+		case 'a':
+		case 'A':
+			//change angle
+			cueAngle += 0.01;
+			break;
+		case 'd':
+		case 'D':
+			//change angle
+			cueAngle -= 0.01;
+			break;
+		case 32://SPACEBAR
+			cueBall->velocity = calcForceVector();
+			isHittable = 0;
+			break;
+		default:
+			break;
+		}
 	}
+
 }
 
-void RenderShotIndicator() 
+void RenderShotIndicator()
 {
+	//modify ui element
+	char cueForceChar[255];
+	sprintf(cueForceChar, "Force: %d", (int)cueForce);
+	strcpy(GetUI(3)->element[1].Text, cueForceChar);
 
-	GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z};
-	GLfloat zwo[3] = { 0,0,0 };
+	if (isHittable == 1) {
 	
-	glLineWidth(1.0);
-	glColor3f(0.0,0.5,1.0);
 
-	//draw line pointing to used object for testing
-	glBegin(GL_LINES);
-	glVertex3fv(ballPos);
-	glVertex3fv(zwo);
-	glEnd();
+		//render line
+		GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z };
+		GLfloat zwo[3] = { 0,0,0 };
 
-	//calc line output end
-	Vec3 outEnd = calcEndPoint();
+		glDisable(GL_LIGHTING);
+		
 
-	//draw output line
-	glBegin(GL_LINES);
-	glVertex3fv(ballPos);
-	glVertex3f(outEnd.x,outEnd.y,outEnd.z);
-	glEnd();
+		float maxRed = 170;//power the indicator reches max redness
+		float lengthMod = 0.3;//how long the indicator is relative to power
+		float redness = cueForce / maxRed;
+		if (cueForce > maxRed) {
+			redness = 1;
+		}
+		
+		glLineWidth(redness * 5);
 
+		//calc line output end
+		Vec3 outEnd = calcEndPoint(lengthMod);
+
+		//draw output line
+		glBegin(GL_LINES);
+		glColor3f(0, 0.5, 0.5);
+		glVertex3fv(ballPos);
+		glColor3f(redness, 1 - redness, 1 - redness);
+		glVertex3f(outEnd.x, outEnd.y, outEnd.z);
+		glEnd();
+
+		glPushMatrix();
+		
+		glTranslatef(ballPos[0], ballPos[1], ballPos[2]);
+		glRotatef(cueAngle * 57.2958, 0, 1, 0);
+		glTranslatef(0,0,cueForce * lengthMod);
+		glutSolidCone(1, cueForce/12, 5, 10);
+		glPopMatrix();
+
+		glEnable(GL_LIGHTING);
+
+		
+	}
 	/*temp follow ball
 	glLoadIdentity();
 	gluLookAt(
@@ -106,13 +141,13 @@ void RenderShotIndicator()
 	*/
 }
 
-Vec3 calcEndPoint() 
+Vec3 calcEndPoint(float lengthMod) 
 {
 	GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z };
 
 	GLfloat endPoint[3] = { ballPos[0],ballPos[1],ballPos[2] };
-	endPoint[0] = sin(cueAngle) * cueForce + ballPos[0];
-	endPoint[2] = cos(cueAngle) * cueForce + ballPos[2];
+	endPoint[0] = sin(cueAngle) * cueForce * lengthMod + ballPos[0];
+	endPoint[2] = cos(cueAngle) * cueForce * lengthMod + ballPos[2];
 
 	Vec3 v = { endPoint[0], endPoint[1], endPoint[2] };
 

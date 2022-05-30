@@ -4,12 +4,29 @@
 
 void updateObject(Object* obj, float deltaTime)
 {
-	obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
+	if (obj->isActive == 0)
+	{
+		printf("ball inactive");
+		return;
+	}
 
-	//friction
-	obj->body.velocity.x *= FRICTION;
-	obj->body.velocity.y *= FRICTION;
-	obj->body.velocity.z *= FRICTION;
+	//scuff clamping, 1 seems like a reasonable for now
+	if (length(obj->body.velocity) < 1) {
+		obj->body.velocity.x = 0;
+		obj->body.velocity.y = 0;
+		obj->body.velocity.z = 0;
+		obj->body.isMoving = 0;
+	}
+	else 
+	{
+		obj->body.position = add(obj->body.position, multiply(obj->body.velocity, deltaTime));
+		obj->body.isMoving = 1;
+		//friction
+		obj->body.velocity.x *= FRICTION;
+		obj->body.velocity.y *= FRICTION;
+		obj->body.velocity.z *= FRICTION;
+	}
+
 	/*
 	obj->body.velocity = add(
 		obj->body.velocity,
@@ -20,17 +37,6 @@ void updateObject(Object* obj, float deltaTime)
 	); // prevVel + prevAccel*deltatime
 
 	obj->body.acceleration = multiply(obj->body.acceleration, deltaTime); // update acceleration
-	*/
-}
-
-void updatePrevObject(Object* obj)
-{
-	/*
-	obj->body.position = obj->body.position;
-	obj->body.velocity = obj->body.velocity;
-	obj->body.acceleration = obj->body.acceleration;
-	obj->body.scale = obj->body.scale;
-	obj->body.rotation = obj->body.rotation;
 	*/
 }
 
@@ -100,11 +106,13 @@ void drawComplexObject(Object* obj)
     for (int i = 0; i < obj->off.nFace; i++)
     {
 		glColor3fv(obj->off.faces[i].colour);
+		
 
 		glPushMatrix();
 		glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
 		glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
 		glRotatef(obj->body.rotAngle, obj->body.rotation.x, obj->body.rotation.y, obj->body.rotation.z);
+
         glBegin(GL_POLYGON);
 			glVertex3f(obj->off.faces[i].p1->x, obj->off.faces[i].p1->y, obj->off.faces[i].p1->z);
 			glVertex3f(obj->off.faces[i].p2->x, obj->off.faces[i].p2->y, obj->off.faces[i].p2->z);
@@ -114,17 +122,56 @@ void drawComplexObject(Object* obj)
     }
 }
 
+//RTX enabled baby(not really)
+static float pi = 3.1415926536;
+void drawSphereShadow(float resolution,float radius, float x, float y, float z)
+{		
+	glDisable(GL_LIGHTING);
+	glColor3f(0.0, 0.0, 0.0);//black shadow
+
+	float angleStep = pi * 2 / resolution; //space beween each point
+	float angleCur = 0; //current angle
+
+	glBegin(GL_POLYGON);
+	for (size_t i = 0; i < resolution; i++)
+	{
+		glVertex3f(x + radius * cos(angleCur), y, z + radius * sin(angleCur));
+		angleCur += angleStep;
+	}
+	glEnd();
+	glEnable(GL_LIGHTING);
+}
+
 void drawSphereObject(Object* obj)
 {
-	glColor3f(0.0, 0.0, 1.0);
-
-	
+	//glColor3f(0.0, 0.0, 1.0);
+	setMaterial(&obj->material);
+	glLineWidth(0.5);
 	glPushMatrix();
 	
 	glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
-	glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
-	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
+
+
+	drawSphereShadow(20, 2, 0, -2.2,0);
+	//dont know why but when velocity is 0 and a rotation is made the ball dissapears. so this check is here i guess...
+	if (length(obj->body.velocity) > 0) {
+		glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
+	}
 	
-	glutWireSphere(1, 10, 8);
+	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
+
+	if (ballMode == 0)
+	{
+		glutSolidSphere(1, 20, 20);
+	}
+	else if (ballMode == 1) {
+		glutSolidCube(2);
+	}
+	else {
+		glutSolidTeapot(1);
+	}
+	
+	//glutSolidTeapot(1);
+	//glutWireSphere(1, 10, 8);
 	glPopMatrix();
 }
