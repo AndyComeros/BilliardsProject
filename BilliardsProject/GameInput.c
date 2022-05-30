@@ -108,14 +108,15 @@ void RenderShotIndicator()
 		}
 		
 		glLineWidth(redness * 5);
-		glColor3f(redness, 1 - redness, 1- redness);
 
 		//calc line output end
 		Vec3 outEnd = calcEndPoint(lengthMod);
 
 		//draw output line
 		glBegin(GL_LINES);
+		glColor3f(0, 0.5, 0.5);
 		glVertex3fv(ballPos);
+		glColor3f(redness, 1 - redness, 1 - redness);
 		glVertex3f(outEnd.x, outEnd.y, outEnd.z);
 		glEnd();
 
