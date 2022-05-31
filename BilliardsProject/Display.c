@@ -70,7 +70,7 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	drawAxis();
+	//drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();

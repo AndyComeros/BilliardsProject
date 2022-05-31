@@ -159,6 +159,7 @@ void ClosePauseMenu() {
 
 void RestartGame() {
     OpenMainMenu();
+    setCamRotAngle(0.f);
     gameStartingSetup();
 }
 

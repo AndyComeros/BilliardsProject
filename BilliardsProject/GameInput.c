@@ -4,14 +4,13 @@
 #define CAM_LIFT 5
 #define CAM_ROTATION 0.1
 
-float camRotAngle = 0;
-
+static float camRotAngle = 0;
 
 void initGameInput(Object* n_CueBall)
 {
 	isHittable = 0;
 	cueAngle = 4.71239;//270DEG
-	cueForce = 30;//wierd default?
+	cueForce = 200;//wierd default?
 	cueBall = &n_CueBall->body;
 }
 
@@ -24,6 +23,8 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 	currTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = (currTime - prevTime) / timeScale;
 	//printf("DeltaTime %f\n",deltaTime);
+
+	if (activeMenu != 3) return;
 
 	switch (key)
 	{
@@ -172,4 +173,9 @@ Vec3 calcForceVector()
 
 	return retv;
 
+}
+
+void setCamRotAngle(GLfloat a)
+{
+	camRotAngle = a;
 }

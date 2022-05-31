@@ -6,7 +6,7 @@
 #define FLOORLENGTH 75.f
 #define WALLHEIGHT 10.f
 #define HALFSIZEOFHOLE 5.f
-#define WALLOFFSET 50.f
+#define WALLOFFSET 5.f
 
 
 void resolveCollisionObjPlane(Object* obj, Face* f)
@@ -96,7 +96,7 @@ void tableAABB(Body* ball)
 	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
 	GLfloat floorLen = FLOORLENGTH - rad;
 	GLfloat floorWid = FLOORWIDTH - rad;
-	GLfloat holeSize = HALFSIZEOFHOLE - rad;
+	GLfloat holeSize = HALFSIZEOFHOLE;
 
 	// if its within bounds, just return. saves computation
 	if (posX < floorLen && posX > -floorLen && posZ < floorWid && posZ > -floorWid)
@@ -110,63 +110,33 @@ void tableAABB(Body* ball)
 		v_leftwall = { 0.f, 0.f, -1.f }, // unit normal for left wall
 		v_rightwall = { 0.f, 0.f, 1.f }; // unit normal for right wall
 
-	if (posX < -floorLen  // further than back wall
-		&& posZ > (-floorWid + holeSize) // not in back left hole
-		&& posZ < (floorWid - holeSize) // not in back right hole
-		)
+	if (posX <= -floorLen)  // further than back wall
 	{
-		//printf("BOUNCE BACK WALL\n");
 		ball->velocity = collisionResolution(&ball->velocity, &v_backwall); // collided with back wall, reflect ball
 	}
 
-	// front wall
-	if (posX > floorLen  // further than front wall
-		&& posZ > (-floorWid + holeSize) // not in front left hole
-		&& posZ < (floorWid - holeSize) // not in front right hole
-		)
+	if (posX >= floorLen)  // further than front wall	
 	{
-		//printf("BOUNCE FRONT WALL\n");
 		ball->velocity = collisionResolution(&ball->velocity, &v_frontwall); // collided with front wall, reflect ball
 	}
 
-	// top left wall and bottom left wall
-	if (
-		// top left wall
-		posZ > floorWid // further than left wall
-		&& posX > -floorLen // not in top left hole
-		&& posX < -holeSize // not in middle hole
-		|| // or in bottom half
-		posZ > floorWid // further than left wall
-		&& posX < floorLen // not in middle hole
-		&& posX > holeSize // not in bottom left hole
-		) 
+	if (posZ >= floorWid) // further than left wall	
 	{
-		//printf("BOUNCE LEFT WALL\n");
 		ball->velocity = collisionResolution(&ball->velocity, &v_leftwall);
 	}
 
-	// top right wall and bottom right wall
-	if (
-		// top right wall
-		posZ < -floorWid // further than right wall
-		&& posX > -floorLen // not in top right hole
-		&& posX < -holeSize // not in middle hole
-		|| // or in bottom half
-		posZ < -floorWid // further than right wall
-		&& posX < floorLen // not in middle hole
-		&& posX > holeSize // not in bottom right hole
-		)
+	if (posZ <= -floorWid) // further than right wall
 	{
-		//printf("BOUNCE LEFT WALL\n");
 		ball->velocity = collisionResolution(&ball->velocity, &v_rightwall);
 	}
+
 }
 
 int holeAABB(Body* ball)
 {
 	GLfloat rad = ball->radius * 1.5; // minus or plus 1 for radius of ball, little extra to make is seem more accurate and not phase through walls
 	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
-	GLfloat holeSize = HALFSIZEOFHOLE - rad;
+	GLfloat holeSize = HALFSIZEOFHOLE;
 	GLfloat floorLen = FLOORLENGTH - holeSize;
 	GLfloat floorWid = FLOORWIDTH - holeSize;
 
@@ -193,14 +163,14 @@ int holeAABB(Body* ball)
 
 	//printf("After Check\n");
 
-	//// if its outside bounds, just return true
-	//if (posX > FLOORLENGTH + WALLOFFSET
-	//	|| posX < -(FLOORLENGTH + WALLOFFSET)
-	//	|| posZ > FLOORWIDTH + WALLOFFSET
-	//	|| posZ < -(FLOORWIDTH + WALLOFFSET))
-	//{
-	//	return 1; // return true
-	//}
+	// if its outside bounds, just return true
+	if (posX > FLOORLENGTH + WALLOFFSET
+		|| posX < -(FLOORLENGTH + WALLOFFSET)
+		|| posZ > FLOORWIDTH + WALLOFFSET
+		|| posZ < -(FLOORWIDTH + WALLOFFSET))
+	{
+		return 1; // return true
+	}
 
 	return 0; // default return false
 }

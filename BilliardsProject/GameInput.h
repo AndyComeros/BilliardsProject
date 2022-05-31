@@ -44,4 +44,6 @@ Vec3 calcEndPoint(float lengthMod);
 //calculates vector used to move ball
 Vec3 calcForceVector();
 
+void setCamRotAngle(GLfloat a);
+
 #endif
