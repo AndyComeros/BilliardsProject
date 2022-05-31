@@ -57,8 +57,8 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 			ball1->position.x -= intersection * (ball1->position.x - ball2->position.x);
 			ball1->position.z -= intersection * (ball1->position.z - ball2->position.z);
 
-			ball2->position.x += intersection * (ball2->position.x - ball2->position.x);
-			ball2->position.z += intersection * (ball2->position.z - ball2->position.z);
+			ball2->position.x -= intersection * (ball2->position.x - ball1->position.x);
+			ball2->position.z -= intersection * (ball2->position.z - ball1->position.z);
 
 			distance = length(minus(ball1->position, ball2->position));
 
