@@ -4,7 +4,7 @@
 
 #define STARTING_HEIGHT 10
 #define BALLCOUNT 16
-
+#define WINCOUNT 1 // 15 is the proper win count, 1 is for debug purposes
 
 static Object ball = {
 	{NULL, // faces ptr
@@ -61,8 +61,7 @@ void gameStartingSetup()
 
 void animateGameObjects(float deltaTime)
 {
-	// if (ballSunkCount == 15) // proper win function
-	if (ballSunkCount == 1) // debug
+	if (ballSunkCount == WINCOUNT) // when win count is reached, display win screen to restart
 	{
 		//printf("WIN");
 		OpenWinMenu(); // win screen
@@ -95,7 +94,7 @@ void animateGameObjects(float deltaTime)
 		if (holeAABB(&balls[i].body) == 1) // if ball hits one of the holes
 		{
 			//printf("ball in hole\n");
-			ballSunkCount++;
+			if (i != 0) ballSunkCount++; // increment if ball isnt the white ball
 			printf("SunkCount: %d\n", ballSunkCount);
 			balls[i].isActive = 0;
 			continue;
