@@ -4,7 +4,7 @@
 
 #define STARTING_HEIGHT 10
 #define BALLCOUNT 16
-#define WINCOUNT 1 // 15 is the proper win count, 1 is for debug purposes
+#define WINCOUNT 15 // 15 is the proper win count, 1 is for debug purposes
 
 static Object ball = {
 	{NULL, // faces ptr
