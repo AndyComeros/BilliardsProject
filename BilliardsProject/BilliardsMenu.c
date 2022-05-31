@@ -138,6 +138,7 @@ void ClosePauseMenu() {
 }
 
 void RestartGame() {
+    OpenMainMenu();
     gameStartingSetup();
 }
 

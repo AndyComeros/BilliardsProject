@@ -1,6 +1,11 @@
 #include "GameInput.h"
 #include "VectorMath.h"
 
+#define CAM_LIFT 5
+#define CAM_ROTATION 0.1
+
+float camRotAngle = 0;
+
 
 void initGameInput(Object* n_CueBall)
 {
@@ -18,37 +23,41 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 {
 	currTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = (currTime - prevTime) / timeScale;
-	printf("DeltaTime %f\n",deltaTime);
+	//printf("DeltaTime %f\n",deltaTime);
 
 	switch (key)
 	{
 	case GLUT_KEY_UP:
-		//increase output velocity
-		cueForce += INPUT_SENSITIVITY*20;
+		// lift up camera
+		getCam()->pos.y += CAM_LIFT;
 		break;
 	case GLUT_KEY_DOWN:
-		//decrease output velocity
-		cueForce -= INPUT_SENSITIVITY*20;
+		// lift down camera
+		getCam()->pos.y -= CAM_LIFT;
 		break;
 	case GLUT_KEY_LEFT:
-		//change angle
-		cueAngle += INPUT_SENSITIVITY;
+		// rotate camera left
+		camRotAngle -= CAM_ROTATION;
+		getCam()->pos.x = sin(camRotAngle) * 100; // * 100 is for distance
+		getCam()->pos.z = cos(camRotAngle) * 100;
 		break;
 	case GLUT_KEY_RIGHT:
-		//change angle
-		cueAngle -= INPUT_SENSITIVITY;
+		// rotate camera right
+		camRotAngle += CAM_ROTATION;
+		getCam()->pos.x = sin(camRotAngle) * 100;
+		getCam()->pos.z = cos(camRotAngle) * 100;
 		break;
 	default:
 		break;
 	}
+
+	updateCamera();
 	prevTime = currTime;
 }
 
 
 void shotInputKeyBoard(unsigned char key, int x, int y)
 {	
-
-
 	if(isHittable == 1){
 		switch (key)
 		{
@@ -80,7 +89,6 @@ void shotInputKeyBoard(unsigned char key, int x, int y)
 			break;
 		}
 	}
-
 }
 
 void RenderShotIndicator()
