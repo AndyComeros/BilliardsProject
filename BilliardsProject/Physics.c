@@ -60,6 +60,8 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 			ball2->position.x += intersection * (ball2->position.x - ball2->position.x);
 			ball2->position.z += intersection * (ball2->position.z - ball2->position.z);
 
+			distance = length(minus(ball1->position, ball2->position));
+
 			//collision formula from: https://en.wikipedia.org/wiki/Elastic_collision
 			//can be extrapolated to 3D but our game is technically a 2D sim
 			Vec3 b1Vel = ball1->velocity;
@@ -69,12 +71,12 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 			
 			
 			GLfloat tMass = (ball1->mass + ball2->mass);
-			GLfloat b1MassRatio = (ball2->mass)/tMass;
-			GLfloat b2MassRatio = (ball1->mass)/tMass;
+			GLfloat b1MassRatio = (2 * ball2->mass)/tMass;
+			GLfloat b2MassRatio = (2 * ball1->mass)/tMass;
 
 			//dot products
 			GLfloat dotProd1 = dot(minus(b1Vel,b2Vel),minus(b1Pos,b2Pos)) / (distance * distance);
-			GLfloat dotProd2 = dot(minus(b2Vel,b1Vel),minus(b2Pos,b1Pos)) / (distance * distance);
+			GLfloat dotProd2 = dot(minus(b2Vel,b1Vel),minus(b2Pos,b1Pos)) / (distance * distance); 
 
 			ball1->velocity.x = b1Vel.x - b1MassRatio * dotProd1 * (b1Pos.x - b2Pos.x);
 			ball2->velocity.x = b2Vel.x - b2MassRatio * dotProd2 * (b2Pos.x - b1Pos.x);
