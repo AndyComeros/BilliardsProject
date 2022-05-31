@@ -21,7 +21,7 @@ typedef struct
     GLfloat lengthY;
 
     //text of button
-    char Text[30];
+    char Text[40];
 
     //behaviour of button
     void(*btn_CallBack)();

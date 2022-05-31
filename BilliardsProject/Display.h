@@ -24,4 +24,6 @@ void drawTable();
 
 void updateCamera();
 
+Camera* getCam();
+
 #endif // DISPLAY_H_INCLUDED

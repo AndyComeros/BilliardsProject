@@ -162,7 +162,7 @@ void tableAABB(Body* ball)
 
 int holeAABB(Body* ball)
 {
-	GLfloat rad = ball->radius * 1.2f; // minus or plus 1 for radius of ball, little extra to make is seem more accurate and not phase through walls
+	GLfloat rad = ball->radius * 1.5; // minus or plus 1 for radius of ball, little extra to make is seem more accurate and not phase through walls
 	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
 	GLfloat holeSize = HALFSIZEOFHOLE - rad;
 	GLfloat floorLen = FLOORLENGTH - holeSize;
@@ -176,18 +176,18 @@ int holeAABB(Body* ball)
 	// if its within bounds, just return. saves computation
 	if (posX < floorLen && posX > -floorLen && posZ < floorWid && posZ > -floorWid)
 	{
-		return 0; // return false
+		 return 0; // return false
 	}
 
 
 	// in top left hole
-	if (posX < floorLen && posZ > floorWid) return 1;
+	if (posX > floorLen && posZ > floorWid) return 1;
 	// in top right hole
-	if (posX < floorLen && posZ < -floorWid) return 1;
-	// in bottom left hole
-	if (posX > floorLen && posZ < floorWid) return 1;
-	// in bottom right hole
 	if (posX > floorLen && posZ < -floorWid) return 1;
+	// in bottom left hole
+	if (posX < -floorLen && posZ > floorWid) return 1;
+	// in bottom right hole
+	if (posX < -floorLen && posZ < -floorWid) return 1;
 
 	//printf("After Check\n");
 

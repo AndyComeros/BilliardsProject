@@ -9,6 +9,7 @@ void InitBilliardUI()
     CreateSettingsMenu();
     CreateGameMenu();
     CreatePauseMenu();
+    CreateWinMenu();
 }
 
 void CreateBillardsMenu()
@@ -95,6 +96,19 @@ void CreatePauseMenu()
     menuCount++;
 }
 
+void CreateWinMenu()
+{
+    menuArray[menuCount].elementCount = 1;
+    menuArray[menuCount].isActive = 0;//inactive by default
+    menuArray[menuCount].menuID = 5;//used to identify this menu
+    menuArray[menuCount].element = (GUI_Element*)malloc(sizeof(GUI_Element) * menuArray[menuCount].elementCount);
+
+    GUI_Element winbutton = { 0.5,0.5,160,60,"     You WON!\n  Click to Restart!" };
+    winbutton.btn_CallBack = &RestartGame;
+    menuArray[menuCount].element[0] = winbutton;
+    menuCount++;
+}
+
 //###--Menu_Callback_Functions--###//
 void testCallback()
 {
@@ -132,12 +146,19 @@ void OpenPauseMenu() {
     switchUI(4);
 }
 
+void OpenWinMenu()
+{
+    isHittable = 0;
+    switchUI(5);
+}
+
 void ClosePauseMenu() {
     isHittable = 1;
     switchUI(3);
 }
 
 void RestartGame() {
+    OpenMainMenu();
     gameStartingSetup();
 }
 

@@ -16,6 +16,8 @@ void CreateGameMenu();
 
 void CreatePauseMenu();
 
+void CreateWinMenu();
+
 //--button_callbacks--//
 void testCallback();
 
@@ -28,6 +30,8 @@ void OpenSettings();
 void OpenMainMenu();
 
 void OpenPauseMenu();
+
+void OpenWinMenu();
 
 void ClosePauseMenu();
 
