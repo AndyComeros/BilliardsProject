@@ -14,6 +14,12 @@ float currTime;
 float deltaTime;
 float prevTime;
 float timeScale = 10000;
+
+int inGame = 0;
+int ballClick = 0;
+Vec3 mouseDown; 
+Vec3 mouseUp;
+Vec3 origin = { 0,0,0 };
 void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 {
 	currTime = glutGet(GLUT_ELAPSED_TIME);
@@ -38,6 +44,16 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 		//change angle
 		cueAngle -= INPUT_SENSITIVITY;
 		break;
+	case GLUT_KEY_F1:
+	
+		if (inGame == 0) {
+			inGame = 1;
+			glutMouseFunc(clickInput);
+		}
+		else if(inGame ==1) {
+			glutMouseFunc(handleMenuInput);
+			inGame = 0;
+		}
 	default:
 		break;
 	}
@@ -164,4 +180,47 @@ Vec3 calcForceVector()
 
 	return retv;
 
+}
+#define PI 3.14159265
+void clickInput(int Button, int state, int x, int y)
+{
+	float xang, xangr, yang, yangr, xvar, zvar;
+
+	xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
+	yang = (((400 - (float)y) / 800) * 45) - 37.59627 + 90; //degrees y up/down
+	//adjust into rads and then into ratio
+
+	xangr = xang * PI / 180; //radoan conversions
+	yangr = yang * PI / 180;
+
+	xvar = 77 * tan(xangr); //intermediary calcs
+	zvar = 77 * tan(yangr) - 100;
+	Vec3 location = { 0,3,0 };
+	location.z = zvar * cos(xangr);
+	location.x = -(100 - location.z) * sin(xangr);
+
+	printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
+	printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
+	if (state == GLUT_DOWN)
+	{
+
+		float jam = length(minus(minus(location, origin), cueBall->position));
+		printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", jam, cueBall->position.x, cueBall->position.y, cueBall->position.z );
+		if (jam < 30) 
+		{
+			mouseDown.x = location.x;
+			mouseDown.y = location.y;
+			mouseDown.z = location.z;
+			ballClick = 1;
+		}
+	}
+
+	if (state == GLUT_UP && ballClick == 1)
+	{
+		mouseUp.x = location.x;
+		mouseUp.y = location.y;
+		mouseUp.z = location.z;
+		ballClick = 0;
+		cueBall->velocity = minus(mouseDown, mouseUp);
+	}
 }

@@ -275,7 +275,7 @@ void drawBallObjects()
 	{
 		if (balls[i].isActive == 0) // false - inactive
 		{
-			//printf("Not Drawing obj: %d\n", i);
+			printf("Not Drawing obj: %d\n", i);
 			continue;
 		}
 		else
