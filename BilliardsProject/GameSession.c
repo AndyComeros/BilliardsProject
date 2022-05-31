@@ -1,5 +1,6 @@
 #include "GameSession.h"
 #include "GameInput.h"
+#include "BilliardsMenu.h"
 
 #define STARTING_HEIGHT 10
 #define BALLCOUNT 16
@@ -60,11 +61,11 @@ void gameStartingSetup()
 
 void animateGameObjects(float deltaTime)
 {
-	if (ballSunkCount == 15)
+	// if (ballSunkCount == 15) // proper win function
+	if (ballSunkCount == 1) // debug
 	{
-		printf("WIN");
-		// win screen
-		//create win menu and call switchUI func here
+		//printf("WIN");
+		OpenWinMenu(); // win screen
 		return;
 	}
 
@@ -93,7 +94,7 @@ void animateGameObjects(float deltaTime)
 
 		if (holeAABB(&balls[i].body) == 1) // if ball hits one of the holes
 		{
-			printf("ball in hole\n");
+			//printf("ball in hole\n");
 			ballSunkCount++;
 			printf("SunkCount: %d\n", ballSunkCount);
 			balls[i].isActive = 0;

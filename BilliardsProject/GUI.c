@@ -2,7 +2,7 @@
 
 void initGUI()
 {
-    int menuCount = 0;
+    menuCount = 0;
     activeMenu = 0;
     windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
     windowWidth = glutGet(GLUT_WINDOW_WIDTH);
@@ -99,7 +99,9 @@ void renderUIElement(GUI_Element * element)
 
     //DRAW TEXT
     glColor3f(0.0f, 0.0f, 0.0f);
-    glRasterPos2i(windowPosX+5, windowPosY+element->lengthY/1.5);//trying to position text in center of button, probably needs to be something to do with font as well...
+    //glRasterPos2i(windowPosX+5, windowPosY+element->lengthY/1.5);//trying to position text in center of button, probably needs to be something to do with font as well...
+    // the above was causing bigger menu's text to be lower then they should be
+    glRasterPos2i(windowPosX + 5, windowPosY + 20);  // setting the text to be top left of the GUI_Element
     glutBitmapString(GLUT_BITMAP_HELVETICA_18,element->Text);
 
     //inner bit
