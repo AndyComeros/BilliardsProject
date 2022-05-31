@@ -295,5 +295,5 @@ void resetWhiteBall()
 	balls[0].body.isMoving = 0;
 	balls[0].isActive = 1;
 	
-	printf("Reset White ball");
+	printf("Reset White ball\n");
 }
