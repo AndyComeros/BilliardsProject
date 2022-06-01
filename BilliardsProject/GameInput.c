@@ -228,13 +228,13 @@ void clickInput(int Button, int state, int x, int y)
 		location.z = zvar + 1.5;
 		location.x = xvar * 1.70;
 
-		printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
-		printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
+		//printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
+		//printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
 		if (state == GLUT_DOWN)
 		{
 
 			float tolerance = length(minus(location, cueBall->position));
-			printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", tolerance, cueBall->position.x, cueBall->position.y, cueBall->position.z);
+			//printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", tolerance, cueBall->position.x, cueBall->position.y, cueBall->position.z);
 			if (tolerance < 20)
 			{
 				mouseDown.x = location.x;
