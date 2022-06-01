@@ -39,7 +39,7 @@ void shotInputKeyBoard(unsigned char key, int x, int y);
 void RenderShotIndicator();
 
 //calculates end of output line
-Vec3 calcEndPoint(float lengthMod);
+Vec3 calcEndPoint(float lengthMod, float angle);
 
 //calculates vector used to move ball
 Vec3 calcForceVector();
