@@ -30,11 +30,11 @@ static float camRotAngle = 0;
 static int camReset = 1; // for rotation when menu is active
 
 
-pixel** picture;
+
 void init()
 {
-	char name[] = { "alanRaw.raw" };
-	picture = InputImage(name,500,500);
+	
+
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
@@ -68,7 +68,7 @@ void reshape(int w, int h)
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	displayImage(picture,500,500);
+	
 	updateCamera();
 	adjustLight();
 	//drawFlatGrid();

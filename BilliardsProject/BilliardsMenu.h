@@ -23,6 +23,8 @@ void testCallback();
 
 void StartGame();
 
+void OnCloseDisplay();
+
 void CloseProgram();
 
 void OpenSettings();

@@ -9,5 +9,5 @@
 typedef unsigned char pixel[3];
 
 pixel** InputImage(char* fileName, int width, int height);
-void displayImage(pixel** image);
+void displayImage(pixel** imageData, int w, int h, int x, int y);
 void reshapeTexture(int w, int h);

@@ -1,5 +1,12 @@
 #include "BilliardsMenu.h"
 #include "GameSession.h"
+#include "Texture.h"
+
+
+pixel** img_Andy;
+pixel** img_Alan;
+pixel** img_Azure;
+pixel** img_Geoff;
 
 void InitBilliardUI()
 {
@@ -10,6 +17,12 @@ void InitBilliardUI()
     CreateGameMenu();
     CreatePauseMenu();
     CreateWinMenu();
+
+
+   img_Andy = InputImage("andy.bmp", 100, 100);
+   img_Alan = InputImage("alan.bmp", 100, 100);
+   img_Azure = InputImage("azure.bmp", 100, 100);
+   img_Geoff = InputImage("geoff.bmp", 100, 100);
 }
 
 void CreateBillardsMenu()
@@ -124,10 +137,52 @@ void StartGame()
 
 }
 
+void OnCloseDisplay() {
+    
+
+
+
+    displayImage(img_Alan, 100, 100,100,700);
+    displayImage(img_Andy, 100, 100,500, 700);
+    displayImage(img_Azure, 100, 100,900, 700);
+    displayImage(img_Geoff, 100, 100,1300, 700);
+
+    glDisable(GL_LIGHTING);
+    glMatrixMode(GL_PROJECTION);
+    glPushMatrix();
+    glLoadIdentity();
+    glOrtho(0.0, windowWidth, windowHeight, 0.0, -1.0, 10);
+
+    //back to model view
+    glMatrixMode(GL_MODELVIEW);
+    //save state
+    glPushMatrix();
+    glLoadIdentity();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+    glRasterPos2i(200, 250);
+    glutBitmapString(GLUT_BITMAP_HELVETICA_18, "Alan");
+    glRasterPos2i(600, 250);
+    glutBitmapString(GLUT_BITMAP_HELVETICA_18, "Andy");
+    glRasterPos2i(1000, 250);
+    glutBitmapString(GLUT_BITMAP_HELVETICA_18, "Azure");
+    glRasterPos2i(1400, 250);
+    glutBitmapString(GLUT_BITMAP_HELVETICA_18, "Geoff");
+    glFlush();
+}
+
 void CloseProgram()
 {
-    glutLeaveMainLoop();
-    exit(0);
+
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
+    glutHideWindow();
+    glutInitWindowSize(500, 300);
+    glutInitWindowPosition(500, 500);
+    glutCreateWindow("AAAA Pool");
+
+    glutDisplayFunc(OnCloseDisplay);
+    //glutLeaveMainLoop();
+    //exit(0);
 }
 void OpenSettings()
 {

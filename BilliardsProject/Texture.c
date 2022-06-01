@@ -48,14 +48,15 @@ pixel** InputImage(char* fileName, int width, int height)
     return image;
 }
 
-void displayImage(pixel** imageData, int w,int h) {
+void displayImage(pixel** imageData, int w,int h,int x, int y) {
     int	offset;
     unsigned char * imageBuffer = (pixel*)malloc(sizeof(pixel) * w * h * 3);
 
     /* flip image - 1st row becomes last - before calling glDrawPixels
     to display original image*/
     offset = 0;
-    for (int r = h - 1; r >= 0; r--) {
+    //int r = h - 1; r >= 0; r--
+    for (int r = 0; r < h;r++) {
         for (int c = 0; c < w; c++) {
             for (int x = 0; x < 3; x++)
             {
@@ -66,8 +67,6 @@ void displayImage(pixel** imageData, int w,int h) {
         offset++;
     }
 
-
-    /////////
     glDisable(GL_LIGHTING);
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
@@ -92,20 +91,19 @@ void displayImage(pixel** imageData, int w,int h) {
 
 
     /* set raster position for displaying image in graphics image buffer*/
-    glRasterPos2i(500, 500);
-    glDrawPixels(w, h, GL_RGB, GL_UNSIGNED_BYTE, imageBuffer); //image_buf
+    glRasterPos2i(x, y);
+    glDrawPixels(w, h, GL_LUMINANCE, GL_UNSIGNED_BYTE, imageBuffer); //image_buf
 
 
     free(imageBuffer);
 
     glShadeModel(shadeMode);//switch back to old shade mode
-    //switch back to 3d
     glMatrixMode(GL_PROJECTION);
     glPopMatrix();
     glMatrixMode(GL_MODELVIEW);
     glPopMatrix();
     glEnable(GL_LIGHTING);
-    //glutSolidCone(100,700,20,30);
+
 }
 
 void reshapeTexture(int w, int h) {
