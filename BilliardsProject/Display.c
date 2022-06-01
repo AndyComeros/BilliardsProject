@@ -26,6 +26,7 @@ static float currTime = 0;
 static float deltaTime = 0;
 static float timeScale = 1000; // converting time into milliseconds
 static float camRotAngle = 0;
+static int camReset = 1; // for rotation when menu is active
 
 void init()
 {
@@ -69,11 +70,11 @@ void display()
 	
 	RenderShotIndicator();
 	glClear(GL_DEPTH_BUFFER_BIT);
-	drawAxis();
+	//drawAxis();
 	renderMenus();
 
 	glutSwapBuffers();
-}
+} 
 
 void animate(int value)
 {
@@ -82,18 +83,24 @@ void animate(int value)
 	currTime = glutGet(GLUT_ELAPSED_TIME);
 	deltaTime = (currTime - prevTime) / timeScale;
 
-
-	if (activeMenu == 1 || activeMenu == 2) {
+	if (activeMenu == 1 || activeMenu == 2) 
+	{
 		camRotAngle += deltaTime / 5;
 		cam.pos.y = 100;
+		cam.pos.x = sin(camRotAngle) * 100;
+		cam.pos.z = cos(camRotAngle) * 100;
+		camReset = 1;
 	}
-	else {
+	else if (camReset == 1)  // if statement only occurs one through animation
+	{
 		camRotAngle = 0;
 		cam.pos.y = 80;
+		cam.pos.x = sin(camRotAngle) * 100;
+		cam.pos.z = cos(camRotAngle) * 100;
+		camReset = 0; // so camera rotation doesn't get set every frame
 	}
 
-	cam.pos.x = sin(camRotAngle) * 100;
-	cam.pos.z = cos(camRotAngle) * 100;
+	
 	
 	animateGameObjects(deltaTime);
 
@@ -678,7 +685,7 @@ void updateCamera()
 		cam.up.x, cam.up.y, cam.up.z);
 }
 
-void drawCue()
+Camera* getCam()
 {
-
+	return &cam;
 }

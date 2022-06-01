@@ -46,4 +46,6 @@ Vec3 calcForceVector();
 void clickInput(int Button, int state, int x, int y);
 void cueDisplay(int x, int y);
 
+void setCamRotAngle(GLfloat a);
+
 #endif

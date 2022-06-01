@@ -23,5 +23,7 @@ void drawAxis();
 void drawTable();
 
 void updateCamera();
-void drawCue(Vec3 start, Vec3 end);
+
+Camera* getCam();
+
 #endif // DISPLAY_H_INCLUDED
