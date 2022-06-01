@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "GUI.h"
 #include "GameInput.h"
+#include "Texture.h"
 
 #define TIMER 15
 #define BALLCOUNT 7
@@ -28,8 +29,13 @@ static float timeScale = 1000; // converting time into milliseconds
 static float camRotAngle = 0;
 static int camReset = 1; // for rotation when menu is active
 
+
+pixel** picture;
 void init()
 {
+	char name[] = { "CoolCid.bmp" };
+	picture = InputImage(name,500,500);
+
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
 
@@ -41,6 +47,8 @@ void init()
 	InitBilliardUI();
 	initGameSession();
 	initLights();
+
+
 }
 
 void reshape(int w, int h)
@@ -53,14 +61,14 @@ void reshape(int w, int h)
 	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 0.1, 10000);
 
 	updateCamera();
-
+	reshapeTexture(w,h);
 	reshapeGUI(w,h);
 }
 
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+	displayImage(picture,500,500);
 	updateCamera();
 	adjustLight();
 	//drawFlatGrid();
