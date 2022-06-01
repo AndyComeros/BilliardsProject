@@ -93,7 +93,7 @@ void displayImage(pixel** imageData, int w,int h) {
 
     /* set raster position for displaying image in graphics image buffer*/
     glRasterPos2i(500, 500);
-    glDrawPixels(w, h, GL_LUMINANCE, GL_UNSIGNED_BYTE, imageBuffer); //image_buf
+    glDrawPixels(w, h, GL_RGB, GL_UNSIGNED_BYTE, imageBuffer); //image_buf
 
 
     free(imageBuffer);

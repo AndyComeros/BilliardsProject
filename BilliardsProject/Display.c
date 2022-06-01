@@ -33,7 +33,7 @@ static int camReset = 1; // for rotation when menu is active
 pixel** picture;
 void init()
 {
-	char name[] = { "CoolCid.bmp" };
+	char name[] = { "alanRaw.raw" };
 	picture = InputImage(name,500,500);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
