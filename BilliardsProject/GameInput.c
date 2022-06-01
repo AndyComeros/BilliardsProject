@@ -18,12 +18,16 @@ float currTime;
 float deltaTime;
 float prevTime;
 float timeScale = 10000;
-
+#define PI 3.14159265
 int inGame = 0;
 int ballClick = 0;
+int mouseInput = 0;
 Vec3 mouseDown; 
 Vec3 mouseUp;
 Vec3 origin = { 0,0,0 };
+float angle =0;
+float force =0;
+Vec3 location = { 0,3,0 };
 void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 {
 	currTime = glutGet(GLUT_ELAPSED_TIME);
@@ -112,12 +116,26 @@ void RenderShotIndicator()
 {
 	//modify ui element
 	char cueForceChar[255];
-	sprintf(cueForceChar, "Force: %d", (int)cueForce);
-	strcpy(GetUI(3)->element[1].Text, cueForceChar);
+
 
 	if (isHittable == 1) {
-	
 
+		if (ballClick == 1) 
+		{
+			force = length(minus(location, cueBall->position));
+			float newx = location.x - cueBall->position.x;
+			float newz = location.z - cueBall->position.z;
+			if (newz>0)	angle = atan(newx/newz) + PI;
+			else angle = atan(newx/newz);
+		}
+		if (ballClick == 0 && inGame == 0)
+		{
+			angle = cueAngle;
+			force = cueForce;
+		}
+
+		sprintf(cueForceChar, "Force: %d", (int)force);
+		strcpy(GetUI(3)->element[1].Text, cueForceChar);
 		//render line
 		GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z };
 		GLfloat zwo[3] = { 0,0,0 };
@@ -126,16 +144,17 @@ void RenderShotIndicator()
 		
 
 		float maxRed = 170;//power the indicator reches max redness
-		float lengthMod = 0.3;//how long the indicator is relative to power
-		float redness = cueForce / maxRed;
-		if (cueForce > maxRed) {
+		float lengthMod = 0.3 * force;//how long the indicator is relative to power
+		float redness = force / maxRed;
+		if (force > maxRed) {
 			redness = 1;
 		}
 		
 		glLineWidth(redness * 5);
 
 		//calc line output end
-		Vec3 outEnd = calcEndPoint(lengthMod);
+		Vec3 outEnd = calcEndPoint(lengthMod, angle);
+		
 
 		//draw output line
 		glBegin(GL_LINES);
@@ -148,9 +167,9 @@ void RenderShotIndicator()
 		glPushMatrix();
 		
 		glTranslatef(ballPos[0], ballPos[1], ballPos[2]);
-		glRotatef(cueAngle * 57.2958, 0, 1, 0);
-		glTranslatef(0,0,cueForce * lengthMod);
-		glutSolidCone(1, cueForce/12, 5, 10);
+		glRotatef(angle * 57.2958, 0, 1, 0);
+		glTranslatef(0,0,lengthMod);
+		glutSolidCone(1, force/12, 5, 10);
 		glPopMatrix();
 
 		glEnable(GL_LIGHTING);
@@ -166,13 +185,13 @@ void RenderShotIndicator()
 	*/
 }
 
-Vec3 calcEndPoint(float lengthMod) 
+Vec3 calcEndPoint(float lengthMod, float angle) 
 {
 	GLfloat ballPos[3] = { cueBall->position.x,cueBall->position.y,cueBall->position.z };
 
 	GLfloat endPoint[3] = { ballPos[0],ballPos[1],ballPos[2] };
-	endPoint[0] = sin(cueAngle) * cueForce * lengthMod + ballPos[0];
-	endPoint[2] = cos(cueAngle) * cueForce * lengthMod + ballPos[2];
+	endPoint[0] = sin(angle) * lengthMod + ballPos[0];
+	endPoint[2] = cos(angle) * lengthMod + ballPos[2];
 
 	Vec3 v = { endPoint[0], endPoint[1], endPoint[2] };
 
@@ -190,47 +209,48 @@ Vec3 calcForceVector()
 	return retv;
 
 }
-#define PI 3.14159265
+
 void clickInput(int Button, int state, int x, int y)
 {
-	float xang, xangr, yang, yangr, xvar, zvar;
+	if (isHittable == 1) {
+		float xang, xangr, yang, yangr, xvar, zvar;
 
-	xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
-	yang = -((((400 - (float)y) / 800) * 45) - 37.59627); //degrees y up/down
-	//adjust into rads and then into ratio
+		xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
+		yang = -((((400 - (float)y) / 800) * 45) - 37.59627); //degrees y up/down
+		//adjust into rads and then into ratio
 
-	xangr = xang * PI / 180; //radian conversions
-	yangr = yang * PI / 180;
+		xangr = xang * PI / 180; //radian conversions
+		yangr = yang * PI / 180;
 
-	
-	zvar = -(77 / tan(yangr) - 100) * 1.5;
-	xvar = sqrt(77*77+(100-zvar)*(100 - zvar))*(cos(PI/2 - xangr)); //intermediary calcs
-	Vec3 location = { 0,3,0 };
-	location.z = zvar+1.5;
-	location.x = xvar*1.70;
 
-	printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
-	printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
-	if (state == GLUT_DOWN)
-	{
+		zvar = -(77 / tan(yangr) - 100) * 1.5;
+		xvar = sqrt(77 * 77 + (100 - zvar) * (100 - zvar)) * (cos(PI / 2 - xangr)); //intermediary calcs
+		location.z = zvar + 1.5;
+		location.x = xvar * 1.70;
 
-		float tolerance = length(minus(location, cueBall->position));
-		printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", jam, cueBall->position.x, cueBall->position.y, cueBall->position.z );
-		if (tolerance < 20) 
+		printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
+		printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
+		if (state == GLUT_DOWN)
 		{
-			mouseDown.x = location.x;
-			mouseDown.y = location.y;
-			mouseDown.z = location.z;
-			ballClick = 1;
+
+			float tolerance = length(minus(location, cueBall->position));
+			printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", tolerance, cueBall->position.x, cueBall->position.y, cueBall->position.z);
+			if (tolerance < 20)
+			{
+				mouseDown.x = location.x;
+				mouseDown.y = location.y;
+				mouseDown.z = location.z;
+				ballClick = 1;
+			}
 		}
-	}
-	if (state == GLUT_UP && ballClick == 1)
-	{
-		mouseUp.x = location.x;
-		mouseUp.y = location.y;
-		mouseUp.z = location.z;
-		ballClick = 0;
-		cueBall->velocity = minus(mouseUp, mouseDown);
+		if (state == GLUT_UP && ballClick == 1)
+		{
+			mouseUp.x = location.x;
+			mouseUp.y = location.y;
+			mouseUp.z = location.z;
+			ballClick = 0;
+			cueBall->velocity = minus(mouseUp, mouseDown);
+		}
 	}
 }
 
@@ -250,21 +270,13 @@ void cueDisplay(int x, int y)
 
 		zvar = -(77 / tan(yangr) - 100) * 1.5;
 		xvar = sqrt(77 * 77 + (100 - zvar) * (100 - zvar)) * (cos(PI / 2 - xangr)); //intermediary calcs
-		Vec3 location = { 0,3,0 };
 		location.z = zvar + 1.5;
 		location.x = xvar * 1.70;
-		printf("Right now I am attempting to run the cuedisplay function");
-		glShadeModel(
-		glColor3f(1, 0, 0);
-		glDisable(GL_LIGHTING);
-		glBegin(GL_LINES);
-		glLineWidth(3.0);
-		glVertex3f(cueBall->position.x, cueBall->position.y, cueBall->position.z);
-		glVertex3f(x, cueBall->position.y, y);
-		glEnd();
-		glEnable(GL_LIGHTING);
-
 	}
+
+	//Use location + mousedown to create angle + magnitude
+	//angle will be newx = x-x, newz = z-z. mag is sqrt(z*z+x*x) angle = atan(z/x) 
+	//sliide into 
 
 
 }
