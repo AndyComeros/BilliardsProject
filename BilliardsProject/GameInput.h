@@ -44,5 +44,6 @@ Vec3 calcEndPoint(float lengthMod);
 //calculates vector used to move ball
 Vec3 calcForceVector();
 void clickInput(int Button, int state, int x, int y);
+void cueDisplay(int x, int y);
 
 #endif

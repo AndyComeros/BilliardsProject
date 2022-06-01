@@ -677,3 +677,8 @@ void updateCamera()
 		cam.look.x, cam.look.y, cam.look.z,
 		cam.up.x, cam.up.y, cam.up.z);
 }
+
+void drawCue()
+{
+
+}

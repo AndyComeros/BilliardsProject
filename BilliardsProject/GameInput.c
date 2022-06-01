@@ -187,26 +187,27 @@ void clickInput(int Button, int state, int x, int y)
 	float xang, xangr, yang, yangr, xvar, zvar;
 
 	xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
-	yang = (((400 - (float)y) / 800) * 45) - 37.59627 + 90; //degrees y up/down
+	yang = -((((400 - (float)y) / 800) * 45) - 37.59627); //degrees y up/down
 	//adjust into rads and then into ratio
 
-	xangr = xang * PI / 180; //radoan conversions
+	xangr = xang * PI / 180; //radian conversions
 	yangr = yang * PI / 180;
 
-	xvar = 77 * tan(xangr); //intermediary calcs
-	zvar = 77 * tan(yangr) - 100;
+	
+	zvar = -(77 / tan(yangr) - 100) * 1.5;
+	xvar = sqrt(77*77+(100-zvar)*(100 - zvar))*(cos(PI/2 - xangr)); //intermediary calcs
 	Vec3 location = { 0,3,0 };
-	location.z = zvar * cos(xangr);
-	location.x = -(100 - location.z) * sin(xangr);
+	location.z = zvar+1.5;
+	location.x = xvar*1.70;
 
 	printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
 	printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
 	if (state == GLUT_DOWN)
 	{
 
-		float jam = length(minus(minus(location, origin), cueBall->position));
+		float tolerance = length(minus(location, cueBall->position));
 		printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", jam, cueBall->position.x, cueBall->position.y, cueBall->position.z );
-		if (jam < 30) 
+		if (tolerance < 20) 
 		{
 			mouseDown.x = location.x;
 			mouseDown.y = location.y;
@@ -214,13 +215,47 @@ void clickInput(int Button, int state, int x, int y)
 			ballClick = 1;
 		}
 	}
-
 	if (state == GLUT_UP && ballClick == 1)
 	{
 		mouseUp.x = location.x;
 		mouseUp.y = location.y;
 		mouseUp.z = location.z;
 		ballClick = 0;
-		cueBall->velocity = minus(mouseDown, mouseUp);
+		cueBall->velocity = minus(mouseUp, mouseDown);
 	}
+}
+
+void cueDisplay(int x, int y)
+{
+	if (ballClick == 1)
+	{
+		float xang, xangr, yang, yangr, xvar, zvar;
+
+		xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
+		yang = -((((400 - (float)y) / 800) * 45) - 37.59627); //degrees y up/down
+		//adjust into rads and then into ratio
+
+		xangr = xang * PI / 180; //radian conversions
+		yangr = yang * PI / 180;
+
+
+		zvar = -(77 / tan(yangr) - 100) * 1.5;
+		xvar = sqrt(77 * 77 + (100 - zvar) * (100 - zvar)) * (cos(PI / 2 - xangr)); //intermediary calcs
+		Vec3 location = { 0,3,0 };
+		location.z = zvar + 1.5;
+		location.x = xvar * 1.70;
+		printf("Right now I am attempting to run the cuedisplay function");
+		glShadeModel(
+		glColor3f(1, 0, 0);
+		glDisable(GL_LIGHTING);
+		glBegin(GL_LINES);
+		glLineWidth(3.0);
+		glVertex3f(cueBall->position.x, cueBall->position.y, cueBall->position.z);
+		glVertex3f(x, cueBall->position.y, y);
+		glEnd();
+		glEnable(GL_LIGHTING);
+
+	}
+
+
 }
