@@ -54,17 +54,18 @@ void displayImage(pixel** imageData, int w,int h,int x, int y) {
 
     /* flip image - 1st row becomes last - before calling glDrawPixels
     to display original image*/
-    offset = 0;
+    //offset = 0;
     //int r = h - 1; r >= 0; r--
+
+    /* loading image buffer before displaying it*/
     for (int r = 0; r < w;r++) {
         for (int c = 0; c < h; c++) {
            for (int p = 0; p < 3; p++)
             {
-
-                imageBuffer[h * offset * 3 + c * 3 + p] = imageData[r][c][p];
+                imageBuffer[h * r * 3 + c * 3 + p] = imageData[r][c][p];
             }
         }
-        offset++;
+        //offset++;
     }
 
     glDisable(GL_LIGHTING);

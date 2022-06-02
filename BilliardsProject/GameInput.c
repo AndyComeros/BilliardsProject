@@ -62,9 +62,11 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 	
 		if (inGame == 0) {
 			inGame = 1;
+			printf("MenuClickMode\n");
 			glutMouseFunc(clickInput);
 		}
 		else if(inGame ==1) {
+			printf("CueClickMode\n");
 			glutMouseFunc(handleMenuInput);
 			inGame = 0;
 		}
