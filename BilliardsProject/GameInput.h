@@ -39,10 +39,12 @@ void shotInputKeyBoard(unsigned char key, int x, int y);
 void RenderShotIndicator();
 
 //calculates end of output line
-Vec3 calcEndPoint(float lengthMod);
+Vec3 calcEndPoint(float lengthMod, float angle);
 
 //calculates vector used to move ball
 Vec3 calcForceVector();
+void clickInput(int Button, int state, int x, int y);
+void cueDisplay(int x, int y);
 
 void setCamRotAngle(GLfloat a);
 
