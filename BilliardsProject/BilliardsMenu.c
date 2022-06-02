@@ -19,10 +19,10 @@ void InitBilliardUI()
     CreateWinMenu();
 
 
-   img_Andy = InputImage("andy.bmp", 100, 100);
-   img_Alan = InputImage("alan.bmp", 100, 100);
-   img_Azure = InputImage("azure.bmp", 100, 100);
-   img_Geoff = InputImage("geoff.bmp", 100, 100);
+   img_Andy = InputImage("images/andy.bmp", 100, 100);
+   img_Alan = InputImage("images/alan.bmp", 100, 100);
+   img_Azure = InputImage("images/azure.bmp", 100, 100);
+   img_Geoff = InputImage("images/geoff.bmp", 100, 100);
 }
 
 void CreateBillardsMenu()

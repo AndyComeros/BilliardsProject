@@ -25,18 +25,18 @@ pixel** InputImage(char* fileName, int width, int height)
 
     /* reaching this line of code means file opened successfully,
     now read file contents into image array */
-    for (int r = 0; r < height; r++) {
-        for (int c = 0; c < width; c++) {
-
-            for (size_t x = 0; x < 3; x++)
+    for (int r = 0; r < width; r++) {
+        for (int c = 0; c < height; c++) {
+           
+            for (size_t p = 0; p < 3; p++)
             {
                 if ((input = fgetc(inFile)) == EOF)   /* read failed */
                 {
-                    printf("***File reading failed! at r: %d, c: %d \n", r, c);
+                    printf("***file reading failed! at r: %d, c: %d \n", r, c);
                     input = getchar();
                     exit(1);    /* terminate execution */
                 }
-                image[r][c][x] = input;
+                image[r][c][p] = input;
             }
             
         }
@@ -50,18 +50,18 @@ pixel** InputImage(char* fileName, int width, int height)
 
 void displayImage(pixel** imageData, int w,int h,int x, int y) {
     int	offset;
-    unsigned char * imageBuffer = (pixel*)malloc(sizeof(pixel) * w * h * 3);
+    unsigned char* imageBuffer = (pixel*)malloc(sizeof(pixel) * w * h);
 
     /* flip image - 1st row becomes last - before calling glDrawPixels
     to display original image*/
     offset = 0;
     //int r = h - 1; r >= 0; r--
-    for (int r = 0; r < h;r++) {
-        for (int c = 0; c < w; c++) {
-            for (int x = 0; x < 3; x++)
+    for (int r = 0; r < w;r++) {
+        for (int c = 0; c < h; c++) {
+           for (int p = 0; p < 3; p++)
             {
 
-                imageBuffer[w * offset + c] = imageData[r][c][x];
+                imageBuffer[h * offset * 3 + c * 3 + p] = imageData[r][c][p];
             }
         }
         offset++;
@@ -92,7 +92,7 @@ void displayImage(pixel** imageData, int w,int h,int x, int y) {
 
     /* set raster position for displaying image in graphics image buffer*/
     glRasterPos2i(x, y);
-    glDrawPixels(w, h, GL_LUMINANCE, GL_UNSIGNED_BYTE, imageBuffer); //image_buf
+    glDrawPixels(w, h, GL_RGB, GL_UNSIGNED_BYTE, imageBuffer); //image_buf
 
 
     free(imageBuffer);
