@@ -50,7 +50,8 @@ Vec3 normalize(const Vec3 a)
 
 	len = length(a);
 
-	return (Vec3) {a.x/len, a.y/len, a.z/len};
+	if (len == 0) return (Vec3){ 0,0,0 };
+	else return (Vec3) {a.x/len, a.y/len, a.z/len};
 }
 
 Vec3 cross(const Vec3 a, const Vec3 b)
