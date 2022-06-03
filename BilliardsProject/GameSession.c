@@ -111,16 +111,11 @@ void animateGameObjects(float deltaTime)
 		GLfloat len = length(balls[i].body.velocity);
 		if (len != 0)
 		{
-			//rotate balls. not final, not sure if correct but looks convining
 			Vec3 normRot = normalize(balls[i].body.velocity);
 
 			balls[i].body.rotation.x = normRot.x;
 			balls[i].body.rotation.y = 0;// normRot.y;
 			balls[i].body.rotation.z = -normRot.z;
-
-
-
-			//balls[i].body.rotation = normalize(balls[i].body.velocity);
 		
 			GLfloat* rA = &balls[i].body.rotAngle;
 			if (*rA < -360.f)
