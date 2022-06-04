@@ -62,31 +62,35 @@ void initGUI();
     *   @param state - state of Button
     *   @param x - mouse x coord
     *   @param y- mouse y coord
+    *   @return void
     */
 void handleMenuInput(int Button,int state,int x,int y);
     /**
-    * @breif enusres menu uses correct window dimensions on window size change
-    * call in window reshape function.
-    * @param w - new window width
-    * @param h - new window height
+    *   @breif enusres menu uses correct window dimensions on window size change
+    *   call in window reshape function.
+    *   @param w - new window width
+    *   @param h - new window height
+    *   @return void
     */
 void reshapeGUI(int w, int h);
 //calls renderUIElement for all elements in all active menus, put in display function after scene renders
     /**
     *   @brief renders all UI elements for the active menu, call this function in the
     *   main display function
+    *   @return void
     */
 void renderMenus();
     /**
     *   @brief Renders a single GUI element to the screen
     *   @param element - GUI element to be displayed
+    *   @return void
     */
 void renderUIElement(GUI_Element * element);
     /**
     *   @brief Returns a reference to a menu from the global menu array
     *   based on its ID.
     *   @param ID - the ID number of the menu to be returned
-    *   @return Menu*
+    *   @return Menu* - pointer to a menu item
     */
 Menu * GetUI(int ID);
     /**

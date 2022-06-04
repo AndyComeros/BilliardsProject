@@ -4,6 +4,7 @@
 #define CAM_LIFT 5
 #define CAM_ROTATION 0.1
 
+//cameras rotation angle
 static float camRotAngle = 0;
 
 void initGameInput(Object* n_CueBall)

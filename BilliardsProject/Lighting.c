@@ -9,9 +9,9 @@ GLfloat lightDir1[] = {0.0,-1.0,0.0,0.0};
 void initLights()
 {
 
-	GLfloat colWhite[] = {1.0,1.0,1.0,1.0};
-	GLfloat colRed[] = {0.5,0.3,0.4,1.0};
-	GLfloat colGrey[] = {0.3,0.3,0.3,1.0};
+	GLfloat defaultSpec[] = {1.0,1.0,1.0,1.0};
+	GLfloat defaultDiff[] = {0.5,0.3,0.4,1.0};
+	GLfloat defaultAmbi[] = {0.3,0.3,0.3,1.0};
 
 	// Enable lighting
 	glEnable(GL_LIGHTING);
@@ -23,11 +23,11 @@ void initLights()
 	//light settings:
 	glLightfv(GL_LIGHT0, GL_POSITION, lightPos1);
 	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, lightDir1);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, colGrey);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, colRed);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, defaultAmbi);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, defaultDiff);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_NORMALIZE);//normalizes norms-expensive...
-	(GL_LIGHT0, GL_SPECULAR, colWhite);
+	(GL_LIGHT0, GL_SPECULAR, defaultSpec);
 
 }
 

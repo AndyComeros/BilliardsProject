@@ -6,8 +6,6 @@ void initGUI()
     activeMenu = 0;
     windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
     windowWidth = glutGet(GLUT_WINDOW_WIDTH);
-    printf("height: %d", windowHeight);
-    printf("width: %d", windowWidth);
 }
 
 //needs to be called on window reshape

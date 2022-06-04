@@ -134,13 +134,9 @@ void StartGame()
     //GetUI(1)->isActive = 0;
     isHittable = 1;
     switchUI(3);
-
 }
 
 void OnCloseDisplay() {
-    
-
-
 
     displayImage(img_Alan, 100, 100,100,700);
     displayImage(img_Andy, 100, 100,500, 700);
