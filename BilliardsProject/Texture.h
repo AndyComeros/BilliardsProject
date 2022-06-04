@@ -19,11 +19,13 @@ pixel** InputImage(char* fileName, int width, int height);
 	*	@param h - image height
 	*	@param x - x position rendered at
 	*	@param y - y position renered at
+	*	@return void
 	*/
 void displayImage(pixel** imageData, int w, int h, int x, int y);
 	/**
 	*	@brief The reshape callback for images, ensures images are diaplyed correctly aftera window resize
 	*	@param w - new window width
 	*	@param h - new window height
+	*	@return void
 	*/
 void reshapeTexture(int w, int h);
