@@ -6,11 +6,15 @@
 #include "Physics.h"
 #include "Object.h"
 	/**
+	*	@brief initializes the billiards game session with basically just gameStartingSetup(), used this incase we needed anything to be different on the first call
+	*	@return void
+	*/
+void initGameSession();
+	/**
 	*	@brief initializes the billiards game session balls with default positions,
 	*	physics properties and lighting materials.
 	*	@return void
 	*/
-void initGameSession();
 void gameStartingSetup();
 	/**
 	*	@brief runs a physics update on all the games Cues balls, checks if they are colliding.

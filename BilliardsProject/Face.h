@@ -15,6 +15,7 @@ typedef struct Face {
 	GLfloat Aot;
 		///Norm for this face
 	Vec3 UnitNormal;
+		// colour of the face
 	GLfloat *colour;
 }Face;
 	/**

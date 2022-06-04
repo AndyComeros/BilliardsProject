@@ -6,9 +6,9 @@
 #include <GL\freeglut.h>
 #include "GameSession.h"
 #include "Lighting.h"
-/**
-*	@breif Stores information for a camera position in the scene
-*/
+	/**
+	*	@brief Stores information for a camera position in the scene
+	*/
 typedef struct {
 		/// Camera position
 	Vec3 pos;

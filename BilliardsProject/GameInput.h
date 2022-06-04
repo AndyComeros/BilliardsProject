@@ -84,7 +84,7 @@ void clickInput(int Button, int state, int x, int y);
 	*/
 void cueDisplay(int x, int y);
 	/**
-	*	@brief changes the angle the camera is rotated armound 0,0,0 
+	*	@brief changes the angle the camera is rotated around 0,0,0 
 	*	along the Y axis
 	*	@param a - new angle
 	*	@return void
