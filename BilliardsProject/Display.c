@@ -33,9 +33,6 @@ static int camReset = 1; // for rotation when menu is active
 
 void init()
 {
-	
-
-
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glEnable(GL_DEPTH_TEST);
 
@@ -47,8 +44,6 @@ void init()
 	InitBilliardUI();
 	initGameSession();
 	initLights();
-
-
 }
 
 void reshape(int w, int h)
