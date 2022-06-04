@@ -103,8 +103,6 @@ void animate(int value)
 		camReset = 0; // so camera rotation doesn't get set every frame
 	}
 
-	
-	
 	animateGameObjects(deltaTime);
 
 	prevTime = currTime;

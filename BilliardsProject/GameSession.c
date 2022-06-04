@@ -248,31 +248,6 @@ void testObjBody(Object* obj, int index) {
 
 }
 
-void randObjBody(Object* obj)
-{
-	obj->body.position.z = rand() % 20 - 10;
-	obj->body.position.x = rand() % 10 - 5;
-	obj->body.position.y = rand() % 30 + 15;
-	obj->body.rotAngle = rand() % 360;
-	GLfloat r = (rand() % 3);
-	if (r == 0) r = 1;
-	obj->body.scale.x = r;
-	obj->body.scale.y = r;
-	obj->body.scale.z = r;
-	obj->body.mass *= r;
-}
-
-void rotateObjects(Object* obj)
-{
-	if (obj->body.rotAngle >= 360)
-	{
-		obj->body.rotAngle = 0;
-	}
-	else
-	{
-		obj->body.rotAngle += 1;
-	}
-}
 
 void drawBallObjects()
 {
