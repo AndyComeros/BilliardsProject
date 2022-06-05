@@ -16,6 +16,8 @@ void CreateGameMenu();
 void CreatePauseMenu();
 	///Creates the win menu
 void CreateWinMenu();
+	///Creates controls menu
+void CreateControlsMenus();
 
 //--button_callbacks for menu items--//
 void testCallback();
@@ -43,5 +45,6 @@ void RestartGame();
 void op1ChangeShade();
 	///Changes the model of the Balls
 void op2ChangeModel();
-
+	///Opens controls menu
+void OpenControls();
 #endif // BILLIARDSMENU_H_INCLUDED

@@ -17,7 +17,7 @@ typedef struct
         ///clickable area of button along Y axis
     GLfloat lengthY;
         ///text of button
-    char Text[40];
+    char Text[500];
         ///behaviour of button
     void(*btn_CallBack)();
 } GUI_Element;

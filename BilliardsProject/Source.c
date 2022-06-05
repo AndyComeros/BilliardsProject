@@ -18,7 +18,7 @@ int main(int argc, char**argv)
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH | GLUT_MULTISAMPLE);
 	glutInitWindowSize(WINDOW_W, WINDOW_H);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(0, 0);
 	glutCreateWindow("AAAA Pool");
 
 	init();

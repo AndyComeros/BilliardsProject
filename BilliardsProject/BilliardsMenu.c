@@ -17,7 +17,7 @@ void InitBilliardUI()
     CreateGameMenu();
     CreatePauseMenu();
     CreateWinMenu();
-
+    CreateControlsMenus();
 
    img_Andy = InputImage("images/andy.bmp", 100, 100);
    img_Alan = InputImage("images/alan.bmp", 100, 100);
@@ -73,22 +73,26 @@ void CreateSettingsMenu()
 
 void CreateGameMenu()
 {
-    menuArray[menuCount].elementCount = 3;
+    menuArray[menuCount].elementCount = 4;
     menuArray[menuCount].isActive = 0;//inactive by default
     menuArray[menuCount].menuID = 3;//used to identify this menu
     menuArray[menuCount].element = (GUI_Element *)malloc(sizeof(GUI_Element)*menuArray[menuCount].elementCount);
 
-    GUI_Element pauseButton = {0.1,0.1,100,30,"Pause"};
+    GUI_Element pauseButton = {0.1,0.1,200,30,"Pause"};
     pauseButton.btn_CallBack = &OpenPauseMenu;
     menuArray[menuCount].element[0] = pauseButton;
 
-    GUI_Element shotIndicator = {0.2,0.1,120,30,"0"};
+    GUI_Element shotIndicator = {0.25,0.1,200,30,"0"};
     shotIndicator.btn_CallBack = &testCallback;
     menuArray[menuCount].element[1] = shotIndicator;
 
-    GUI_Element CueMode = { 0.335,0.1,200,30,"F1 MouseMode: Menu"};
+    GUI_Element CueMode = { 0.4,0.1,200,30,"F1 MouseMode: Menu"};
     CueMode.btn_CallBack = &testCallback;
     menuArray[menuCount].element[2] = CueMode;
+
+    GUI_Element Controls = { 0.55,0.1,200,30,"Controls" };
+    Controls.btn_CallBack = &OpenControls;
+    menuArray[menuCount].element[3] = Controls;
     menuCount++;
 }
 
@@ -126,6 +130,23 @@ void CreateWinMenu()
     menuCount++;
 }
 
+void CreateControlsMenus() 
+{
+    menuArray[menuCount].elementCount = 2;
+    menuArray[menuCount].isActive = 0;//inactive by default
+    menuArray[menuCount].menuID = 6;//used to identify this menu
+    menuArray[menuCount].element = (GUI_Element*)malloc(sizeof(GUI_Element) * menuArray[menuCount].elementCount);
+
+    GUI_Element controlExplain = { 0.5,0.3,400,300,"Controls:\n\nChange input angle: A and D\nChange force: W and S\nChange Camera: Arrow Keys\nHit Ball: Space\n\nBall input Can be changed to mouse\nmode by pressing F1"};
+    controlExplain.btn_CallBack = &testCallback;
+    menuArray[menuCount].element[0] = controlExplain;
+
+    GUI_Element backMenu = { 0.5,0.5,90,30,"Back" };
+    backMenu.btn_CallBack = &ClosePauseMenu;
+    menuArray[menuCount].element[1] = backMenu;
+    menuCount++;
+
+}
 //###--Menu_Callback_Functions--###//
 void testCallback()
 {
@@ -229,8 +250,15 @@ void op1ChangeShade(){
     }
 }
 
-void op2ChangeModel() {
+void op2ChangeModel() 
+{
     ballMode++;
     if (ballMode > 3)
         ballMode = 0;
+}
+
+void OpenControls()
+{
+    isHittable = 0;
+    switchUI(6);
 }

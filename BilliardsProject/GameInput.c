@@ -178,7 +178,7 @@ void RenderShotIndicator()
 		glTranslatef(ballPos[0], ballPos[1], ballPos[2]);
 		glRotatef(angle * 57.2958, 0, 1, 0);
 		glTranslatef(0,0,lengthMod);
-		glutSolidCone(1, force/12, 5, 10);
+		glutSolidCone(1, force/12, 10, 20);
 		glPopMatrix();
 
 		glEnable(GL_LIGHTING);
