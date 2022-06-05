@@ -3,6 +3,8 @@
 
 #define CAM_LIFT 5
 #define CAM_ROTATION 0.1
+#define PI 3.14159265
+#define FORCEMULTIPLIER 3
 
 static float camRotAngle = 0;
 
@@ -18,7 +20,6 @@ float currTime;
 float deltaTime;
 float prevTime;
 float timeScale = 10000;
-#define PI 3.14159265
 int ballClick = 0;
 int mouseInput = 0;
 Vec3 mouseDown; 
@@ -127,7 +128,7 @@ void RenderShotIndicator()
 
 		if (ballClick == 1) 
 		{
-			force =  2* length(minus(location, mouseDown));
+			force = FORCEMULTIPLIER * length(minus(location, mouseDown));
 			float newx = location.x - mouseDown.x;
 			float newz = location.z - mouseDown.z;
 			if (newz>0)	angle = atan(newx/newz) + PI;
@@ -236,7 +237,7 @@ void clickInput(int Button, int state, int x, int y)
 		{
 			mouseUp = loc;
 			ballClick = 0;
-			cueBall->velocity = multiply(minus(mouseUp, mouseDown), 2);
+			cueBall->velocity = multiply(minus(mouseUp, mouseDown), FORCEMULTIPLIER);
 		}
 	}
 }
