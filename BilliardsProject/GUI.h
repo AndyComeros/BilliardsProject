@@ -1,6 +1,6 @@
 #ifndef GUI_H_INCLUDED
 #define GUI_H_INCLUDED
-#include <gl/freeglut.h>
+#include <GL/freeglut.h>
     /**
     *   @brief Stores information on a single element in
     *   a menu. Each element can be clicked to execute its callback.

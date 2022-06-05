@@ -3,7 +3,7 @@
 #ifndef GAMEINPUT_H_INCLUDED
 #define GAMEINPUT_H_INCLUDED
 
-#include <gl/freeglut.h>
+#include <GL/freeglut.h>
 #include "GUI.h"//creates GUI elements 
 #include "Object.h"//interracts with game objects
 #include "Display.h"//temp include for testing

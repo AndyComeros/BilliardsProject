@@ -1,5 +1,5 @@
 #pragma once
-#include <gl/freeglut.h>
+#include <GL/freeglut.h>
 	/**
 	*	@brief lighting material properties used in the Phong
 	*	reflection model lighting.
