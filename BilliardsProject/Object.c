@@ -26,18 +26,6 @@ void updateObject(Object* obj, float deltaTime)
 		obj->body.velocity.y *= FRICTION;
 		obj->body.velocity.z *= FRICTION;
 	}
-	
-	
-	obj->body.velocity = add(
-		obj->body.velocity,
-		multiply(
-			obj->body.acceleration,
-			deltaTime
-		)
-	); // prevVel + prevAccel*deltatime
-
-	obj->body.acceleration = multiply(obj->body.acceleration, deltaTime); // update acceleration
-	
 }
 
 Vec3 centerOfMass(OffModel* cModel)
@@ -151,13 +139,9 @@ void drawSphereObject(Object* obj)
 	
 	glTranslatef(obj->body.position.x, obj->body.position.y, obj->body.position.z);
 
-
 	drawSphereShadow(20, 2, 0, -2.2,0);
-	//dont know why but when velocity is 0 and a rotation is made the ball dissapears. so this check is here i guess...
-	if (length(obj->body.velocity) > 0) {
-		glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
-	}
-	
+
+	glRotatef(obj->body.rotAngle, obj->body.rotation.z, obj->body.rotation.y, obj->body.rotation.x);
 	glScalef(obj->body.scale.x, obj->body.scale.y, obj->body.scale.z);
 
 	if (ballMode == 0)

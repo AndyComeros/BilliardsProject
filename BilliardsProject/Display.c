@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "GUI.h"
 #include "GameInput.h"
+#include "Texture.h"
 
 #define TIMER 15
 #define BALLCOUNT 7
@@ -28,6 +29,8 @@ static float timeScale = 1000; // converting time into milliseconds
 static float camRotAngle = 0;
 static int camReset = 1; // for rotation when menu is active
 
+
+
 void init()
 {
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -53,7 +56,7 @@ void reshape(int w, int h)
 	gluPerspective(60.0, (GLfloat)w / (GLfloat)h, 0.1, 10000);
 
 	updateCamera();
-
+	reshapeTexture(w,h);
 	reshapeGUI(w,h);
 }
 
@@ -100,8 +103,6 @@ void animate(int value)
 		camReset = 0; // so camera rotation doesn't get set every frame
 	}
 
-	
-	
 	animateGameObjects(deltaTime);
 
 	prevTime = currTime;

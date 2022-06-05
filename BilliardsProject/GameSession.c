@@ -108,18 +108,23 @@ void animateGameObjects(float deltaTime)
 			if(j != i) physicSphereCollide(&balls[i].body, &balls[j].body);
 		}
 
-		//rotate balls. not final, not sure if correct but looks convining
-		Vec3 normRot = normalize(balls[i].body.velocity);
+		GLfloat len = length(balls[i].body.velocity);
+		if (len != 0)
+		{
+			Vec3 normRot = normalize(balls[i].body.velocity);
 
-		balls[i].body.rotation.x = normRot.x;
-		balls[i].body.rotation.y = 0;// normRot.y;
-		balls[i].body.rotation.z = -normRot.z;
+			balls[i].body.rotation.x = normRot.x;
+			balls[i].body.rotation.y = 0;// normRot.y;
+			balls[i].body.rotation.z = -normRot.z;
+		
+			GLfloat* rA = &balls[i].body.rotAngle;
+			if (*rA < -360.f)
+			{
+				*rA = 0;
+			}
+			balls[i].body.rotAngle -= len/2.45;
+		}
 
-
-
-		//balls[i].body.rotation = normalize(balls[i].body.velocity);
-
-		balls[i].body.rotAngle -= length(balls[i].body.velocity)/2.45;
 	}
 
 	if (activeCount == 0 && activeMenu == 3) 
@@ -243,31 +248,6 @@ void testObjBody(Object* obj, int index) {
 
 }
 
-void randObjBody(Object* obj)
-{
-	obj->body.position.z = rand() % 20 - 10;
-	obj->body.position.x = rand() % 10 - 5;
-	obj->body.position.y = rand() % 30 + 15;
-	obj->body.rotAngle = rand() % 360;
-	GLfloat r = (rand() % 3);
-	if (r == 0) r = 1;
-	obj->body.scale.x = r;
-	obj->body.scale.y = r;
-	obj->body.scale.z = r;
-	obj->body.mass *= r;
-}
-
-void rotateObjects(Object* obj)
-{
-	if (obj->body.rotAngle >= 360)
-	{
-		obj->body.rotAngle = 0;
-	}
-	else
-	{
-		obj->body.rotAngle += 1;
-	}
-}
 
 void drawBallObjects()
 {

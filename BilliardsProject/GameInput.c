@@ -6,6 +6,7 @@
 #define PI 3.14159265
 #define FORCEMULTIPLIER 3
 
+//cameras rotation angle
 static float camRotAngle = 0;
 
 void initGameInput(Object* n_CueBall)
@@ -65,10 +66,12 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 		char wasd[20] = "CueMode: WASD";
 		if (inGame == 0) {
 			inGame = 1;
+			printf("MenuClickMode\n");
 			glutMouseFunc(clickInput);
 			strcpy(GetUI(3)->element[2].Text, drag);
 		}
 		else if(inGame ==1) {
+			printf("CueClickMode\n");
 			glutMouseFunc(handleMenuInput);
 			inGame = 0;
 			strcpy(GetUI(3)->element[2].Text, wasd);
