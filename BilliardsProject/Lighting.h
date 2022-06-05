@@ -1,5 +1,9 @@
 #pragma once
-#include <GL/freeglut.h>
+
+#ifndef LIGHTING_H_INCLUDED
+#define LIGHTING_H_INCLUDED
+
+#include <GL\freeglut.h>
 	/**
 	*	@brief lighting material properties used in the Phong
 	*	reflection model lighting.
@@ -33,3 +37,5 @@ void setMaterial(Material * material);
 	*	@return void
 	*/
 void adjustLight();
+
+#endif // LIGHTING_H_INCLUDED

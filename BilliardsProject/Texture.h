@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef TEXTURE_H_INCLUDED
+#define TEXTURE_H_INCLUDED
+
 #include <GL\freeglut.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,3 +33,6 @@ void displayImage(pixel** imageData, int w, int h, int x, int y);
 	*	@return void
 	*/
 void reshapeTexture(int w, int h);
+
+
+#endif // TEXTURE_H_INCLUDED
