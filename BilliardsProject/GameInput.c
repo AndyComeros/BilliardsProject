@@ -275,8 +275,7 @@ Vec3 rayCast(int x, int y)
 	xvar = asin(camera->pos.x / 100); //obtain world angle of camera rotation.
 	if (camera->pos.z < 0) xvar = PI-xvar; //if rotated enough, we're at the other side of a unit circle.
 	xangr = xvar + xang;  //local angle into world angle
-	float temp = xangr * 180 / PI;
-	Vec3 output = { -sin(xangr), sin(yangr), -cos(xangr) };
+	Vec3 output = { -sin(xangr), tan(yangr), -cos(xangr) };
 	return output;
 
 }
