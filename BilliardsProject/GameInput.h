@@ -92,5 +92,11 @@ void cueMovement(int x, int y);
 	*	@return void
 	*/
 void setCamRotAngle(GLfloat a);
+	/**
+	*	@brief returns a Vec3 which represents the direction of the mouse click
+	*	@param x - mouse X coord
+	*	@param y - mouse y coord
+	*	@return Vec3
+	*/
 Vec3 rayCast(int x, int y);
 #endif

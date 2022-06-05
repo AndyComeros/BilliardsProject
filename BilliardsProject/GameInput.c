@@ -62,16 +62,14 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 		break;
 	case GLUT_KEY_F1:
 	{
-		char drag[20] = "CueMode: DragClick";
-		char wasd[20] = "CueMode: WASD";
+		char drag[20] = "F1 MouseMode: Menu";
+		char wasd[20] = "F1 MouseMode: Cue";
 		if (inGame == 0) {
 			inGame = 1;
-			printf("MenuClickMode\n");
 			glutMouseFunc(clickInput);
 			strcpy(GetUI(3)->element[2].Text, drag);
 		}
 		else if(inGame ==1) {
-			printf("CueClickMode\n");
 			glutMouseFunc(handleMenuInput);
 			inGame = 0;
 			strcpy(GetUI(3)->element[2].Text, wasd);

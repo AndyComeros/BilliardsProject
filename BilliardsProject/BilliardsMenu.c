@@ -86,7 +86,7 @@ void CreateGameMenu()
     shotIndicator.btn_CallBack = &testCallback;
     menuArray[menuCount].element[1] = shotIndicator;
 
-    GUI_Element CueMode = { 0.335,0.1,180,30,"CueMode: WASD"};
+    GUI_Element CueMode = { 0.335,0.1,200,30,"F1 MouseMode: Menu"};
     CueMode.btn_CallBack = &testCallback;
     menuArray[menuCount].element[2] = CueMode;
     menuCount++;
