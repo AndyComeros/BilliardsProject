@@ -78,7 +78,7 @@ void CreateGameMenu()
     menuArray[menuCount].menuID = 3;//used to identify this menu
     menuArray[menuCount].element = (GUI_Element *)malloc(sizeof(GUI_Element)*menuArray[menuCount].elementCount);
 
-    GUI_Element pauseButton = {0.1,0.1,200,30,"Pause"};
+    GUI_Element pauseButton = {0.1,0.1,200,30,"Menu"};
     pauseButton.btn_CallBack = &OpenPauseMenu;
     menuArray[menuCount].element[0] = pauseButton;
 
