@@ -13,7 +13,7 @@ void initGameInput(Object* n_CueBall)
 {
 	isHittable = 0;
 	cueAngle = 4.71239;//270DEG
-	cueForce = 200;//wierd default?
+	cueForce = 50;//wierd default?
 	cueBall = &n_CueBall->body;
 }
 
@@ -140,7 +140,7 @@ void RenderShotIndicator()
 			angle = cueAngle;
 			force = cueForce;
 		}
-		if (force > 500) force = 500;
+		if (force > 200) force = 200;
 
 
 		sprintf(cueForceChar, "Force: %d", (int)force);
