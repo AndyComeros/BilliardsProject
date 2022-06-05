@@ -60,7 +60,7 @@ void CreateSettingsMenu()
 
 void CreateGameMenu()
 {
-    menuArray[menuCount].elementCount = 2;
+    menuArray[menuCount].elementCount = 3;
     menuArray[menuCount].isActive = 0;//inactive by default
     menuArray[menuCount].menuID = 3;//used to identify this menu
     menuArray[menuCount].element = (GUI_Element *)malloc(sizeof(GUI_Element)*menuArray[menuCount].elementCount);
@@ -72,6 +72,10 @@ void CreateGameMenu()
     GUI_Element shotIndicator = {0.2,0.1,120,30,"0"};
     shotIndicator.btn_CallBack = &testCallback;
     menuArray[menuCount].element[1] = shotIndicator;
+
+    GUI_Element CueMode = { 0.335,0.1,180,30,"CueMode: WASD"};
+    CueMode.btn_CallBack = &testCallback;
+    menuArray[menuCount].element[2] = CueMode;
     menuCount++;
 }
 

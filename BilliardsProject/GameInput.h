@@ -20,6 +20,8 @@ GLfloat cueForce;
 GLfloat cueAngle;
 //is ball hittable;
 int isHittable;
+// To Tell
+static int inGame = 0;
 
 //whether ball inputs are currently being taken
 //unsigned int isBallHittable = 1;

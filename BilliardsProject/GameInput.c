@@ -19,7 +19,6 @@ float deltaTime;
 float prevTime;
 float timeScale = 10000;
 #define PI 3.14159265
-int inGame = 0;
 int ballClick = 0;
 int mouseInput = 0;
 Vec3 mouseDown; 
@@ -28,6 +27,7 @@ Vec3 origin = { 0,0,0 };
 float angle =0;
 float force =0;
 Vec3 location = { 0,3,0 };
+
 void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 {
 	currTime = glutGet(GLUT_ELAPSED_TIME);
@@ -59,15 +59,20 @@ void shotInputSpecialKeyBoard(unsigned char key, int x, int y)
 		getCam()->pos.z = cos(camRotAngle) * 100;
 		break;
 	case GLUT_KEY_F1:
-	
+	{
+		char drag[20] = "CueMode: DragClick";
+		char wasd[20] = "CueMode: WASD";
 		if (inGame == 0) {
 			inGame = 1;
 			glutMouseFunc(clickInput);
+			strcpy(GetUI(3)->element[2].Text, drag);
 		}
 		else if(inGame ==1) {
 			glutMouseFunc(handleMenuInput);
 			inGame = 0;
+			strcpy(GetUI(3)->element[2].Text, wasd);
 		}
+	}
 	default:
 		break;
 	}
