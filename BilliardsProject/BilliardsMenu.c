@@ -137,7 +137,7 @@ void CreateControlsMenus()
     menuArray[menuCount].menuID = 6;//used to identify this menu
     menuArray[menuCount].element = (GUI_Element*)malloc(sizeof(GUI_Element) * menuArray[menuCount].elementCount);
 
-    GUI_Element controlExplain = { 0.5,0.3,400,300,"Controls:\n\nChange input angle: A and D\nChange force: W and S\nChange Camera: Arrow Keys\nHit Ball: Space\n\nBall input Can be changed to mouse\nmode by pressing F1"};
+    GUI_Element controlExplain = { 0.5,0.3,400,300,"Controls:\n\nChange input angle: A and D\nChange force: W and S\nChange Camera: Arrow Keys\nHit Ball: Space\n\nBall input can be changed to mouse\nmode by pressing F1"};
     controlExplain.btn_CallBack = &testCallback;
     menuArray[menuCount].element[0] = controlExplain;
 
