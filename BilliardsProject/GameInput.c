@@ -233,7 +233,6 @@ void clickInput(int Button, int state, int x, int y)
 			ballClick = 0;
 			cueBall->velocity = multiply(minus(mouseUp, mouseDown), 2);
 		}
-
 	}
 }
 
@@ -265,22 +264,19 @@ Vec3 rayCast(int x, int y)
 	float xang, xangr, yang, yangr, xvar, zvar, zdist, camangy;
 	float h = glutGet(GLUT_WINDOW_HEIGHT) / 2;
 	float w = glutGet(GLUT_WINDOW_WIDTH) / 2;
-	float ratio = h / w;
+	float ratio = w/h;
 	camangy = -atan((camera->pos.y) / 100); //calculate the angle the camera is facing. this effects our y angle calculation.
 
-	xang = (w - (float)x) / (w * 2); //x angle as clicked on at the screen
-	if (camera->pos.z < 0) xang = PI - xang;  //if past a certain point, our camera is facing backwards
+	xang = ((w - (float)x) / (w * 2) * PI) / (3 * ratio); //convert screen angle into local angle
 
 	yang = (h - (float)y) / (h * 2); //center y ratio
 	yangr = camangy + (yang * PI) / 3; //change screen angle and click position into a radian.
 
 	xvar = asin(camera->pos.x / 100); //obtain world angle of camera rotation.
-	if (camera->pos.z < 0) xvar += PI / 2; //if rotated enough, we're at the other side of a unit circle.
-	xangr = xvar + (xang * PI) / (3 * ratio); //convert screen click into radian, add world adjustment var
+	if (camera->pos.z < 0) xvar = PI-xvar; //if rotated enough, we're at the other side of a unit circle.
+	xangr = xvar + xang;  //local angle into world angle
+	float temp = xangr * 180 / PI;
+	Vec3 output = { -sin(xangr), sin(yangr), -cos(xangr) };
+	return output;
 
-
-	zvar = xangr;  //use world angle
-	if (camera->pos.z < 0) zvar += PI; //if world angle past, unit circle flip
-	zvar = zvar + (xang * PI) / (3 * ratio);
-	Vec3 output = { -sin(xangr), tan(yangr), -cos(zvar) };
 }
