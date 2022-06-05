@@ -122,9 +122,9 @@ void RenderShotIndicator()
 
 		if (ballClick == 1) 
 		{
-			force = length(minus(location, cueBall->position));
-			float newx = location.x - cueBall->position.x;
-			float newz = location.z - cueBall->position.z;
+			force =  2* length(minus(location, mouseDown));
+			float newx = location.x - mouseDown.x;
+			float newz = location.z - mouseDown.z;
 			if (newz>0)	angle = atan(newx/newz) + PI;
 			else angle = atan(newx/newz);
 		}
@@ -133,6 +133,8 @@ void RenderShotIndicator()
 			angle = cueAngle;
 			force = cueForce;
 		}
+		if (force > 500) force = 500;
+
 
 		sprintf(cueForceChar, "Force: %d", (int)force);
 		strcpy(GetUI(3)->element[1].Text, cueForceChar);
@@ -213,65 +215,36 @@ Vec3 calcForceVector()
 void clickInput(int Button, int state, int x, int y)
 {
 	if (isHittable == 1) {
-		float xang, xangr, yang, yangr, xvar, zvar;
 
-		xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
-		yang = -((((400 - (float)y) / 800) * 45) - 37.59627); //degrees y up/down
-		//adjust into rads and then into ratio
+		Camera* camera = getCam();
+		Vec3 direction = rayCast(x, y); //create a raycast vector
 
-		xangr = xang * PI / 180; //radian conversions
-		yangr = yang * PI / 180;
+		float factor = (camera->pos.y - 3) / -direction.y; //how much raycast to hit plane of y=3;
+		Vec3 loc = add(camera->pos, multiply(direction, factor));
 
-
-		zvar = -(77 / tan(yangr) - 100) * 1.5;
-		xvar = sqrt(77 * 77 + (100 - zvar) * (100 - zvar)) * (cos(PI / 2 - xangr)); //intermediary calcs
-		location.z = zvar + 1.5;
-		location.x = xvar * 1.70;
-
-		//printf("\nangles at vals: x %f, y %f", xang, yang); //output angles
-		//printf("\nattempt at vals: x %f, y %f, z %f", location.x, location.y, location.z); //output location
 		if (state == GLUT_DOWN)
 		{
-
-			float tolerance = length(minus(location, cueBall->position));
-			//printf("\nJam is %f, Cue Ball x: %f, y: %f, z: %f", tolerance, cueBall->position.x, cueBall->position.y, cueBall->position.z);
-			if (tolerance < 20)
-			{
-				mouseDown.x = location.x;
-				mouseDown.y = location.y;
-				mouseDown.z = location.z;
-				ballClick = 1;
-			}
+			mouseDown = loc;
+			ballClick = 1;
 		}
 		if (state == GLUT_UP && ballClick == 1)
 		{
-			mouseUp.x = location.x;
-			mouseUp.y = location.y;
-			mouseUp.z = location.z;
+			mouseUp = loc;
 			ballClick = 0;
-			cueBall->velocity = minus(mouseUp, mouseDown);
+			cueBall->velocity = multiply(minus(mouseUp, mouseDown), 2);
 		}
+
 	}
 }
 
-void cueDisplay(int x, int y)
+void cueMovement(int x, int y)
 {
 	if (ballClick == 1)
 	{
-		float xang, xangr, yang, yangr, xvar, zvar;
-
-		xang = (((float)x - 600) / 1200) * 60; //degrees x left/right
-		yang = -((((400 - (float)y) / 800) * 45) - 37.59627); //degrees y up/down
-		//adjust into rads and then into ratio
-
-		xangr = xang * PI / 180; //radian conversions
-		yangr = yang * PI / 180;
-
-
-		zvar = -(77 / tan(yangr) - 100) * 1.5;
-		xvar = sqrt(77 * 77 + (100 - zvar) * (100 - zvar)) * (cos(PI / 2 - xangr)); //intermediary calcs
-		location.z = zvar + 1.5;
-		location.x = xvar * 1.70;
+		Camera* camera = getCam();
+		Vec3 direction = rayCast(x, y); //create a raycast vector
+		float factor = (camera->pos.y - 3) / -direction.y; //how much raycast to hit plane of y=3;
+		location = add(camera->pos, multiply(direction, factor));
 	}
 
 	//Use location + mousedown to create angle + magnitude
@@ -284,4 +257,30 @@ void cueDisplay(int x, int y)
 void setCamRotAngle(GLfloat a)
 {
 	camRotAngle = a;
+}
+
+Vec3 rayCast(int x, int y) 
+{
+	Camera* camera = getCam();
+	float xang, xangr, yang, yangr, xvar, zvar, zdist, camangy;
+	float h = glutGet(GLUT_WINDOW_HEIGHT) / 2;
+	float w = glutGet(GLUT_WINDOW_WIDTH) / 2;
+	float ratio = h / w;
+	camangy = -atan((camera->pos.y) / 100); //calculate the angle the camera is facing. this effects our y angle calculation.
+
+	xang = (w - (float)x) / (w * 2); //x angle as clicked on at the screen
+	if (camera->pos.z < 0) xang = PI - xang;  //if past a certain point, our camera is facing backwards
+
+	yang = (h - (float)y) / (h * 2); //center y ratio
+	yangr = camangy + (yang * PI) / 3; //change screen angle and click position into a radian.
+
+	xvar = asin(camera->pos.x / 100); //obtain world angle of camera rotation.
+	if (camera->pos.z < 0) xvar += PI / 2; //if rotated enough, we're at the other side of a unit circle.
+	xangr = xvar + (xang * PI) / (3 * ratio); //convert screen click into radian, add world adjustment var
+
+
+	zvar = xangr;  //use world angle
+	if (camera->pos.z < 0) zvar += PI; //if world angle past, unit circle flip
+	zvar = zvar + (xang * PI) / (3 * ratio);
+	Vec3 output = { -sin(xangr), tan(yangr), -cos(zvar) };
 }

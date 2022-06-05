@@ -92,6 +92,7 @@ void physicSphereCollide(Body *ball1, Body *ball2)
 
 void tableAABB(Body* ball)
 {
+	
 	GLfloat rad = ball->radius*1.2f; // minus or plus 1 for radius of ball, little extra to make is seem more accurate and not phase through walls
 	GLfloat posX = ball->position.x, posZ = ball->position.z; // local variables
 	GLfloat floorLen = FLOORLENGTH - rad;
@@ -129,7 +130,7 @@ void tableAABB(Body* ball)
 	{
 		ball->velocity = collisionResolution(&ball->velocity, &v_rightwall);
 	}
-
+	
 }
 
 int holeAABB(Body* ball)
@@ -171,6 +172,6 @@ int holeAABB(Body* ball)
 	{
 		return 1; // return true
 	}
-
+	
 	return 0; // default return false
 }

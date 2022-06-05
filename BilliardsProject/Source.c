@@ -25,7 +25,7 @@ int main(int argc, char**argv)
 	glutSpecialFunc(shotInputSpecialKeyBoard);
 
 	glutMouseFunc(handleMenuInput);
-	glutMotionFunc(cueDisplay);
+	glutMotionFunc(cueMovement);
 	//glutIdleFunc(animate);
 
 	glutTimerFunc(TIMER, animate, 0);

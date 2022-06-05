@@ -9,7 +9,7 @@ void updateObject(Object* obj, float deltaTime)
 		printf("ball inactive");
 		return;
 	}
-
+	
 	//scuff clamping, 1 seems like a reasonable for now
 	if (length(obj->body.velocity) < 1) {
 		obj->body.velocity.x = 0;
@@ -26,8 +26,8 @@ void updateObject(Object* obj, float deltaTime)
 		obj->body.velocity.y *= FRICTION;
 		obj->body.velocity.z *= FRICTION;
 	}
-
-	/*
+	
+	
 	obj->body.velocity = add(
 		obj->body.velocity,
 		multiply(
@@ -37,7 +37,7 @@ void updateObject(Object* obj, float deltaTime)
 	); // prevVel + prevAccel*deltatime
 
 	obj->body.acceleration = multiply(obj->body.acceleration, deltaTime); // update acceleration
-	*/
+	
 }
 
 Vec3 centerOfMass(OffModel* cModel)

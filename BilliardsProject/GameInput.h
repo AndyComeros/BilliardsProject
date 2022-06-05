@@ -44,8 +44,8 @@ Vec3 calcEndPoint(float lengthMod, float angle);
 //calculates vector used to move ball
 Vec3 calcForceVector();
 void clickInput(int Button, int state, int x, int y);
-void cueDisplay(int x, int y);
+void cueMovement(int x, int y);
 
 void setCamRotAngle(GLfloat a);
-
+Vec3 rayCast(int x, int y);
 #endif
